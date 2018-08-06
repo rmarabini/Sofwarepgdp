@@ -1,0 +1,121 @@
+MAIN WINDOW
+
+<ctrl>+x -- cut or column cut
+<ctrl>+c -- copy or column copy
+<ctrl>+v -- paste
+<ctrl>+a -- select all
+<ctrl>+s -- save file
+
+<shift>+mouse drag -- column select
+F1 -- column copy
+F2 -- column cut
+F3 -- column paste
+
+F5 -- open Word Frequency
+F6 -- run Gutcheck
+F7 -- spell check selection (or document, if no selection made)
+F8 -- open Stealth Scannos search
+
+<ctrl>+z -- undo
+<ctrl>+y -- redo
+
+<ctrl>+u -- Convert case of selection to upper case
+<ctrl>+l -- Convert case of selection to lower case
+<ctrl>+t -- Convert case of selection to title case
+
+<ctrl>+d -- delete character after cursor (Delete)
+<ctrl>+h -- delete character to the left of the cursor (Backspace)
+<ctrl>+k -- delete from cursor to end of line
+<ctrl>+<backspace> -- delete word backwards
+<ctrl>+<delete> -- delete word forwards
+
+<ctrl>+f -- open Search & Replace popup
+<ctrl>+g -- continue search
+<ctrl>+<shift>+g -- continue search in opposite direction
+
+<ctrl>+i -- view current image (as See Img button)
+<ctrl>+p -- go to page
+<ctrl>+P -- go to page label
+<ctrl>+o -- flood fill (if popup is open, otherwise open it)
+<ctrl>+r -- surround text (if popup is open, otherwise open it)
+
+<ctrl>+Home -- move cursor to the start of the text
+<ctrl>+End -- move cursor to end of the text
+<ctrl>+right arrow -- move to the start of the next word
+<ctrl>+left arrow -- move to the start of the previous word
+<ctrl>+up arrow -- move to the start of the current paragraph
+<ctrl>+down arrow -- move to the start of the next paragraph
+<ctrl>+PgUp -- scroll left one screen
+<ctrl>+PgDn -- scroll right one screen
+
+<shift>+Home -- adjust selection to beginning of current line
+<shift>+End -- adjust selection to end of current line
+<shift>+up arrow -- adjust selection up one line
+<shift>+down arrow -- adjust selection down one line
+<shift>+left arrow -- adjust selection left one character
+<shift>+right arrow -- adjust selection right one character
+
+<shift>+<ctrl>+Home -- adjust selection to the start of the text
+<shift>+<ctrl>+End -- adjust selection to end of the text
+<shift>+<ctrl>+left arrow -- adjust selection to the start of the previous word
+<shift>+<ctrl>+right arrow -- adjust selection to the start of the next word
+<shift>+<ctrl>+up arrow -- adjust selection to the start of the current paragraph
+<shift>+<ctrl>+down arrow -- adjust selection to the start of the next paragraph
+
+<ctrl>+, -- highlight all apostrophes in selection.
+<ctrl>+. -- highlight all double quotes in selection.
+<ctrl>+0 -- remove all highlights.
+
+<Insert> -- Toggle insert / overstrike mode
+
+Double-click left mouse button -- select word
+Triple-click left mouse button -- select line
+
+<shift>+click left mouse button -- adjust selection to click point
+<shift>+double-click left mouse button -- adjust selection to include word clicked on
+<shift>+triple-click left mouse button -- adjust selection to include line clicked on
+
+Single click right mouse button -- pop up shortcut to menu bar
+
+
+MENUS (non-Mac)
+
+Hold Alt to activate the menu bar, select an item by typing its underlined symbol.
+
+
+SEARCH POPUP
+
+<Enter> -- Search
+<shift>+<Enter> -- Replace
+<ctrl>+<Enter> -- Replace & Search
+<ctrl>+<shift>+<Enter> -- Replace All
+
+
+PAGE SEPARATOR POPUP
+
+j -- Join Lines - join lines, remove all blank lines, spaces, asterisks and hyphens.
+k -- Join, Keep Hyphen - join lines, remove all blank lines, spaces and asterisks, keep hyphen.
+l -- Blank Line - leave one blank line. Close up any other whitespace. (Paragraph Break)
+t -- New Section - leave two blank lines. Close up any other whitespace. (Section Break)
+h -- New Chapter - leave four blank lines. Close up any other whitespace. (Chapter Break)
+r -- Refresh - search for, highlight and re-center the next page separator.
+u -- Undo - undo the last edit.
+d -- Delete - delete the page separator. Make no other edits.
+v -- View the current page in the image viewer.
+a -- Cycle Automatic modes.
+? -- View hotkey help popup.
+
+
+SPELL CHECK POPUP
+
+<ctrl>+s -- Skip word
+<ctrl>+i -- Skip all/ignore word
+<ctrl>+a -- Add word to Aspell dictionary
+<ctrl>+p -- Add word to project dictionary 
+
+
+ADJUST PAGE MARKERS POPUP
+
+PgDn/PgUp -- move to next/previous page marker.
+Up/Down/Left/Right arrows -- move current page marker up/down/left/right.
+
