@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content=
+"text/html; charset=ISO-8859-1">
+<title>The Project Gutenberg eBook of Scientific American
+Supplement, ***enter issue date here***</title>
+<style type="text/css">
+<!--
+body {margin-left: 15%; margin-right: 15%; background-color: white}
+img {border: 0;}
+h1,h2,h3 {text-align: center;}
+  .sc                  {font-variant: small-caps;}
+.note {margin-left: 2em; margin-right: 2em; margin-bottom: 1em;}
+.ind {margin-left: 10%; margin-right: 10%;}
+hr {text-align: center; width: 50%;}
+.ctr {text-align: center;}
+-->
+</style>
+</head>
+<body>
+<p class="ctr"><a href="./illustrations/1a.png"><img src=
+"./illustrations/1a_th.png" alt=""></a></p>
+<h1>SCIENTIFIC AMERICAN SUPPLEMENT NO. ***enter issue number here***</h1>
+<h2>NEW YORK, ***enter issue date here***</h2>
+<h4>Scientific American Supplement. Vol. ***enter volume number here***, No. ***enter issue number here***.</h4>
+<h4>Scientific American established 1845</h4>
+<h4>Scientific American Supplement, $5 a year.</h4>
+<h4>Scientific American and Supplement, $7 a year.</h4>
+<hr>
+<table summary="Contents" border="0" cellspacing="5">
+<tr>
+<th colspan="2">TABLE OF CONTENTS.</th>
+</tr>
+<tr>
+<td valign="top">I.</td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td valign="top">II.</td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td valign="top">III.</td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+<tr>
+<td valign="top">IV.</td>
+<td><a href="#***enter anchor name here***">
+***enter article header here***
+</a></td>
+</tr>
+</table>
+<hr> 

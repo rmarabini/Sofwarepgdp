@@ -1,0 +1,12 @@
+<hr class="full" /> 
+    ***FOOTNOTE 1***  move the footnotes here!
+    ***FOOTNOTE 2*** 
+    *** 
+<hr class="full" /> 
+
+***THE 'PRINTED BY' LINE*** 
+
+<hr class="full" /> 
+
+</body> 
+</html> 

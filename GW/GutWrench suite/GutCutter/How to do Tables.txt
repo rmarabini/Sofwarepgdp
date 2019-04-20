@@ -1,0 +1,52 @@
+GutCutter can help with setting up HTML tables (this has been implemented only in certain Styles, including Punch). You will have to type in a few extra characters, which GutCutter will convert to HTML markup. These characters and other HTML markups will be removed by GutCutter in preparing the plain-text version.
+
+These instructions apply only to the following GutCutter styles:
+  --"Punch" magazine
+  --"Notes & Queries" magazine
+  --"Lippincott's" magazine
+
+This is the version of these instructions of 2 December 2004.
+
+These markups should be added in the first phase of making a well-marked-up version, which is further worked on in the other two phases to produce both final versions (plain-text and HTML).
+
+       *       *       *       *       *
+
+1. Add /$ and $/ tags around the table. (These will be converted to <table...> and </table>.) Optionally, put the table Summary after the /$.
+
+2. Optionally, put the table caption in <caption ...> and </caption> tags.
+
+3. Separate the table columns with vertical-line characters "|". Also put "|" characters before the first column and after the last.
+
+4. Optionally, the horizontal alignment of each table element can be adjusted by adding a character immediately after the preceding "|":
+    |< for left-align
+    |> for right-align
+    |= for centered horizontally
+    |^ for vertically aligned at the top
+    |_ for vertically aligned at the bottom
+
+These symbols can also be used after the opening /$ markup to set the alignment of the table itself (e.g., "/$=summary" centers the table horizontally on the page).
+
+An example marked-up table using this system:
+
+/$=Demo
+<caption align="top">Batters' Statistics.</caption>
+|<Player's name. |=Hits.|=At bats.|=Avg.|
+|<Joe Schmoe     |>  4  |>   5    |^.800|
+|<Ed Glover      |>  3  |>   6    |^.500|
+|<Cornelius Kolb |>  2  |>   7    |_.283|
+$/
+
+which GutCutter will convert to:
+
+<table summary="Demo" align="center">
+<caption align="top">Batters' Statistics.</caption>
+<tr><td align="left">Player's name.</td><td align="center">Hits.</td><td align="center">At bats.</td><td align="center">Avg.</td></tr>
+<tr><td align="left">Joe Schmoe</td><td align="right">4</td><td align="right">5</td><td valign="top">.800</td></tr>
+<tr><td align="left">Ed Glover</td><td align="right">3</td><td align="right">6</td><td valign="top">.500</td></tr>
+<tr><td align="left">Cornelius Kolb</td><td align="right">2</td><td align="right">7</td><td valign="bottom">.283</td></tr>
+</table>
+
+Note that in preparing the plain-text version, the entire <table ...> and <caption ...> tags are removed, including any optional parameters. The <table...> and </table> tags are replaced with /$...$/ markups (to be removed later by GutHammer or other PP tool).
+
+For a demonstration, run GutCutter on the accompanying file TableDemo.txt using any of the styles which includes support for HTML Table Help (see the list at the top of this file).
+

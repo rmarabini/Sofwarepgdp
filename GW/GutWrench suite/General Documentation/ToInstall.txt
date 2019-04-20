@@ -1,0 +1,51 @@
+These are special installations instructions for GutWrench, GutAxe, and GutCutter.
+
+If you use the Extract function of WinZip, the resulting files will be arranged in their proper directories for all the programs to work, and these instructions can be ignored.
+
+For GutWrench to work properly, the accompanying files:
+
+GWimposs.txt
+GWimprob.txt
+GWscanoE.txt    (English stealth scannos)
+GWscanoOE.txt   (Olde Englifh ftealth fcannof)
+GWscanoF.txt    (French scannos)
+GWscanoO.txt    (Other-language scannos)
+
+must be placed inside a folder named
+
+GWplugins
+
+which, in turn, must reside in the same folder as GutWrench.exe.
+
+For GutAxe to work properly, the accompanying files:
+
+GAaccent.txt
+GAaelig.txt
+GAmarkup.txt
+GAothers.txt
+GAscanno.txt
+
+must be placed inside a folder named
+
+GAplugins
+
+which, in turn, must reside in the same folder as GutAxe.exe.
+
+For GutCutter to work properly, the accompanying files:
+
+GCdefine.txt
+GCstyle0.txt, GCstyle1.txt, GCstyle2.txt, etc.
+Header0.txt, Header1.txt, Header2.txt, etc.
+Trailer0.txt, Trailer1.txt, Trailer2.txt, etc.
+
+must be placed inside a folder named
+
+GCstyles
+
+which, in turn, must reside in the same folder as GutCutter.exe.
+
+The file Cheklist.txt is a short check list for using GutSweeper, GutAxe, GutWrench, and GutHammer as part of the entire job of post-processing. For convenience, paste it into the beginning of your text, and annotate it (or delete steps) as you complete each stage. Don't forget to delete it from your text when you're done!
+
+A Checklist for using GutCutter is contained in the file "How to do Punch.txt".
+
+For further instructions on using GutAxe, GutWrench, and GutCutter, see the accompanying files GAreadme.txt, GWreadme.txt, and GCreadme.txt.

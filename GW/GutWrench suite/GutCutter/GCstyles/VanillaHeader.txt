@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type"
+    content="text/html; charset=us-ascii">
+<meta content="GutCutter (version 0.3)" name="generator">
+<title>The Project Gutenberg eBook of
+    <b>__TITLE__.</b>,
+    by __AUTHOR__.
+</title>
+<style type="text/css">
+    <!--
+    * { font-family:   Times;
+      }
+    P { text-indent:   1em;
+        margin-top:    .75em;
+        font-size:     12pt;
+        text-align:    justify;
+        margin-bottom: .75em; }
+    H1,H2,H3,H4,H5,H6 { text-align: center; }
+    HR  { width: 33%; }
+    PRE { font-family: Courier, monospaced;}
+    .toc  { margin-left: 15%; font-size: 10pt; margin-bottom: 0em;}
+    CENTER { padding: 10px;}
+    // -->
+</style>
+</head>
+<body>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<a name="2H_4_1"><!-- H2 anchor --></a>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>
+TABLE OF CONTENTS
+</h2>
+***put table of contents here***
+<h2>
+FOREWORD
+</h2>
+***put foreword here***
+<h2>
+INTRODUCTION
+</h2>
+***put foreword here***

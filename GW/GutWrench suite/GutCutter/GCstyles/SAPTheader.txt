@@ -1,0 +1,44 @@
+[Illustration]
+
+
+
+
+SCIENTIFIC AMERICAN SUPPLEMENT NO. 288
+
+
+
+
+NEW YORK, JULY 9, 1881
+
+Scientific American Supplement. Vol. XI, No. 288.
+
+Scientific American established 1845
+
+Scientific American Supplement, $5 a year.
+
+Scientific American and Supplement, $7 a year.
+
+       *       *       *       *       *
+
+============== ^ example above ^ ============ v real below v ===============
+[Illustration]
+
+
+
+
+SCIENTIFIC AMERICAN SUPPLEMENT NO. ***enter issue no. here***
+
+
+
+
+NEW YORK, ***enter issue date here***
+
+Scientific American Supplement. Vol. ***enter vol. no. here***, No. ***enter issue no. here***.
+
+Scientific American established 1845
+
+Scientific American Supplement, $5 a year.
+
+Scientific American and Supplement, $7 a year.
+
+       *       *       *       *       *

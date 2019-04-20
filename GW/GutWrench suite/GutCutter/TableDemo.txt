@@ -1,0 +1,29 @@
+
+<h1>Table Demonstration</h1>
+<h2>using GutCutter</h2>
+
+       *       *       *       *       *
+
+/$=Demo
+<caption align="top">Table 1. Batters' Statistics.</caption>
+|<Player's name.|Hits.|At bats.|Avg.|
+|<Joe Schmoe|>4|>5|^.800|
+|<Ed Glover|>3|>6|^.500|
+|<Cornelius Kolb|>2|>7|_.283|
+$/
+
+       *       *       *       *       *
+
+/$=Schedule
+<caption align="top">Table 2. Schedule.</caption>
+|>Mileage.|<    Place. |>      Time.|
+|>    --  |<    Euston     |>  6.55 P.M.|
+|>   5½|<    Willesden  |> [7.4]  "|
+|>  17½|<    Watford    |> [7.18] "|
+|>  46¾|<    Bletchley  |> [7.50] "|
+|>  82¼|<    Rugby      |> [8.24] "|
+|>  94¼|<    Coventry   |> [8.36] "|
+|> 113    |<    Birmingham |>  8.55  "|
+$/
+
+

@@ -22,10 +22,10 @@ $donotcenterpagemarkers   = '0';
 $extops_size              = '10';
 $failedsearch             = '0';
 $font_char                = '=';
-$fontname                 = 'Bitstream Charter';
-$fontsize                 = '20';
+$fontname                 = 'Courier New';
+$fontsize                 = '22';
 $fontweight               = '';
-$geometry                 = '1900x972+0+17';
+$geometry                 = '1920x979+0+0';
 $geometry2                = '462x583+684+72';
 $gesperrt_char            = '~';
 $globalaspellmode         = 'normal';
@@ -39,7 +39,7 @@ $intelligentWF            = '0';
 $ignoreversions           = 'revision';
 $italic_char              = '_';
 $jeebiesmode              = 'p';
-$lastversioncheck         = '1533471616';
+$lastversioncheck         = '1555790205';
 $lastversionrun           = '1.0.25';
 $lmargin                  = '0';
 $multisearchsize          = '3';
@@ -71,7 +71,7 @@ $txt_conv_tb              = '1';
 $twowordsinhyphencheck    = '0';
 $unicodemenusplit         = '2';
 $utffontname              = 'Courier New';
-$utffontsize              = '14';
+$utffontsize              = '18';
 $url_no_proofer           = 'http://www.pgdp.net/phpBB2/privmsg.php?mode=post';
 $url_yes_proofer          = 'http://www.pgdp.net/c/stats/members/mbr_list.php?uname=';
 $urlprojectpage           = 'http://www.pgdp.net/c/project.php?id=';
@@ -82,20 +82,18 @@ $vislnnm                  = '0';
 $w3cremote                = '0';
 $wfstayontop              = '0';
 
-$globallastpath      = '/home/roberto/sda/Books/FuenteOvejuna/';
 $globalspellpath     = '/usr/bin/aspell';
 $globalviewerpath    = '/usr/bin/geeqie';
 $globalbrowserstart  = 'xdg-open';
-$gutcommand          = '/home/roberto/sda/Books/Software/Guiguts/tools/gutcheck/gutcheck';
-$jeebiescommand      = '/home/roberto/sda/Books/Software/Guiguts/tools/jeebies/jeebies';
-$scannospath         = '/home/roberto/sda/Books/Software/Guiguts/scannos';
+$gutcommand          = '/home/roberto/sda/pgdp/Sofwarepgdp/Guiguts/tools/gutcheck/gutcheck';
+$jeebiescommand      = '/home/roberto/sda/pgdp/Sofwarepgdp/Guiguts/tools/jeebies/jeebies';
+$scannospath         = '/home/roberto/sda/pgdp/Sofwarepgdp/Guiguts/scannos';
 $tidycommand         = '/usr/bin/tidy';
 $validatecommand     = '/usr/bin/onsgmls';
-$validatecsscommand  = '/home/roberto/sda/Books/Software/Guiguts/tools/W3C/css-validator.jar';
+$validatecsscommand  = '/home/roberto/sda/pgdp/Sofwarepgdp/Guiguts/tools/W3C/css-validator.jar';
 
 @recentfile = (
-	'/home/roberto/sda/Books/FuenteOvejuna/FuenteOvejuna._firsttxt',
-	'/home/roberto/sda/Books/FuenteOvejuna/FuenteOvejuna.txt',
+	'/home/roberto/deleteme',
 	'README.txt',
 );
 
@@ -113,71 +111,50 @@ $validatecsscommand  = '/home/roberto/sda/Books/Software/Guiguts/tools/W3C/css-v
 	{'label' => '', 'command' => ''},
 );
 
-$geometryhash{pagelabelpop}      = '375x500+1491+86';
-$geometryhash{hotkeyspop}        = '+144+119';
-$geometryhash{utfpop}            = '+46+46';
+$geometryhash{jeepop}            = '+284+72';
+$geometryhash{pagelabelpop}      = '375x500+20+20';
 $geometryhash{alignpop}          = '+338+83';
-$geometryhash{pagesephelppop}    = '+191+132';
+$geometryhash{gcpop}             = '+224+72';
 $geometryhash{utfsearchpop}      = '550x450+53+87';
+$geometryhash{extpop}            = '+120+38';
+$geometryhash{hpopup}            = '300x400+584+211';
+$geometryhash{pagesephelppop}    = '+191+132';
+$geometryhash{gcviewoptspop}     = '+264+72';
+$geometryhash{hotkeyspop}        = '+144+119';
+$geometryhash{footcheckpop}      = '+22+12';
 $geometryhash{errorcheckpop}     = '+484+72';
 $geometryhash{asciiboxpop}       = '+358+187';
-$geometryhash{aboutpop}          = '+312+136';
 $geometryhash{wfpop}             = '+365+63';
-$geometryhash{gcviewoptspop}     = '+264+72';
-$geometryhash{gcpop}             = '+224+72';
-$geometryhash{hpopup}            = '300x400+584+211';
-$geometryhash{extpop}            = '+120+38';
-$geometryhash{footcheckpop}      = '+22+12';
 $geometryhash{regexrefpop}       = '+106+72';
-$geometryhash{jeepop}            = '+284+72';
+$geometryhash{utfpop}            = '+46+46';
 $geometryhash{gcrunoptspop}      = '+244+72';
+$geometryhash{aboutpop}          = '+312+136';
 
+$positionhash{pagemarkerpop}     = '+302+97';
+$positionhash{footpop}           = '+255+157';
+$positionhash{guesspgmarkerpop}  = '+10+10';
+$positionhash{marginspop}        = '+145+137';
+$positionhash{filepathspop}      = '+55+7';
+$positionhash{htmlgenpop}        = '+145+37';
+$positionhash{searchpop}         = '+10+10';
+$positionhash{grpop}             = '+144+153';
 $positionhash{txtconvpop}        = '+82+131';
 $positionhash{latinpop}          = '+10+10';
-$positionhash{fixpop}            = '+34+22';
-$positionhash{utfentrypop}       = '+191+132';
-$positionhash{pagemarkerpop}     = '+302+97';
-$positionhash{brkpop}            = '+482+131';
-$positionhash{spellpopup}        = '+152+97';
-$positionhash{filepathspop}      = '+98+336';
-$positionhash{srchhistsizepop}   = '+152+97';
-$positionhash{htmlgenpop}        = '+145+37';
-$positionhash{fontpop}           = '+10+10';
-$positionhash{grpop}             = '+144+153';
-$positionhash{footpop}           = '+255+157';
 $positionhash{htmlimpop}         = '+45+37';
-$positionhash{pageseppop}        = '+686+634';
-$positionhash{marginspop}        = '+145+137';
-$positionhash{searchpop}         = '+733+139';
-$positionhash{guesspgmarkerpop}  = '+10+10';
+$positionhash{fontpop}           = '+10+10';
+$positionhash{spellpopup}        = '+152+97';
+$positionhash{srchhistsizepop}   = '+152+97';
+$positionhash{fixpop}            = '+34+22';
+$positionhash{brkpop}            = '+482+131';
+$positionhash{pageseppop}        = '+334+176';
+$positionhash{utfentrypop}       = '+191+132';
 
 @mygcview = ();
 
 @search_history = (
-	"\x{5b}\x{2a}",
-	"dalde",
-	"dadle",
-	"dad",
-	"e\x{f1}id",
-	"e\x{f1}il",
-	"re\x{f1}id",
-	"renid",
-	"re",
-	"re\x{f1}il",
-	"\x{3c}sc",
-	"Aparte",
-	"academi",
-	"s\x{ed}",
-	"si ",
-	"si",
-	"decien",
-	"descien",
-	"Illustration",
-	"\x{5b}Blank Page\x{5d}",
 );
 
 @replace_history = (
-	"",
 );
 
 @multidicts = (

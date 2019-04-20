@@ -1,0 +1,135 @@
+\Auxiliary file N&QPTstyle.txt for GutCutter 0.3
+\Converts text file with DP markups and some HTML markups to a plain-text version
+\This file serves to remove the extra markups and to revert any HTML back to DP plain-text style
+\This file works with the Notes and Queries Style
+
+\modified 29 Dec. 2005
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+s\*/*\\Blank line in poetry (introduced by GutCutter)
+
+    FRACTIONS
+r_(\d)-1/4_$1¼_fraction one-quarter
+r_(\d)-1/2_$1½_fraction one-half
+r_(\d)-3/4_$1¾_fraction three-quarters
+
+    REPLACE DP-style SMALL-CAPITALS MARKUP WITH HTML BOLD MARKUP
+s\<sc>\<b>\Replace small-caps markup with bold markup
+s\</sc>\</b>\Replace small-caps markup with bold markup
+
+     Change Page Separator to an indication of the page number
+r_-{23}File:\s*(\d+)\.png-{25,30}_{$1}_page number
+
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*_{$1}_page number 
+
+     Remove special N&Q markups
+s\>>\\Remove ">>author" markup
+s\/#note\/#\Remove Editorial Note markup
+s\#/note\#/\Remove Editorial Note markup
+
+s\##\\Remove page number link markup
+
+   Don't italicize letters used to enumerate lists:
+   (Putting these rules here allows them to be italicized in the HTML.)
+r_\(<i>([a-zA-Z\d])</i>\)_($1)_Don't italicize lone letter or number in parens
+  \s\(<i>a</i>)\(a)\Don't italicize "(a)"
+    etc.
+s\(<i>ii</i>)\(ii)\Don't italicize "(ii)"
+s\(<i>iii</i>)\(iii)\Don't italicize "(iii)"
+s\(<i>iv</i>)\(iv)\Don't italicize "(iv)"
+s\(<i>vi</i>)\(vi)\Don't italicize "(vi)"
+s\(<i>vii</i>)\(vii)\Don't italicize "(vii)"
+s\(<i>viii</i>)\(viii)\Don't italicize "(viii)"
+s\(<i>ix</i>)\(ix)\Don't italicize "(ix)"
+s\(<i>xi</i>)\(xi)\Don't italicize "(xi)"
+s\(<i>xii</i>)\(xii)\Don't italicize "(xii)"
+s\(<i>xiii</i>)\(xiii)\Don't italicize "(xiii)"
+s\(<i>xiv</i>)\(xiv)\Don't italicize "(xiv)"
+
+\Don't italicize abbreviations:
+s\<i>i.e.</i>\i.e.\Don't italicize "i.e."
+s\<i>e.g.</i>\e.g.\Don't italicize "e.g."
+s\<i>etc.</i>\etc.\Don't italicize "etc."
+s\<i>et al.</i>\et al.\Don't italicize "et al."
+s\<i>Ib.</i>\Ib.\Don't italicize "Ib."
+s\<i>Ibid.</i>\Ibid.\Don't italicize "Ibid."
+s\<i>do.</i>\do.\Don't italicize "do."
+s\<i>Do.</i>\Do.\Don't italicize "Do."
+\British currency:
+r_<i>([dls]\.)</i>_$1_Don't italicize British currency
+  s\<i>l.</i>\l.\Don't italicize "l." for pound
+  s\<i>s.</i>\s.\Don't italicize "s." for shilling
+  s\<i>d.</i>\d.\Don't italicize "d." for pence
+
+\Undo special features used for Punch and Mirror:
+r_\[Illustration [CLRI]{0,1}\d*([:\]])_[Illustration$1_Illustration
+  \s\[Illustration L10:\[Illustration:\Illustration
+  \s\[Illustration L10]\[Illustration]\Illustration without caption
+    etc.
+
+r_\[Illustration [CLRI]{0,1}\d*\/[^:\]]+([:\]])_[Illustration$1_Illustration
+  \s\[Illustration L10/23-4:\[Illustration:\Illustration
+  \s\[Illustration L10/23-4]\[Illustration]\Illustration
+
+      THOUGHT BREAKS
+s\<hr>\       *       *       *       *       *\Rule to Thought Break
+s\<hr />\       *       *       *       *       *\Rule to Thought Break
+s\<hr class="short" />\       *       *       *       *       *\Short Rule to Thought Break
+s\<hr class="full" />\       *       *       *       *       *\Full Rule to Thought Break
+s\<hr class="long" />\       *       *       *       *       *\Long Rule to Thought Break
+s\<tb>\       *       *       *       *       *\<tb> DP markup to Thought Break
+s\<tb />\       *       *       *       *       *\(Erroneous) <tb /> DP markup to Thought Break
+s\<tb short>\       *       *       *       *       *\<tb short> modified DP markup to Thought Break
+s\<tb full>\       *       *       *       *       *\<tb full> modified DP markup to Thought Break
+s\<tb long>\       *       *       *       *       *\<tb long> modified DP markup to Thought Break
+\Undo special "Mirror", "Punch", "Notes & Queries", and "Fully Monty" features
+s\       *       *       *       *       *full\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *long\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *short\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *adverts\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *advert\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *ad\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *ads\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *adv\       *       *       *       *       *\Thought Break
+
+    Take out tokens for HTML Tables
+r_<table[^>]*>__remove <table...> tag
+s\</table>\\remove </table> tag
+r_<caption[^>]*>__remove <caption...> tag
+s\</caption>\\remove </caption> tag
+s\|<\|\Table separator, left-align
+s\|>\|\Table separator, right-align
+s\|=\|\Table separator, center-align
+s\|^\|\Table separator, top-align
+s\|_\|\Table separator, bottom-align
+s\|\\remove vertical-line symbol
+
+     Remove any HTML markups that may have been introduced
+
+s\&amp;\&\ampersand
+s\&mdash;\--\em dash
+
+\Replace HTML Header tags by Bold tags:
+r_<h\d>_<b>_Header-x to Bold
+r_</h\d>_</b>_Header-x close to Bold close
+  \s\<h1>\<b>\Header-1 to Bold
+    etc.
+
+
+    REMOVE VARIOUS HTML MARKUPS
+s\<p>\\Remove paragraph markup
+s\</p>\\Remove paragraph markup
+s\</div>\\Remove markup
+s\<center>\\Remove centering markup
+s\</center>\\Remove centering markup
+s\<u>\\Remove underline markup
+s\</u>\\Remove underline markup
+s\<big>\\Remove big markup
+s\</big>\\Remove big markup
+s\<small>\\Remove small markup
+s\</small>\\Remove small markup
+s\<br />\\Remove HTML breaks
+s\<br>\\Remove HTML breaks

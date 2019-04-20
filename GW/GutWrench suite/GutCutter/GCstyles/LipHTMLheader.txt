@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+
+  <title>The Project Gutenberg eBook of Lippincott's Magazine of Popular Literature and Science, Vol. ***, No. ***, ***DATE***.</title>
+
+  <style type="text/css"> 
+  <!-- 
+  body                 {margin-left: 10%; margin-right: 10%;} 
+  p                    {text-align: justify;} 
+  blockquote           {text-align: justify;} 
+  h1,h2,h3,h4,h5,h6    {text-align: center;} 
+  h1 {margin-top: 2em; margin-bottom: 2em}
+  h2 {margin-top: 4em; margin-bottom: 2em}
+  h3 {margin-top: 2em; margin-bottom: 2em}
+  .sc                  {font-variant: small-caps;}
+
+  pre                  {font-size: 0.7em;} 
+
+  hr                   {text-align: center; width: 50%;} 
+  html>body hr         {margin-right: 25%; margin-left: 25%; width: 50%;} 
+  hr.full              {width: 100%;} 
+  html>body hr.full    {margin-right: 0%; margin-left: 0%; width: 100%;} 
+  hr.short             {text-align: center; width: 20%;} 
+  html>body hr.short   {margin-right: 40%; margin-left: 40%; width: 20%;} 
+
+  .note {margin-left: 10%; margin-right: 10%; font-size: 0.9em;} 
+
+  span.pagenum {position: absolute; left: 1%; right: 91%; font-size: 8pt;} 
+
+  .poem {margin-left:10%; margin-right:10%; margin-bottom: 1em;
+         text-align: left;} 
+  .poem .stanza        {margin: 1em 0em 1em 0em;} 
+  .poem p              {margin: 0; padding-left: 3em; text-indent: -3em;} 
+  .poem p.i2           {margin-left: 1em;} 
+  .poem p.i4           {margin-left: 2em;} 
+  .poem p.i6           {margin-left: 3em;} 
+  .poem p.i8           {margin-left: 4em;} 
+  .poem p.i10          {margin-left: 5em;} 
+
+  .figure, .figcenter, .figright, .figleft 
+  {padding: 1em; margin: 0; text-align: center;} 
+  .figure img, .figcenter img, .figright img, .figleft img 
+                       {border: none;} 
+  .figure p, .figcenter p, .figright p, .figleft p 
+                       {margin: 0; text-indent: 1em;} 
+  .figcenter           {margin: auto;} 
+  .figright            {float: right;} 
+  .figleft             {float: left;} 
+
+  .inline {border: none; vertical-align: middle;}
+
+  .footnote {font-size: 0.9em; margin-right: 10%; margin-left: 10%;}
+
+  .side {float:right;
+         font-size: 75%;
+         width: 25%;
+         padding-left:10px;
+         border-left: dashed thin;
+         margin-left: 10px;
+         text-align: left;
+         text-indent: 0;
+         font-weight: bold;
+         font-style: italic;}
+
+  div.trans-note {border-style: solid; border-width: 1px;
+      margin: 3em 15%; padding: 1em; text-align: center;}
+
+  .illustrations {margin: 0.5em 10%; font-size: 0.9em;}
+
+  .toc {margin: 0 10%; text-align: left; font-size: 0.9em;}
+  .toc p {margin: 0.5em 0;}
+  .toc p.i4 {margin-left: 2em;}
+
+  p.author {text-align: right; margin-right: 5%;} 
+
+  a:link {color: blue; text-decoration: none;}
+  link {color: blue; text-decoration: none;}
+  a:visited {color: blue; text-decoration: none;}
+  a:hover {color: red;}
+  --> 
+  </style> 
+</head> 
+<body> 
+    <div class="trans-note">
+        Transcriber's Note: The Table of Contents and the list of
+        illustrations were added by the transcriber.
+    </div>
+<hr class="full" />
+
+    <h1>LIPPINCOTT'S MAGAZINE</h1>
+    <h3>OF</h3>
+    <h2><i>POPULAR LITERATURE AND SCIENCE.</i></h2>
+    <hr class="short" />
+    <h4>***Month***, ***year***.<br />
+    Vol. ***.</h4>
+    <hr class="short" />
+
+    <h3>TABLE OF CONTENTS</h3>
+
+    <div class="toc">
+        <p><a href="#illustrations">ILLUSTRATIONS</a></p>
+
+        <p>***TITLE OF FIRST ARTICLE***.</p>
+
+        <p class="i4">***Subtitle of First Article***. [Illustrated]
+        <a href="#page***">***</a></p>
+
+    </div>
+    <hr />
+    <a name="illustrations" id="illustrations"></a>
+
+    <h4>ILLUSTRATIONS</h4>
+
+    <p class="illustrations"><a href="#example">***Example Illustration***.</a></p>
+
+    <hr />

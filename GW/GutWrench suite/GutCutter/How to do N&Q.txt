@@ -1,0 +1,148 @@
+These are instructions on how to use various computer tools to help make an HTML version of "Notes & Queries" magazine in the style prescribed by the PM, Jon Ingram. You should have some familiarity with the basic scheme, which you can find described in detail in the DP Forum under Uberprojects --> Notes and Queries.
+
+This is the version of these instructions of 2 December 2004.
+
+You are going to make both a plain-text version and an HTML version, in three Phases. The first phase is to make a well-marked-up version, which will be further worked on in the other two phases to produce both final versions.
+
+       *       *       *       *       *
+
+PHASE ONE. Error-checking and adding a little more mark-up.
+
+1. Optionally, first run GutSweeper on the text file. Then go thru the text with an editor:
+
+a) In the Table of Contents, use GutCutter's Table-making capability (see the accompanying file "How to do Tables.txt"). Put "##" in front of each page number. (These will become links in the HTML version.) E.g.,
+
+<h2>CONTENTS.</h2>
+
+/$^Contents
+|<NOTES:-- |>Page|
+|<Travelling in England |>##33|
+|<Sanuto's Doges of Venice, by Sir F. Madden |>##35|
+|<Letters of Lord Nelson's Brother, immediately after the
+    Battle of Trafalgar, by the Rev. A. Gatty |>##36|
+|<Misquotations |>##38|
+ ...
+$/
+
+b) In the Page Separators, change the scan image numbers to the actual page numbers. You can use the GutPunch tool to do this. Also, if any word is hyphenated across a Page Separator, repair it to a whole word on one side of the PS or the other.
+
+c) Add HTML Header markups as appropriate:
+<h2>...</h2> about major section titles (items in ALL CAPS in the CONTENTS);
+<h3>...</h3> about titles of articles.
+
+d) Insert rules where needed, according to the N&Q style. Between articles, use the "Thought Break" (the usual five asterisks, seven spaces apart):
+
+       *       *       *       *       *
+
+If an article ends at the bottom of a page, put a Thought Break after it but _just before_ the Page Separator. (This is so that the Page Number displayed in the HTML version will fall a little below the Rule--looks nicer.) It should look like this (note where the blank lines go):
+
+... text on previous page.
+
+       *       *       *       *       *
+-----------------------File: 123.png----------------------------
+
+Text of following page.....
+
+Rules between major sections should be "full-length". These may be set up now by appending "full" after the Thought Break:
+
+       *       *       *       *       *full
+
+Rules before the adverts should also be a special type. These may be set up by appending "adverts" after the Thought Break:
+
+       *       *       *       *       *adverts
+
+The "full" and "adverts" will be automatically stripped out of the plain-text version. "short" and "long" rules are also handled.
+
+e) Adjust mark-ups:
+Change /*...*/ to /#...#/ around Block Quotes. Use /#note...#/note around Editorial Notes.
+Around Tables, change /*...*/ to /$...$/ and use GutCutter's Table-making capability (see the accompanying file "How to do Tables.txt" for instructions).
+(Leave /*...*/ around poetry and verse.)
+Add this markup around Editorial Notes:
+
+/#note
+[Editorial note.]
+#/note
+
+This is the same as Block Quote markup but with the word "note" added; if an Editorial Note is longer than one paragraph, use this markup around each paragraph (or deal with it by editing the HTML later).
+
+f) Mark authors' names or initials at ends of items with ">>" in front. (This will set them as right-justified in the HTML version.)
+
+2. Change any _low-line mark-ups_ of italics to <i>HTML style</i>.
+
+If you would like to have abbreviations like "etc." and "et al." appear in italics in the HTML, add tags around them now. (They will be stripped out automatically when you create the plain-text version with GutCutter.) I like to do this around the English money: "2<i>s.</i> 6<i>d.</i>"; these also get stripped out by GutCutter (note that the periods go INSIDE the italics markups).
+
+3. Pull any in-line Footnotes out of line. In general, N&Q articles are short, so I put all the footnotes of each article at the end of the article (where they will stay in the plain-text version). Order all the Footnotes so that they are numbered consecutively thoughout the text.
+
+4. Proofread and check for errors in the usual manner:
+GutAxe
+Gutcheck (Guiguts is recommended!)
+GutWrench
+Spellchecker
+(See the Checklist that comes with the GutWrench suite.)
+
+5. Inspect.
+
+6. You have completed making a "well-marked-up" version. Save a copy of this file in a safe place. This file will become both the plain-text and HTML versions.
+
+       *       *       *       *       *
+
+PHASE TWO: make the plain-text version:
+
+1. Run GutCutter on the well-marked-up version with these selections:
+  (radio button) Output As ... Plain Text
+    and
+  (menu) Style --> Notes and Queries
+This will automatically do the following:
+--Replace HTML <hx>header</hx> tags by <b>bold</b> tags.
+--Replace DP-style Page Separators with {page number}.
+--Remove italics markups that shouldn't be used (e.g., around <i>e.g.</i>, <i>etc.</i>, and English money).
+
+GutCutter's output, named GCout.txt, is now a standard DP marked-up version. Continue working with this file.
+
+2. Fix up Footnotes in the N&Q style. Change this:
+
+[Footnote 1: This is a footnote.]
+
+to look like this, surrounded by block-quote markups:
+
+/#
+[1] This is a footnote.
+#/
+
+3. Run GutHammer to re-wrap the text. (If you prefer, use RewrapIndent or Guiguts.)
+Adjust GutHammer's settings to also:
+--Apply an additive indent (select "Add") of 2 spaces to Poetry.
+--Change <i>HTML-style italics mark-up</i> to _low-line markup_.
+--Change text within <b>HTML-style bold mark-up</b> to ALL CAPS.
+
+4. Make a final inspection. It's a good idea to rerun gutcheck (in verbose mode) and GutAxe (in PPV mode). You have completed the plain-text version. Rename this file "NandQ.txt".
+
+       *       *       *       *       *
+
+PHASE THREE: make the HTML version. Start again with the well-marked-up version you made in Phase One. If you found any errors in making the plain-text version, correct them also in the well-marked-up file.
+
+1. Prepare the footnotes by consecutively numbering them through the entire text.
+
+2. Run GutCutter on the well-marked-up file with "Output As ... HTML" selected, and using Notes & Queries Style. The output of this program is named GCout.htm. Continue working with this file.
+
+3. Fix up the title area of the header, adding the volume number and the date.
+
+4. Fix up the Footnotes. In the GutCutter output, the tags (i.e., [3]) are automatically handled (may need number adjusted), and the footnotes look like this:
+
+<blockquote class="footnote"><a id="footnote3" name="footnote3"></a><b>Footnote 3:</b><a href="#footnotetag3"> (return) </a><p>***put text here***</p></blockquote> This is the real footnote text.]
+
+Repair it to look like this:
+
+<blockquote class="footnote"><a id="footnote3" name="footnote3"></a><b>Footnote 3:</b><a href="#footnotetag3"> (return) </a><p>This is the real footnote text.</p></blockquote>
+
+and move the Footnote where you want it (near the end of the file for N&Q, or possibly at end of Chapter for other projects).
+
+(A little trick: If, in the well-marked-up version, the footnote text falls all on a single line, it will be handled completely automatically by GutCutter and require no clean-up.)
+
+5. Open with your favorite web-browser to inspect.
+
+6. Clean up your code with Tidy and validate iy at http://validator.w3.org/. Rename this file "NandQ.htm".
+
+You're done making the HTML version.
+
+       *       *       *       *       *

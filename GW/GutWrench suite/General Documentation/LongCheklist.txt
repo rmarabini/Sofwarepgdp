@@ -1,0 +1,87 @@
+/$
+===========================================================
+Long (detailed) version of post-processing checklist for using 
+GutSweeper, GutAxe, GutWrench, and GutHammer (last changed 4 February 2005):
+
+(Paste this list at the front of your text. Remove or annotate each
+item when completed. Make a note to yourself here if you complete
+an item only partially. When the list is gone, you're done!)
+
+1. Run GutSweeper (in short, with all options selected) to:
+  a. Check that poetry, block-quote, and sic/stet markups are correct!
+If there are any Errors, running the Modify Text function will yield unpredictable results, so correct them by hand until a run of GutSweeper yields no Errors. "Alerts" point out some items that the Modify Text function will automatically repair and can be ignored.
+
+Then, Modify Text (can be done in a single run, by selecting all the options) to:
+  b. Break up long lines (from which proofers have removed line breaks)
+  c. Remove trailing blanks
+  d. Merge double blanks (outside of poetry and other markups)
+  e. Remove blank lines at the bottom of each page
+  f. "Clothe" the "naked" hyphens and dashes at the beginnings and ends of lines
+(Text within CORRECT markups is not affected by the above.)
+  g. Remove "*/*" interior poetry markup lines
+  h. Delete any text after markups, e.g., "/* poetry".
+  i. Split "oe" and "OE" ligatures
+  j. Remove spaces within abbreviations.
+  k. Optionally, spilt "ae" and "AE" ligatures.
+The modified text is always saved as GSout.txt. My practice is to name the original file "A.txt", so I rename this to "B.txt".
+
+2. Run GutAxe to make some quick corrections to the text. GutAxe scans the text looking for some common errors for which the corrections are straightforward. It shows the correction it proposes and asks whether you want to accept the change. If it finds a genuine error but the correction it suggests is not acceptable, make a note of it and correct it by hand later. The modified text is saved as GAout.txt; rename this to "C.txt". 
+(Alternatively, run GutAxe now to Check Text only; run it again to Modify 
+Text after inspecting the text in the following step.)
+
+3. First editing pass through the text:
+  a. Clean up around (but do not remove) Page Separators.
+    i) If you have not run GutSweeper, remove blank lines before Page Separators.
+    ii) If a page starts with a new paragraph, leave a blank line after the Page Separator.
+    iii) If a page starts a new chapter, leave blank lines after the Page Separator according to the Proofing Guidelines.
+  b. Repair words that were hyphenated across pages. Put the whole word on one page or the other. Search for "-*" to find them, and correct by hand. Also dress up "naked" dashes that were left across page separators; search for "*-" to find these.
+  c. Clean up front material (Title, TOC, etc.)
+  d. Clean up chapter and section headings and their spacings.
+  e. Check that all chapter headings are present and in order.
+  f. Check poetry, tables, block quotes, and similar markups.
+
+4. Run GutJack to add HTML markups around front material and chapter and section heading.
+
+5. Run GutWrench to search for common errors. Make corrections by hand using a text editor. For convenience, use these functions separately:
+  a. "Other Errors"
+  b. "Italics and Other Markup"
+  c. "Hyphens and Dashes" (you may want to turn on Expert Mode for this step).
+
+6. Run Gutcheck to check for common errors. Make corrections by hand, or, more conveniently, by using Thundergnat's Winguts GUI (highly recommended, but at this point, it helps to deactivate the checks for "Short Lines").
+
+7. Run GutWrench to Map the text. Do these separately:
+  a. Check Character Map for weird characters (tabs, back-quotes [`], number/pound-key/sharp signs [#], tildes [~], curly brackets [{}], etc.).
+  b. Look through the Page Map for error messages flagging unmatched italic markups.
+  c. "Hyphenations"
+    i) Check for words that do not make a likely hyphenated-word combination (may be a hyphen in place of a dash).
+    ii) Check for words that appear both hyphenated and non-hyphenated (e.g., "to-day" and "today").
+  d. "Accents"
+    i) Check for words that appear with both accented and unaccented characters.
+    ii) Check for words that are incorrectly accented.
+
+8. Print the GW Page Map. I open the GWmaps.txt file in MSWord, format it to two columns (save a tree!), set up the pages for narrow margins, and print it.
+
+9. Check the printed Page Map against the scan images (I display the scan images by using IrfanView's slide-show mode; select it to advance to the next image on keyboard input).
+  a. Thought breaks (indicated by "TB" on the Page Map).
+  b. Italic markups (check that each page has the right number of <i>...</i> markups and _low-line_ characters).
+  c. Other (optional; sometimes I spot a missing accented character).
+
+10. GutWrench
+  a. Check for errors again
+  b. "Improbables"
+  c. "Scannos"
+
+11. Gutcheck, verbose mode
+(Again, Thundergnat's winguts GUI is recommended!)
+
+12. Spellcheck (e.g., open the file in MSWord and run the spellchecker). Be sure to save the result as a text file (.txt file extension)!
+
+13. Rewrap the text, using GutHammer or, for more complicated texts, big-bill's RewrapIndent tool.
+
+14. If uploading to Project Gutenberg, replace italic markups with underlines (if not done with GutHammer in Step 13).
+
+15. Final check (look over the final text).
+
+16. You're done--remove this list!
+===========================================================
+$/

@@ -1,0 +1,392 @@
+\Auxiliary file MYstyle.txt for GutCutter 0.3
+\
+\My style for Sign Language book
+\
+\Converts text file with DP and additional markups to an XHTML version in the 
+\general style of Jon Ingram (used for _Punch_ and _The Mirror_)
+\but with numerous other added features
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+   THOUGHT BREAKS --> HORIZONTAL RULES
+
+s\       *       *       *       *       *full\<hr class="full" />\full horizontal rule
+s\       *       *       *       *       *long\<hr />\long horizontal rule
+s\       *       *       *       *       *short\<hr class="short" />\short horizontal rule
+s\       *       *       *       *       *\<hr />\long horizontal rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\       ***\<hr class="short" />\short horiz. rule
+s\<tb>\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+
+s\/#note\<blockquote class="note"><p>\"Note-style" blockquote begins
+s\/#\<blockquote><p>\Block quote begins
+s\#/\</p></blockquote>\Block Quote ends
+s\*/*\  </div><div class="stanza">\New stanza
+s\/*\<div class="poem">  <div class="stanza">\Poem begins
+s\*/\  </div>  </div>\Poem ends
+
+   ILLUSTRATIONS
+
+   These assume that the illustrations are .png files placed in subdirectory "images"
+
+   If the closing bracket "]" falls on the same line, capture the caption
+r_\[Illustration:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration with caption
+
+   Added notations before the colon: C/L/R = centered/left/right, number = width percent
+   E.g., "[Illustration L42: caption]" yields a left-justified figure at 42% width.
+   Both the letter and number are optional, but if both are used, the letter must come before the number.
+
+   For the Sign Language book, all the images are titled "fig###.png", where ### is the Figure number.
+   Also, all the captions read like this: "Illustration L42: Fig. ###. Caption text]"
+   This allows us to get creative with Regular Expressions:
+
+r_\[Illustration C(\d+): Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration centered ??%
+r_\[Illustration (\d+): Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration centered ??%
+r_\[Illustration L(\d+): Fig. (\d+)([^\]]*)\]_<div class="figleft" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration left ??%
+r_\[Illustration R(\d+): Fig. (\d+)([^\]]*)\]_<div class="figright" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration right ??%
+r_\[Illustration C: Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration centered, default width (100%)
+r_\[Illustration L: Fig. (\d+)([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration left, default width (50%)
+r_\[Illustration R: Fig. (\d+)([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration right, default width (50%)
+
+r_\[Illustration C(\d+):([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration (\d+):([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration L(\d+):([^\]]*)\]_<div class="figleft" style="width:$1%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$2</div>_Illustration left ??%
+r_\[Illustration R(\d+):([^\]]*)\]_<div class="figright" style="width:$1%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$2</div>_Illustration right ??%
+r_\[Illustration C:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$1</div>_Illustration centered, default width (100%)
+r_\[Illustration L:([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$1</div>_Illustration left, default width (50%)
+r_\[Illustration R:([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/fig??.png"><img width="100%" src="images/fig??.png" alt="" /></a>$1</div>_Illustration right, default width (50%)
+
+s\[Illustration]\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>\Illustration without caption
+
+   If the closing bracket does not fall on the same line, treat as well as possible.
+   (These will need some cleaning up later.)
+
+r_\[Illustration C(\d+):_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration (\d+):_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration L(\d+):_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left ??%
+r_\[Illustration R(\d+):_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right ??%
+r_\[Illustration C:_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered, default width (100%)
+r_\[Illustration L:_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left, default width (50%)
+r_\[Illustration R:_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right, default width (50%)
+
+  Badly formed illustration markup; handle as well as possible
+
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>\Illustration
+
+======================================
+
+   SUBSCRIPTS & SUPERSCRIPTS
+
+r~_\{([^\}]*)\}~<sub>$1</sub>~subscript
+r~\^\{([^\}]*)\}~<sup>$1</sup>~superscript
+
+======================================
+   IMPORTANT: This line (if used) must come BEFORE defining any HTML character entities
+     (Either put it first or do not use it at all.)
+
+s\&\&amp;\ampersand
+======================================
+
+   letters with diacritical marks (for BAE); use HTML character entities
+
+   Special for sign language:
+
+       =A=
+
+    Latin-1
+s_[\a]_&#224;_"a" with grave
+s_à_&#224;_"a" with grave
+s_[\A]_&#192;_"A" with grave
+s_À_&#192;_"A" with grave
+s\[/a]\&#225;\"a" with acute
+s\á\&#225;\"a" with acute
+s\[/A]\&#193;\"A" with acute
+s\Á\&#193;\"A" with acute
+s\[^a]\&#226;\"a" with circumflex
+s\â\&#226;\"a" with circumflex
+s\[^A]\&#194;\"A" with circumflex
+s\Â\&#194;\"A" with circumflex
+s\[~a]\&#227;\"a" with tilde
+s\ã\&#227;\"a" with tilde
+s\[~A]\&#195;\"A" with tilde
+s\Ã\&#195;\"A" with acute
+s\[:a]\&#228;\"a" with umlaut
+s\ä\&#228;\"a" with umlaut
+s\[:A]\&#196;\"A" with umlaut
+s\Ä\&#196;\"A" with umlaut
+s\[oa]\&#229;\"a" with circle, å
+s\å\&#229;\"a" with circle, å
+s\[oA]\&#197;\"A" with circle
+s\Å\&#197;\"A" with circle
+
+   non-Latin-1 ("&#256;" and above)
+s\[=A]\&#256;\"A" with macron
+s\[=a]\&#257;\"a" with macron
+s\[)A]\&#258;\"A" with breve
+s\[)a]\&#259;\"a" with breve
+    s\[.A]\&#???;\"A" with dot above
+    s\[.a]\&#???;\"a" with dot above
+s\[A,]\&#260;\"A" with ogonek
+s\[a,]\&#261;\"a" with ogonek
+s\[vA]\&#461;\"A" with caron
+s\[va]\&#462;\"a" with caron
+
+
+       =C=
+
+s\ç\&#231;\"c" with cedilla, ç
+s\[c,]\&#231;\"c" with cedilla, ç
+
+
+       =E=
+
+    Latin-1
+s_[\e]_&#232;_"e" with grave
+s_è_&#232;_"e" with grave
+s_[\E]_&#200;_"E" with grave
+s_È_&#200;_"E" with grave
+s\[/e]\&#233;\"e" with acute
+s\é\&#233;\"e" with acute
+s\[/E]\&#201;\"E" with acute
+s\É\&#201;\"E" with acute
+s\[^e]\&#234;\"e" with circumflex
+s\ê\&#234;\"e" with circumflex
+s\[^E]\&#202;\"E" with circumflex
+s\Ê\&#202;\"E" with circumflex
+s\[:e]\&#235;\"e" with umlaut
+s\ë\&#235;\"e" with umlaut
+s\[:E]\&#203;\"E" with umlaut
+s\Ë\&#203;\"E" with umlaut
+    s\[~e]\&etilde;\"e" with tilde
+    s\[~E]\&Etilde;\"E" with tilde
+
+   non-Latin-1
+s\[=E]\&#274;\"E" with macron
+s\[=e]\&#275;\"e" with macron
+s\[)E]\&#276;\"E" with breve
+s\[)e]\&#277;\"e" with breve
+s\[.E]\&#278;\"E" with dot above
+s\[.e]\&#279;\"e" with dot above
+s\[E,]\&#280;\"E" with ogonek
+s\[e,]\&#281;\"e" with ogonek
+    s\[E,]\&#???;\"E" with cedilla
+    s\[e,]\&#???;\"e" with cedilla
+s\[vE]\&#282;\"E" with caron
+s\[ve]\&#283;\"e" with caron
+
+
+      =I=
+
+   Latin-1
+s_[\i]_&#237;_"i" with grave, ì
+s_ì_&#237;_"i" with grave, ì
+s_[\I]_&#205;_"I" with grave
+s_Ì_&#205;_"I" with grave
+s\[/i]\&#237;\"i" with acute, í
+s\í\&#237;\"i" with acute, í
+s\[/I]\&#205;\"I" with acute
+s\Í\&#205;\"I" with acute
+s\[^i]\&#238;\"i" with circumflex, 
+s\î\&#238;\"i" with circumflex, 
+s\[^I]\&#206;\"I" with circumflex
+s\Î\&#206;\"I" with circumflex
+s\[:I]\&#207;\"I" with umlaut
+s\Ï\&#207;\"I" with umlaut
+s\[:i]\&#239;\"i" with umlaut
+s\ï\&#239;\"i" with umlaut
+
+   non-Latin-1 ("&#256;" and above)
+s\[~I]\&#296;\"I" with tilde
+s\[~i]\&#297;\"i" with tilde
+s\[=I]\&#298;\"I" with macron
+s\[=i]\&#299;\"i" with macron
+s\[)I]\&#300;\"I" with breve
+s\[)i]\&#301;\"i" with breve
+s\[I,]\&#302;\"I" with ogonek
+s\[i,]\&#303;\"i" with ogonek
+s\[.I]\&#304;\"I" with dot
+s\[.i]\&#305;\"i" without dot(!)
+
+
+      =N=
+
+s\[~n]\&#241;\"n" with tilde
+s\ñ\&#241;\"n" with tilde
+s\[~N]\&#209;\"N" with tilde
+s\Ñ\&#209;\"N" with tilde
+
+s\[n]\<sup>n</sup>\raised "n"
+
+
+      =O=
+
+s_[\o]_&#242;_"o" with grave
+s\ò\&#242;\"o" with grave
+s_[\O]_&#210;_"O" with grave
+s\Ò\&#210;\"O" with grave
+s\[/o]\&#243;\"o" with acute
+s\ó\&#243;\"o" with acute
+s\[/O]\&#211;\"O" with acute
+s\Ó\&#211;\"O" with acute
+s\[^o]\&#244;\"o" with circumflex
+s\ô\&#244;\"o" with circumflex
+s\[^O]\&#212;\"O" with circumflex
+s\Ô\&#212;\"O" with circumflex
+s\[~o]\&#245;\"o" with tilde
+s\õ\&#245;\"o" with tilde
+s\[~O]\&#213;\"O" with tilde
+s\Õ\&#213;\"O" with tilde
+s\[:O]\&#214;\"O" with umlaut
+s\Ö\&#214;\"O" with umlaut
+s\[:o]\&#246;\"o" with umlaut
+s\ö\&#246;\"o" with umlaut
+
+   non-Latin-1
+s\[=O]\&#332;\"O" with macron
+s\[=o]\&#333;\"o" with macron
+s\[)O]\&#334;\"O" with breve
+s\[)o]\&#335;\"o" with breve
+
+
+      =U=
+
+s_[\u]_&#249;_"u" with grave, ù
+s_ù_&#249;_"u" with grave, ù
+s_[\U]_&#217;_"U" with grave
+s_Ù_&#217;_"U" with grave
+s\[/u]\&#250;\"u" with acute, ú
+s\ú\&#250;\"u" with acute, ú
+s\[/U]\&#219;\"U" with acute
+s\Ú\&#219;\"U" with acute
+s\[^u]\&#250;\"u" with circumflex, 
+s\û\&#250;\"u" with circumflex, 
+s\[^U]\&#219;\"U" with circumflex
+s\Û\&#219;\"U" with circumflex
+s\[:u]\&#252;\"u" with umlaut
+s\ü\&#252;\"u" with umlaut, ü
+s\[:U]\&#220;\"U" with umlaut
+s\Ü\&&#220;\"U" with umlaut
+
+   non-Latin-1
+s\[~U]\&#360;\"U" with tilde
+s\[~u]\&#361;\"u" with tilde
+s\[=U]\&#362;\"U" with macron
+s\[=u]\&#363;\"u" with macron
+s\[)U]\&#364;\"U" with breve
+s\[)u]\&#365;\"u" with breve
+s\[oU]\&#366;\"U" with ring
+s\[ou]\&#367;\"u" with ring
+s\[U,]\&#370;\"U" with ogonek
+s\[u,]\&#371;\"u" with ogonek
+
+
+      =SPECIAL=
+
+s\[k]\&#670;\inverted "k"
+s\[t]\&#647;\inverted "t"
+
+s\¢\&#162;\cent sign, ¢
+s\°\&#176;\degree symbol, °
+s\Æ\&#198;\AE ligature, Æ
+s\æ\&#230;\ae ligature, æ
+
+s\[Eng]\&#330;\Latin letter upper-case "eng"
+s\[ENG]\&#330;\Latin letter upper-case "eng"
+s\[eng]\&#331;\Latin letter lower-case "eng"
+
+
+   Greek letters; use HTML character entities
+s_[Alpha]_&Alpha;_Greek letter
+s_[Beta]_&Beta;_Greek letter
+s_[Gamma]_&Gamma;_Greek letter
+s_[Delta]_&Delta;_Greek letter
+s_[Epsilon]_&Epsilon;_Greek letter
+s_[Zeta]_&Zeta;_Greek letter
+s_[Eta]_&Eta;_Greek letter
+s_[Theta]_&Theta;_Greek letter
+s_[Iota]_&Iota;_Greek letter
+s_[Kappa]_&Kappa;_Greek letter
+s_[Lambda]_&Lambda;_Greek letter
+s_[Mu]_&Mu;_Greek letter
+s_[Nu]_&Nu;_Greek letter
+s_[Xi]_&Xi;_Greek letter
+s_[Omicron]_&Omicron;_Greek letter
+s_[Pi]_&Pi;_Greek letter
+s_[Rho]_&Rho;_Greek letter
+s_[Sigma]_&Sigma;_Greek letter
+s_[Tau]_&Tau;_Greek letter
+s_[Upsilon]_&Upsilon;_Greek letter
+s_[Phi]_&Phi;_Greek letter
+s_[Chi]_&Chi;_Greek letter
+s_[Psi]_&Psi;_Greek letter
+s_[Omega]_&Omega;_Greek letter
+s_[alpha]_&alpha;_Greek letter
+s_[beta]_&beta;_Greek letter
+s_[gamma]_&gamma;_Greek letter
+s_[delta]_&delta;_Greek letter
+s_[epsilon]_&epsilon;_Greek letter
+s_[zeta]_&zeta;_Greek letter
+s_[eta]_&eta;_Greek letter
+s_[theta]_&theta;_Greek letter
+s_[iota]_&iota;_Greek letter
+s_[kappa]_&kappa;_Greek letter
+s_[lambda]_&lambda;_Greek letter
+s_[mu]_&mu;_Greek letter
+s_[nu]_&nu;_Greek letter
+s_[xi]_&xi;_Greek letter
+s_[omicron]_&omicron;_Greek letter
+s_[pi]_&pi;_Greek letter
+s_[rho]_&rho;_Greek letter
+s_[sigmaf]_&sigmaf;_Greek letter
+s_[sigma]_&sigma;_Greek letter
+s_[tau]_&tau;_Greek letter
+s_[upsilon]_&upsilon;_Greek letter
+s_[phi]_&phi;_Greek letter
+s_[chi]_&chi;_Greek letter
+s_[psi]_&psi;_Greek letter
+s_[omega]_&omega;_Greek letter
+
+
+s\/$\<pre>\pre-formatted begins
+s\$/\</pre>\pre-formatted ends
+
+s\<p>          \<p class="i10">\Indent extra 10 spaces
+s\<p>        \<p class="i8">\Indent extra 8 spaces
+s\<p>      \<p class="i6">\Indent extra 6 spaces
+s\<p>    \<p class="i4">\Indent extra 4 spaces
+s\<p>  \<p class="i2">\Indent extra 2 spaces
+
+r_-{23}File: (\d+)\.png-{25,30}_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number 
+
+\Make sure you handle Page Separators and ampersands before treating dashes!
+s\--\&mdash;\em dash
+
+   Footnotes:
+r_\[(\d+)\]_<a id="footnotetag$1" name="footnotetag$1"></a><a href="#footnote$1"><sup>$1</sup></a>_Footnote
+   If the closing bracket "]" falls on same line, capture the footnote caption.
+r_\[Footnote (\d+): ([^\]]+)\]_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>$2</p></blockquote>_Footnote
+   Can't find closing bracket; treat as well as possible
+r_\[Footnote (\d+):_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>***Put footnote text here***</p></blockquote>_Footnote
+
+
+  Sidenotes: (note that it grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote: ([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote
+
+
+   Help for Tables of Contents and Indices and "See p. ***"
+r_##(\d+)_<a href="#page$1">$1</a><br />_Go to page #
+\s\##\<a href="#page***">***</a></br>\Go to page #***
+

@@ -1,0 +1,225 @@
+\Auxiliary file SAHTMLstyle.txt for GutCutter 0.3
+\Converts text file with DP markups to an HTML version 
+\To be used for Scientific American (SciAm)
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, w, s, or o).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+     Tables, Poetry, and Block Quotes
+s\*/*\\Remove blank line in poetry (needed by GutCutter!)
+s\/*\<pre>\Poem begins
+s\*/\</pre>\Poem ends
+s\/#\<blockquote>\Block quote begins
+s\#/\</blockquote>\Block quote ends
+
+=============================================================
+
+s\/$\<pre>\Table begins
+s\$/\</pre>\Table ends
+
+=============================================================
+   Help for HTML TABLES. To activate, left-justify the lines below,
+   and indent the two lines just above. 
+   Be sure to activate corresponding lines in SAPTstyle.txt.
+   You must add /$...$/ or <table...>...</table> around each table.
+
+  r_\/\$(.*)_<table summary="$1" align="center">_Table begins
+  s\$/\</table>\Table ends
+  r_^\s*\|<_<tr><td align="left">_begin a Table row, left-align first row element
+  r_^\s*\|>_<tr><td align="right">_begin a Table row, right-align first row element
+  r_^\s*\|\^_<tr><td valign="top">_begin a Table row, vertically align first row element at top
+  r_^\s*\|\=_<tr><td align="center">_begin a Table row, center first row element
+  r_^\s*\|_<tr><td>_begin a Table row, default-align first row element
+  r_\|\s*$_</td></tr>_end a Table row
+  s_|<_</td><td align="left">_next Table row element, left-align this element
+  s_|>_</td><td align="right">_next Table row element, right-align this element
+  s_|^_</td><td valign="top">_next Table row element, vertically align this element at top
+  s_|=_</td><td align="center">_next Table row element, center this element
+  s_|_</td><td>_next Table row element, default-align this element
+=============================================================
+
+s\       *       *       *       *       *short\<hr />\Thought Break to Horizontal Rule
+s\       *       *       *       *       *long\<hr />\Thought Break to Horizontal Rule
+s\       *       *       *       *       *full\<hr />\Thought Break to Horizontal Rule
+s\       *       *       *       *       *\<hr />\Thought Break to Horizontal Rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\<tb>\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+
+   subscripts & superscripts
+r~_(\d)~<sub>$1</sub>~subscript
+r~\^(\d)~<sup>$1</sup>~superscript
+r~_\{([^\}]*)\}~<sub>$1</sub>~subscript
+r~\^\{([^\}]*)\}~<sup>$1</sup>~superscript
+r~_\\(\d)~<sub>$1</sub>~subscript
+r~\^\\(\d)~<sup>$1</sup>~superscript
+r~_\\\{([^\}]*)\}~<sub>$1</sub>~subscript
+r~\^\\\{([^\}]*)\}~<sup>$1</sup>~superscript
+
+
+r_\[Illustration ([^:]*)-:([^\]]*)\]_<p class="ctr"><img src="./images/$1.png" alt="$2"></p><p class="ctr">$2</p>_small Illustration with caption (no thumbnail)
+r_\[Illustration ([^:]*)-:([^\]]*\n[^\]]*)_<p class="ctr"><img src="./images/$1.png" alt="$2"></p><p class="ctr">$2</p>***_small multiline Illustration with caption (no thumbnail)
+r_\[Illustration ([^\]:]*)-\]_<p class="ctr"><img src="./images/$1.png" alt=""></p>_small Illustration without caption (no thumbnail)
+r~\[Illustration ([^:]*):([^\]]*)\]~<p class="ctr"><a href="./images/$1.png"><img src="./images/$1_th.jpg" alt="$2"></a></p><p class="ctr">$2</p>~large Illustration (thumbnail) with caption
+r~\[Illustration ([^:]*):([^\]]*)~<p class="ctr"><a href="./images/$1.png"><img src="./images/$1_th.jpg" alt="$2"></a></p><p class="ctr">$2</p>***~large multiline Illustration (thumbnail) with caption
+r~\[Illustration ([^\]:]*)\]~<p class="ctr"><a href="./images/$1.png"><img src="./images/$1_th.jpg" alt=""></a></p>~large Illustration (thumbnail) without caption
+
+   IMPORTANT: This line (if used) must come BEFORE defining HTML character entities!
+s\&\&amp;\ampersand
+
+
+  HELP FOR TABLE OF CONTENTS
+o_<[hH]2>([^<]+)<\/[hH]2>_<tr><td valign="top">***I.***</td><td><a href="#***>$1</a></td></tr>_Major heading to TOC
+o_<[hH][3456]>([^<]+)<\/[hH][3456]>_<tr><td></td><td><a href="#***>$1</a></td></tr>_Minor heading to TOC
+
+   INSERT ANCHOR BEFORE HEADING IF NOT PRESENT
+r_^<[hH]([23456])>([^<]+)<\/[hH]\d>_<a name="***"></a><h$1>$2</h$1>_Insert anchor before heading
+
+    Footnotes
+r!\[(\d{1,3})\]!<a name="FNanchor_$1"></a><a href="#Footnote_$1"><sup>$1</sup></a>!Footnote tag
+
+r!\[Footnote (\d+): ([^\]]+)\]!<a name="Footnote_$1"></a><a href="#FNanchor_$1">[$1]</a><div class="note">$2</div>!Footnote
+r!\[Footnote (\d+):!<a name="Footnote_$1"></a><a href="#FNanchor_$1">[$1]</a><div class="note">***put footnote text here***</div>!Footnote
+r!\[Footnote !<a name="Footnote_**"></a><a href="#FNanchor_**">[**]</a><div class="note">***put footnote text here***</div>!Footnote
+
+r_-{23}File:\s*0*(\d+)\.png-{25,30}__remove page separator
+r_-+File:\s*0*(\d+)\.png.*__remove page separator
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*__remove page separator 
+
+s_[Alpha]_&Alpha;_Greek letter
+s_[Beta]_&Beta;_Greek letter
+s_[Gamma]_&Gamma;_Greek letter
+s_[Delta]_&Delta;_Greek letter
+s_[Epsilon]_&Epsilon;_Greek letter
+s_[Zeta]_&Zeta;_Greek letter
+s_[Eta]_&Eta;_Greek letter
+s_[Theta]_&Theta;_Greek letter
+s_[Iota]_&Iota;_Greek letter
+s_[Kappa]_&Kappa;_Greek letter
+s_[Lambda]_&Lambda;_Greek letter
+s_[Mu]_&Mu;_Greek letter
+s_[Nu]_&Nu;_Greek letter
+s_[Xi]_&Xi;_Greek letter
+s_[Omicron]_&Omicron;_Greek letter
+s_[Pi]_&Pi;_Greek letter
+s_[Rho]_&Rho;_Greek letter
+s_[Sigma]_&Sigma;_Greek letter
+s_[Tau]_&Tau;_Greek letter
+s_[Upsilon]_&Upsilon;_Greek letter
+s_[Phi]_&Phi;_Greek letter
+s_[Chi]_&Chi;_Greek letter
+s_[Psi]_&Psi;_Greek letter
+s_[Omega]_&Omega;_Greek letter
+s_[alpha]_&alpha;_Greek letter
+s_[beta]_&beta;_Greek letter
+s_[gamma]_&gamma;_Greek letter
+s_[delta]_&delta;_Greek letter
+s_[epsilon]_&epsilon;_Greek letter
+s_[zeta]_&zeta;_Greek letter
+s_[eta]_&eta;_Greek letter
+s_[theta]_&theta;_Greek letter
+s_[iota]_&iota;_Greek letter
+s_[kappa]_&kappa;_Greek letter
+s_[lambda]_&lambda;_Greek letter
+s_[mu]_&mu;_Greek letter
+s_[nu]_&nu;_Greek letter
+s_[xi]_&xi;_Greek letter
+s_[omicron]_&omicron;_Greek letter
+s_[pi]_&pi;_Greek letter
+s_[rho]_&rho;_Greek letter
+s_[sigmaf]_&sigmaf;_Greek letter
+s_[sigma]_&sigma;_Greek letter
+s_[tau]_&tau;_Greek letter
+s_[upsilon]_&upsilon;_Greek letter
+s_[phi]_&phi;_Greek letter
+s_[chi]_&chi;_Greek letter
+s_[psi]_&psi;_Greek letter
+s_[omega]_&omega;_Greek letter
+
+s_[Greek: Alpha]_&Alpha;_Greek letter
+s_[Greek: A]_&Alpha;_Greek letter
+s_[Greek: Beta]_&Beta;_Greek letter
+s_[Greek: B]_&Beta;_Greek letter
+s_[Greek: Gamma]_&Gamma;_Greek letter
+s_[Greek: G]_&Gamma;_Greek letter
+s_[Greek: Delta]_&Delta;_Greek letter
+s_[Greek: D]_&Delta;_Greek letter
+s_[Greek: Epsilon]_&Epsilon;_Greek letter
+s_[Greek: E]_&Epsilon;_Greek letter
+s_[Greek: Zeta]_&Zeta;_Greek letter
+s_[Greek: Z]_&Zeta;_Greek letter
+s_[Greek: Eta]_&Eta;_Greek letter
+s_[Greek: H]_&Eta;_Greek letter
+s_[Greek: Theta]_&Theta;_Greek letter
+s_[Greek: Iota]_&Iota;_Greek letter
+s_[Greek: I]_&Iota;_Greek letter
+s_[Greek: Kappa]_&Kappa;_Greek letter
+s_[Greek: K]_&Kappa;_Greek letter
+s_[Greek: Lambda]_&Lambda;_Greek letter
+s_[Greek: L]_&Lambda;_Greek letter
+s_[Greek: Mu]_&Mu;_Greek letter
+s_[Greek: M]_&Mu;_Greek letter
+s_[Greek: Nu]_&Nu;_Greek letter
+s_[Greek: N]_&Nu;_Greek letter
+s_[Greek: Xi]_&Xi;_Greek letter
+s_[Greek: Omicron]_&Omicron;_Greek letter
+s_[Greek: O]_&Omicron;_Greek letter
+s_[Greek: Pi]_&Pi;_Greek letter
+s_[Greek: Rho]_&Rho;_Greek letter
+s_[Greek: Sigma]_&Sigma;_Greek letter
+s_[Greek: S]_&Sigma;_Greek letter
+s_[Greek: Tau]_&Tau;_Greek letter
+s_[Greek: T]_&Tau;_Greek letter
+s_[Greek: Upsilon]_&Upsilon;_Greek letter
+s_[Greek: Y]_&Upsilon;_Greek letter
+s_[Greek: Phi]_&Phi;_Greek letter
+s_[Greek: Chi]_&Chi;_Greek letter
+s_[Greek: Psi]_&Psi;_Greek letter
+s_[Greek: Omega]_&Omega;_Greek letter
+s_[Greek: alpha]_&alpha;_Greek letter
+s_[Greek: a]_&alpha;_Greek letter
+s_[Greek: beta]_&beta;_Greek letter
+s_[Greek: b]_&beta;_Greek letter
+s_[Greek: gamma]_&gamma;_Greek letter
+s_[Greek: g]_&gamma;_Greek letter
+s_[Greek: delta]_&delta;_Greek letter
+s_[Greek: d]_&delta;_Greek letter
+s_[Greek: epsilon]_&epsilon;_Greek letter
+s_[Greek: e]_&epsilon;_Greek letter
+s_[Greek: zeta]_&zeta;_Greek letter
+s_[Greek: z]_&zeta;_Greek letter
+s_[Greek: eta]_&eta;_Greek letter
+s_[Greek: theta]_&theta;_Greek letter
+s_[Greek: iota]_&iota;_Greek letter
+s_[Greek: i]_&iota;_Greek letter
+s_[Greek: kappa]_&kappa;_Greek letter
+s_[Greek: k]_&kappa;_Greek letter
+s_[Greek: lambda]_&lambda;_Greek letter
+s_[Greek: l]_&lambda;_Greek letter
+s_[Greek: mu]_&mu;_Greek letter
+s_[Greek: m]_&mu;_Greek letter
+s_[Greek: nu]_&nu;_Greek letter
+s_[Greek: n]_&nu;_Greek letter
+s_[Greek: xi]_&xi;_Greek letter
+s_[Greek: omicron]_&omicron;_Greek letter
+s_[Greek: o]_&omicron;_Greek letter
+s_[Greek: pi]_&pi;_Greek letter
+s_[Greek: rho]_&rho;_Greek letter
+s_[Greek: sigmaf]_&sigmaf;_Greek letter
+s_[Greek: sigma]_&sigma;_Greek letter
+s_[Greek: s]_&sigma;_Greek letter
+s_[Greek: tau]_&tau;_Greek letter
+s_[Greek: t]_&tau;_Greek letter
+s_[Greek: upsilon]_&upsilon;_Greek letter
+s_[Greek: phi]_&phi;_Greek letter
+s_[Greek: chi]_&chi;_Greek letter
+s_[Greek: psi]_&psi;_Greek letter
+s_[Greek: omega]_&omega;_Greek letter

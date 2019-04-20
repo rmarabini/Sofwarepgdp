@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+
+  <title>International Weekly Miscellany, ***DATE***.</title> 
+
+  <style type="text/css"> 
+  <!-- 
+  body                 {margin-left: 10%; margin-right: 10%;} 
+  p                    {text-align: justify;} 
+  blockquote           {text-align: justify;} 
+  h1,h2,h3,h4,h5,h6    {text-align: center;} 
+  pre                  {font-size: 0.7em;} 
+  .sc                  {font-variant: small-caps;}
+
+  hr                   {text-align: center; width: 50%;} 
+  html>body hr         {margin-right: 25%; margin-left: 25%; width: 50%;} 
+  hr.full              {width: 100%;} 
+  html>body hr.full    {margin-right: 0%; margin-left: 0%; width: 100%;} 
+  hr.short             {text-align: center; width: 20%;} 
+  html>body hr.short   {margin-right: 40%; margin-left: 40%; width: 20%;} 
+
+  .note
+  {margin-left: 10%; margin-right: 10%; font-size: 0.9em;} 
+
+  p.author {text-align: right;} 
+
+  span.pagenum 
+  {position: absolute; left: 1%; right: 91%; font-size: 8pt;} 
+
+  .poem 
+  {margin-left:10%; margin-right:10%; margin-bottom: 1em; text-align: left;} 
+  .poem .stanza        {margin: 1em 0em 1em 0em;} 
+  .poem p              {margin: 0; padding-left: 3em; text-indent: -3em;} 
+  .poem p.i2           {margin-left: 1em;} 
+  .poem p.i4           {margin-left: 2em;} 
+  .poem p.i6           {margin-left: 3em;} 
+  .poem p.i8           {margin-left: 4em;} 
+  .poem p.i10          {margin-left: 5em;} 
+
+  .figure, .figcenter, .figright, .figleft 
+  {padding: 1em; margin: 0; text-align: center; font-size: 0.8em;} 
+  .figure img, .figcenter img, .figright img, .figleft img 
+                       {border: none;} 
+  .figure p, .figcenter p, .figright p, .figleft p 
+                       {margin: 0; text-indent: 1em;} 
+  .figcenter           {margin: auto;} 
+  .figright            {float: right;} 
+  .figleft             {float: left;} 
+
+  .footnote            {font-size: 0.9em; margin-right: 10%; margin-left: 10%;}
+
+  .side { float:right;
+          font-size: 75%;
+          width: 25%;
+          padding-left:10px;
+          border-left: dashed thin;
+          margin-left: 10px;
+          text-align: left;
+          text-indent: 0;
+          font-weight: bold;
+          font-style: italic;}
+  --> 
+  </style> 
+</head> 
+<body> 
+ <h1>INTERNATIONAL WEEKLY MISCELLANY<br /> 
+  Of Literature, Art, and Science.</h1> 
+
+  <hr class="full" /> 
+
+  <table width="100%" summary="Volume, Number, and Date"> 
+    <tr> 
+      <td align="left"><b>Vol. ***VOL***.</b></td> 
+      <td align="center"><b>NEW YORK, ***DATE***.</b></td> 
+      <td align="right"><b>No. ***NUMBER***.</b></td> 
+    </tr> 
+  </table> 
+
+  <hr class="full" /> 

@@ -1,0 +1,83 @@
+/$
+===========================================================
+Version of 4 February 2005
+Post-processing checklist for using GutSweeper, GutAxe, GutWrench, and GutHammer:
+
+(Paste this list at the front of your text. Remove or annotate each
+item when completed. Make a note to yourself here if you complete
+an item only partially. When the list is gone, you're done!)
+
+1. Run GutSweeper (in short, with all options selected) to:
+  a. Check that poetry, block-quote, and sic/stet markups are correct!
+(Alerts can be ignored.)
+Then, modify text (can be done in a single run) to:
+  b. Break up long lines (from which proofers have removed line breaks).
+  c. Remove trailing blanks.
+  d. Merge double blanks.
+  e. Remove blank lines at the bottom of each page
+  f. "Clothe" the "naked" hyphens and dashes at the beginnings and ends of lines
+(Text within CORRECT markups is not affected by the above.)
+  g. Remove "*/*" interior poetry markup lines.
+  h. Delete any text after markups, e.g., "/* poetry".
+  i. Split "oe" and "OE" ligatures.
+  j. Remove spaces within abbreviations.
+
+2. Run GutAxe to make some quick corrections to the text.
+(Alternatively, run GutAxe now to Check Text only; run it again to Modify 
+Text after inspecting the text in the following step.)
+
+3. First editing pass through the text:
+  a. Clean up around Page Separators.
+  b. Patch up words that were hyphenated across pages
+    (put the whole word on one page or the other).
+  c. Clean up front material (Title, TOC, etc.).
+  d. Clean up chapter and section headings.
+  e. Check that all chapter headings are present and in order.
+  f. Check poetry, tables, block quotes, and similar markups.
+
+4. Run GutJack to add HTML markups around front material and chapter and section heading.
+
+5. GutWrench
+  a. "Other Errors"
+  b. "Italics and Other Markup"
+  c. "Hyphens and Dashes"
+
+6. Gutcheck, non-verbose mode
+(Thundergnat's winguts GUI is recommended! At this point, 
+deactivate checks for "Short Lines".)
+
+7. GutWrench "Maps"
+  a. Check Character Map for weird characters
+  b. Check Page Map for unmatched italic markups
+  c. "Hyphenations"
+  d. "Accents"
+
+8. Print the GW Page Map
+
+9. Check printed Page Map against scan images
+  a. Thought breaks
+  b. Italic markups
+  c. Other (optional)
+
+10. GutWrench
+  a. Check for errors again
+  b. "Improbables"
+  c. "Scannos"
+
+11. Gutcheck, verbose mode
+(Again, Thundergnat's winguts GUI is recommended!)
+
+12. Spellcheck
+
+13. Rewrap text (GutHammer or, for more complicated texts,
+big-bill's RewrapIndent tool)
+
+14. If uploading to Project Gutenberg, replace italic markups 
+with underlines (if not done with GutHammer in Step 13).
+
+15. Final inspection
+
+16. You're done--remove this list!
+
+===========================================================
+$/

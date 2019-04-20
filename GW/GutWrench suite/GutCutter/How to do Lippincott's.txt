@@ -1,0 +1,192 @@
+These are instructions on how to use GutCutter and GutHammer to help make an HTML version of "Lippincott's" magazine. This style is somewhat similar to that prescribed for "Punch" and the "Mirror", but a bit more complicated, since a Table of Contents and List of Illustrations are also prepared, and there are generally more than a few footnotes. For more details, see the discussions of these uberprojects in the DP Forum.
+
+This is the version of these instructions of 2 December 2004.
+
+You are going to make both a plain-text version and an HTML version, in three Phases. The first phase is to make a well-marked-up version, which will be further worked on in the second phase to make the plain-text version and in the third phase to make the HTML version.
+
+       *       *       *       *       *
+
+PHASE ONE--WELL-MARKED-UP VERSION. Error-checking and adding a little more mark-up.
+
+1. Optionally, first run GutSweeper and then GutAxe on the text file. Then go thru the text with an editor:
+
+a) Add HTML Header markups as appropriate:
+<h2>...</h2> about major and minor article titles;
+<h3>...</h3> about sub-titles or titles of sub-articles;
+<h4>...</h4> about chapter headings, bylines, etc.
+
+b) Insert rules where needed, but sparingly! To separate major articles, use four blank lines.
+
+When a "Thought Break" (the usual five asterisks, seven spaces apart) is needed:
+
+Within an article or sub-article, use:
+
+       *       *       *       *       *short
+
+Between sub-articles that have no header, use:
+
+       *       *       *       *       *long
+
+or without the "long". ("long" give the default horizontal rule length in the HTML, and gets stripped out of the plain-text [as does ["short"]; use "long" to remind yourself that you've decided the length of this TB.)
+
+If a Thought Break falls at the bottom of a page, put it _just before_ the Page Separator.
+(This is so that the Page Number displayed in the HTML version will fall a little below the Rule--looks nicer.)
+It should look like this (mind where the blank lines go):
+
+... end of text of previous page.
+
+       *       *       *       *       *long
+-----File: 123.png---\proofer1\proofer2\-------------------------
+
+Beginning of text of following page.....
+
+c) Move Illustrations so that they fall between paragraphs. 
+
+Now, this part is usually optional with GutCutter, but it's very important for the Lippincott's:
+Modify "[Illustration:" like this example:
+"[Illustration R30/4-2:" scales the image, named "4-2.png", to 30% and floats it right.
+("Float" means justify it to one side and wrap the text around it.)
+Instead of "R", use "C" for centered and "L" to float left.
+Any whole number is accepted for the scaling percentage.
+The image name is generally the page number; if there is more than one image on a page, append "-1", "-2", etc.
+The example above indicates the second image on page number 4 (as it reads on the scan, not the number of the scan!).
+Try to fit the illustration's entire caption on the same line; this helps GutCutter handle the whole thing automatically.
+This step will save you having to scale the figures in the HTML later and, more importantly, will generate data that can be easily used to create the required list of illustrations for Lippincott's.
+
+d) Adjust mark-ups:
+Change /*...*/ to /#...#/ around Block Quotes.
+Around Tables, change /*...*/ to /$...$/ and use GutCutter's Table-making capability (see the accompanying file "How to do Tables.txt" for instructions).
+(Leave /*...*/ around poetry.)
+
+e) Patch up any words that are hyphenated across Page Separators (or italics or bold markup that was interrupted by a Page Separator). For hyphenated words, put the complete word either before or after the Page Separator.
+
+f) Mark authors' names or initials at ends of articles with ">>" in front. (This sets them as right-justified in the HTML version.)
+
+2. Change any _low-line mark-ups_ of italics to <i>HTML style</i>.
+
+If you would like common abbreviations like "etc." and "et al." to appear in italics in the HTML, add tags around them now. (They will be stripped out automatically when you create the plain-text version with GutCutter.) I like to do this around the English money: "2<i>s.</i> 6<i>d.</i>"; these also get stripped out by GutCutter (note that the periods go INSIDE the italics markups).
+
+3. Proofread and check for errors in the usual manner:
+GutAxe
+Gutcheck (Guiguts is recommended!)
+GutWrench
+Spellchecker
+(See the Checklist that comes with the GutWrench suite.)
+
+4. Remove Page Separators that do not correspond to an actual new page in the scans.
+(Since Lippincott's was mostly scanned by page columns, you will be removing about every other PS.)
+Change the scan number in each Page Separator to the page number that appears in the scan. You can use the GutPunch tool to do this.
+
+5. Inspect.
+
+6. You have completed making a "well-marked-up" version.
+Make a copy and keep it in a safe place. This file will be converted in Phases Two and Three into both the plain-text version and the HTML version.
+
+       *       *       *       *       *
+
+PHASE TWO--PLAIN-TEXT VERSION. Working with the well-marked-up version:
+
+1. Run GutCutter on the well-marked-up version of Phase One, with: 
+  (radio button) Output As ... Plain Text
+    and
+  (menu) Style --> Lippincott's
+selected. This will do the following:
+--Replace HTML <hx>header</hx> tags by <b>bold</b> tags
+--Remove italics markups that shouldn't be used (e.g., around <i>e.g.</i>, <i>etc.</i>)
+--Remove other HTML markups and GutCutter tokens.
+
+GutCutter's output, named GCout.txt, is now a standard DP marked-up version. Continue working with this file. You will also need another file that GutCutter creates, called "GCtoc.txt", which contains Table of Contents and List of Illustrations information.
+
+2. Edit the beginning of GCout.txt to include the proper title information. For "Lippincott's", it should look like this:
+
+LIPPINCOTT'S MAGAZINE OF POPULAR LITERATURE AND SCIENCE
+
+APRIL, 1873.
+
+Vol. XI, No. 25.
+
+That is, Title, blank line, Date, blank line, volume and issue numbers.
+Then leave four blank lines before the Table of Contents.
+
+3. Create a Table of Contents.
+Copy the file GCtoc.txt to follow "TABLE OF CONTENTS".
+Remove illustration references, and edit the remainder into shape.
+
+4. Create a list of illustrations.
+Copy the file GCtoc.txt to follow "LIST OF ILLUSTRATIONS".
+Remove TOC information, and edit the remainder.
+
+5. Run GutHammer to re-wrap the text. (If you prefer, use RewrapIndent or Guiguts.)
+Adjust GutHammer's settings to also:
+--Apply an additive indent (select "Add") of 2 spaces to Poetry.
+--Change <i>HTML-style italics mark-up</i> to _low-line markup_.
+--Change text within <b>HTML-style bold mark-up</b> to ALL CAPS.
+(GutHammer also removes the Page Separators.)
+
+6. Make a final inspection. It's a good idea to rerun gutcheck (in verbose mode) and GutAxe (in PPV mode).
+You have completed the plain-text version. Rename this file "Lipp.txt".
+
+       *       *       *       *       *
+
+PHASE THREE--HTML VERSION. Start again with the well-marked-up version you made in Phase One.
+If you found any errors in Phase Two, correct them also in this file.
+
+1. Run GutCutter on the file with "Output As ... HTML" and the "Lippincott's" style selected.
+The output of this program is named GCout.htm. Continue working with this file.
+
+2. Prepare the image files for the Illustrations by cropping them from the page scans (use IrfanView or Photoshop).
+Name them "PAGENUMBER.png", where PAGENUMBER is the page number (e.g., 123.png, where 123 is the page number).
+If there is more than one on a page, name them "123-1.png", "123-2.png", etc.
+Put them in a folder named "images".
+
+3. In the title area of the header, add the volume number and the date.
+
+4. Create a Table of Contents.
+Copy the file GCtoc.txt (which now contains HTML code) to follow the "TABLE OF CONTENTS" heading.
+Remove illustration references, and edit the remainder into shape.
+(You will have to enter the page number [twice] in each entry, and merge authors' names to appear on the same line.)
+
+5. Create a list of illustrations. 
+Copy the file GCtoc.txt to follow "LIST OF ILLUSTRATIONS". 
+Remove TOC information, and edit the remainder.
+(If you properly marked up each "[Illustration...]" tag, this should be very easy.)
+
+6. If necessary, fix up the figure captions. The output from GutCutter may look like this:
+
+<div class="figcenter" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>??CAPTION??</p></div><h3>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</h3>
+WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."]</p>
+
+This should be repaired to look like this (where the figure's image file is named "123.png"):
+
+<div class="figcenter" style="width:50%;"><a href="images/123.png"><img width="100%" src="images/123.png" alt="" /></a><h3>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</h3>
+<p>WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."</p></div>
+
+Don't forget to adjust the parameter "width:50%;" so that the percentage reflects the width of the image with respect to the original page (i.e., full width = 100%). Also, if the figure is associated with the surrounding text, change "figcenter" to "figright" and use "width:50%;" or smaller.
+(Again, if you properly marked up each "[Illustration...]" tag, this should have all been done automatically.)
+
+7. Fix up the Footnotes. GutCutter output looks like this:
+
+<blockquote class="footnote"><a id="footnote3" name="footnote3"></a><b>Footnote 3:</b><a href="#footnotetag3"> (return) </a>***put text here***</blockquote> This is a test.]
+
+where 3 is the Footnote number. Repair this to look like this:
+
+<blockquote class="footnote"><a id="footnote3" name="footnote3"></a><b>Footnote 3:</b><a href="#footnotetag3"> (return) </a>This is a test.</blockquote>
+
+and move the Footnote where you want it (e.g., at end of Article).
+
+Another little trick: If, in the well-marked-up version, the footnote text falls all on a single line, it will be handled completely automatically by GutCutter and require no clean-up.
+
+A further trick: after moving the footnotes to the end of the HTML file, they can usually be fixed up with just a few search and replace operations:
+ 
+***Put footnote text here***</p></blockquote>  Just remove these.
+ 
+Replace ]</p> with  </p></blockquote>
+
+8. Open with your favorite web-browser to inspect.
+
+9. Check and clean up your file with Tidy, and validate it at http://validator.w3.org/. 
+Rename this file "Lipp.htm".
+
+You're done making the HTML version. 
+
+       *       *       *       *       *

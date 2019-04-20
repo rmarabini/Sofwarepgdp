@@ -1,0 +1,13 @@
+<hr class="full" /> 
+    ***FOOTNOTE 1***  move the footnotes here!
+    ***FOOTNOTE 2*** 
+    *** 
+<hr class="full" /> 
+
+<p><i>Printed and published by J LIMBIRD, 143, Strand, (near Somerset   ***USE ACTUAL MATERIAL HERE!***
+House,) and sold by all Newsmen and Booksellers.</i></p> 
+
+<hr class="full" />
+
+</body> 
+</html> 

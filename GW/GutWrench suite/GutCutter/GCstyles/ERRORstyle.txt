@@ -1,0 +1,2981 @@
+\Auxiliary file ERRORstyle.txt for GutCutter 0.3
+\
+\This helps find suspected errors in a text file by
+\preparing an HTML version with the suspects highlighted.
+\
+\modified 11 Feb. 2006
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+
+   THOUGHT BREAKS --> HORIZONTAL RULES
+
+s\       *       *       *       *       *full\<hr class="full" />\full horizontal rule
+s\       *       *       *       *       *long\<hr />\long horizontal rule
+s\       *       *       *       *       *short\<hr class="short" />\short horizontal rule
+s\       *       *       *       *       *\<hr />\long horizontal rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\       ***\<hr class="short" />\short horiz. rule
+s\<tb>\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+
+r_-{5,}File:\s*0*(\d+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+r_-{5,}File:\s*\-(\d+)\.png.*__remove Page Separator with negative page number
+r_-{5,}File:\s*([mdclxvi]+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number as Roman numeral
+r_-+File:\s*0*(\d+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+
+
+   ILLUSTRATIONS
+
+   These assume that the illustrations are .png files placed in subdirectory "images"
+
+   If the closing bracket "]" falls on the same line, capture the caption
+r_\[Illustration:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration with caption
+
+   Added notations before the colon: C/L/R = centered/left/right, number = width percent
+   E.g., "[Illustration L42: caption]" yields a left-justified figure at 42% width
+   Both the letter and number are optional, but if both are used, the letter must come before the number.
+
+   For the Sign Language book, all the images are titled "fig###.png", where ### is the Figure number.
+   Also, all the captions read like this: "Illustration L42: Fig. ###. Caption text]"
+   This allows us to get creative with Regular Expressions in handling the figures:
+r_\[Illustration C(\d+): Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration centered ??%
+r_\[Illustration (\d+): Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration centered ??%
+r_\[Illustration L(\d+): Fig. (\d+)([^\]]*)\]_<div class="figleft" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration left ??%
+r_\[Illustration R(\d+): Fig. (\d+)([^\]]*)\]_<div class="figright" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration right ??%
+r_\[Illustration C: Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration centered, default width (100%)
+r_\[Illustration L: Fig. (\d+)([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration left, default width (50%)
+r_\[Illustration R: Fig. (\d+)([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration right, default width (50%)
+
+   Tag illustrations like this: "[Illustration C50/###-#: text]" where "###-#.png" is the image filename.
+
+   These lines handle figures captioned with <hx>"..."</hx> tags with quotes, possibly missing final "]"
+   (Replace the double quotes with single quotes in the alt parameter.)
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$3'" /></a><h$2>"$3"</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration right ??%
+
+   These lines handle figures captioned with <hx>...</hx> tags, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$3" /></a><h$2>$3</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, with "quotes" around the caption, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$2'" /></a>"$2"</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$2" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration right ??%
+
+   These four lines handle when there is no caption "[Illustration C50/###-#]"
+r_\[Illustration\s*C(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*L(\d+)\/([^\]]+)\]_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration left ??%, no caption
+r_\[Illustration\s*R(\d+)\/([^\]]+)\]_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration right ??%, no caption
+
+  Badly formed illustration markup; handle as well as possible
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>\Illustration
+
+
+   ERRORS START HERE
+   NOTE: Each rule must somehow change the suspected error,
+   so that it does not get detected over and over again.
+
+r_([abefghjklnopqrstuvwyz])(\1{2,})_<e>$1<ZWJ>$2</e>_letter repeated more than twice
+
+    Scannos and Stealth Scannos
+
+    =A=
+r_\b([aA])(a)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(Ali)(ens{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(Ag)(ues)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([aA])(il)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([aA])(loe|lter)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b([aA]lter)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\AMD\<escanno>A<ZWJ>M<ZWJ>D</e>\scanno
+r_\b(A)([BK]E|RB)\b_<escanno for ARE>$1<ZWJ>$2</e>_scanno for ARE
+r_\b([vV]ery|[eE]xtremely|[aA]nd|[bB]ut|[aA]n|[tT]he)\s+(and)\b_$1 <estealth scanno>$2</e>_stealth scanno: "and" for "arid"
+r_\b([sS]emi)\-(and)\b_$1-<estealth scanno: "and" for "arid">$2</e>_stealth scanno: "and" for "arid"
+r_\b([aA]nd)\s+(area|desert|l*and|landscape|climate|environment|zone|region)\b_<estealth scanno>$1</e> $2_stealth scanno: "and" for "arid"
+r_\b([aA]nd)\s+(area|desert|land|landscape|climate|environment|zone|region)s\b_<estealth scanno>$1</e> $2s_stealth scanno: "and" for "arid"
+r_\b([aA])([mru]|ri)d\b_<estealth scanno>$1<ZWJ>$2d</e>_stealth scanno for "and"
+r_\b([aA]n)(us)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([aA])([glprtvwxy]c)\b_<escanno or stealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+r_\b(d'A)(re)\b_<estealth scanno>$1<ZWJ>$2</e>_scanno, e for c
+r_\b([aA]n|[cC]ircular|[eE]lliptical|[tT]he)\s+(are)\b_$1 <estealth scanno>$2</e>_are for arc
+w\auger\<estealth scanno>au<ZWJ>ger</e>\stealth scanno
+w\augered\<estealth scanno>aug<ZWJ>ered</e>\stealth scanno
+
+    =B=
+    (see also "b/h confusion" below)
+w\Bach\<estealth scanno>Ba<ZWJ>ch</e>\stealth scanno
+r_\b([bfghptwBFHPTW][ae])(ils{0,1}|iling)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([bpBP])at\b_<estealth scanno>$1<ZWJ>at</e>_stealth scanno
+w\Beep\<estealth scanno>Be<ZWJ>ep</e>\stealth scanno
+w\boll\<estealth scanno>bo<ZWJ>ll</e>boil\stealth scanno
+r_\b([bB]o)(obs*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(B[co]ring)\s+(S[ceo]a)_<estealth scanno>$1<ZWJ> <ZWJ>$2</e>_stealth scanno
+r_(Born)(eo{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\Beth\<estealth scanno>Be<ZWJ>th</e>\stealth scanno
+w\Breams\<estealth scanno>Bre<ZWJ>ams</e>\stealth scanno
+
+    =C=
+r_\b([cC]a[fgkmnprsv])(o)\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+r_\b([cC]a[fgkmnprsv])(o[drs])\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+r_([cC]a)(irn)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\car\<estealth scanno>c<ZWJ>ar</e>\stealth scanno
+w\cars\<estealth scanno>ca<ZWJ>rs</e>\stealth scanno
+r_\b([cC]ar)(nages*)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, carnage/carriage
+r_\b([cC]a)(nn|pp|tt)ing_<estealth scanno>$1<ZWJ>$2ing</e>_stealth scanno
+w\CBAPTER\<escanno>CB<ZWJ>APTER</e>\scanno
+r_\b(C[BH]A[FRT])(TE[BR])\b_<e>$1<ZWJ>$2</e>_scanno
+w\Christinas\<estealth scanno>Christ<ZWJ>inas</e>\stealth scanno
+r_\b(c)(lements*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([cC]o)(lls*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([cC]oloni)(cs)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\curs\<estealth scanno>cu<ZWJ>rs</e>\stealth scanno
+r_\b(C0)([uU][rR][sS]{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+
+    =D=
+   (see also "cl/d confusion")
+r_\b([dD]en)(tal)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\DC\<e>D<ZWJ>C</e>\scanno
+w\DCES\<e>DC<ZWJ>ES</e>\scanno
+r_\b([dD]o)(cs)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_(Due)\s+([dD][e'])\b_<estealth scanno>$1<ZWJ> $2</e>_stealth scanno
+
+    =E=
+w\eared\<estealth scanno>ea<ZWJ>red</e>\stealth scanno
+r_\b([eE])(ves*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, eve/eye
+r_\b([eE]y)(e[nrs]{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+w\eveiy\<estealth scanno>eve<ZWJ>iy</e>\scanno
+r_\b([eE]very)\s+(body|one|thing|where)_<e>$1<ZWJ> <ZWJ>$2</e>_connect words
+
+    =F=
+r_\b([fF]a[cdkmrtz])(o)\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno, "o" for "e"
+r_\b(f)([aou]ng)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([fhwFHW]a)(nne[dr])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([fF])(ax)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, fax/far
+r_\b(fe)(ign)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, feign/reign
+r_\b([fF])([ir]at)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_(£)([a-z])_<e>$1<ZWJ>$2</e>_scanno (pound for f)
+r_([a-zA-Z])(£)_<e>$1<ZWJ>$2</e>_scanno (pound for f)
+r_\b([fgFG][lr])(oe)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+r_\b([fF])(olio wed)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(F[BK])([CO0]M)\b_<e>$1<ZWJ>$2</e>_scanno
+r_\b(F[O0C])([BEKP])\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+w_Franco_<estealth scanno>Fra<ZWJ>nco</e>_stealth scanno
+
+    =G=
+w\gees\<estealth scanno>ge<ZWJ>es</e>\stealth scanno
+r_\b([gG]entle)\s+(man|woman|folk)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space(s)
+r_\b([gG]rand)\s+(father|mother|pa|ma|pop|mom|son|daughter|pere)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space(s)
+r_\b([gG]ro)(ats{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+r_\b(grous)(e|ed|ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+w\guru\<estealth scanno>gu<ZWJ>ru</e>\stealth scanno
+w\gurus\<estealth scanno>gu<ZWJ>rus</e>\stealth scanno
+
+    =H=
+    (see also "b/h confusion" below)
+r_\b([hpwHPW]a)(re)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([hH]al)(t)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "halt" for "half"
+r_\b([hH]a)([rwy]ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([hH]er)(e\-worship)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([oO]ur|[mM]y|[tT]he)(\s+here)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\hitman\<estealth scanno>hit<ZWJ>man</e>\stealth scanno
+r_\b([hH]un)(ched)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+
+    =I=
+r_\b([iI])([r£])\b_<e>$1<ZWJ>$2</e>_scanno
+w\IP\<e>I<ZWJ>P</e>IF\scanno
+w\Info\<estealth scanno>In<ZWJ>fo</e>\scanno
+w\info\<estealth scanno>in<ZWJ>fo</e>\scanno
+r_"II\b_<e>"I<ZWJ>I</e>_II for Italian word Il
+w\INDBX\<e>IND<ZWJ>BX</e>\scanno
+w\IMDEX\<e>IM<ZWJ>DEX</e>\scanno
+w\MDEX\<e>M<ZWJ>DEX</e>\scanno
+
+    =L=
+r_\b([lL]ad)(les)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(1')([aehiouyàáâèéêô])_<e>$1<ZWJ>$2</e>_French scanno, one for el
+r_\b([bclBCL]a)(ud)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(li)(m[eo])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b(li)(mo)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\loguitur\<e>log<ZWJ>uitur</e>\scanno
+
+    =M=
+w\mall\<estealth scanno>ma<ZWJ>ll</e>\stealth scanno
+w\malls\<estealth scanno>ma<ZWJ>lls</e>\stealth scanno
+s\mariner\<estealth scanno>mar<ZWJ>iner</e>\stealth scanno
+w\mast\<estealth scanno>ma<ZWJ>st</e>\stealth scanno
+r_\b([mM])(ew)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\MEW\<estealth scanno>M<ZWJ>EW</e>\stealth scanno
+w\MEWS\<estealth scanno>ME<ZWJ>WS</e>\stealth scanno
+  Sometimes OCRed for "his" but could be abbrev. for "manuscript":
+r_\b([mM]o)(a[st])\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, moat/most
+w\mow\<estealth scanno>m<ZWJ>ow</e>\stealth scanno
+w\Ms\<estealth scanno>M<ZWJ>s</e>his\stealth scanno
+w\musts\<estealth scanno>mu<ZWJ>sts</e>\stealth scanno
+
+    =N=
+w\nein\<estealth scanno>ne<ZWJ>in</e>rein\stealth scanno
+r_\b([nN]e)(ne|on)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\bnite_<estealth scanno>ni<ZWJ>te</e>_stealth scanno
+r_\b([nN]i)(tros*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\nn\<e>n<ZWJ>n</e>\French scanno
+r_\b(n)(agged|avel|eap|egress|isus|ock|oil|uder*)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+
+    =O=
+w\oases\<estealth scanno>oa<ZWJ>ses</e>\stealth scanno
+w\oast\<estealth scanno>oa<ZWJ>st</e>\stealth scanno
+w\OAST\<estealth scanno>OA<ZWJ>ST</e>\stealth scanno
+w\Oast\<estealth scanno>Oa<ZWJ>st</e>\stealth scanno
+\w\oat\<estealth scanno>o<ZWJ>at</e>eat\stealth scanno
+r_\b(o)(at[eis]+)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+s\o'dock\<estealth scanno>o'<ZWJ>dock</e>\stealth scanno
+r_\b([oO])([t£])\b_<e>$1<ZWJ>$2</e>_scanno
+  \w\o£\of\scanno (pound for f)
+r_\b(O)([BEP])\b_<e>$1<ZWJ>$2</e>_scanno
+r_\b([oO]f)(\s+ten)\b_<e>$1<ZWJ>$2</e>_split word
+r_\b([oO]v)(en)\b_<estealth scanno>$1<ZWJ>$2</e>_scanno
+
+    =P=
+w\Pans\<estealth scanno>Pa<ZWJ>ns</e>\stealth scanno
+s\Piddl\<estealth scanno>Pid<ZWJ>dl</e>\stealth scanno
+r_(P)([ilI1][gG]\.)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, Pig/Fig
+r_\b([pP]oliti)(es)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(P)(or|our|rom|OR|OUR|ROM)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(P)(ran[ck]|RAN[CK])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(PEEF|PERF|PREP|FREF|FREP)(ACE)\b_<escanno>$1<ZWJ>$2</e>_scanno
+w\PRICK\<estealth scanno>PR<ZWJ>ICK</e>\stealth scanno
+
+    =R=
+r_\b([rR]eal)(ty)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(r)(ecks*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, reck/neck
+r_\b(r)(eed[sy]*)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, reed/need
+r_\b(re)(ign)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(r)(ets*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, ret/net
+r_\b([rR])(ets*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, ret/net
+w_Rico_<estealth scanno>Ri<ZWJ>co</e>_stealth scanno
+r_\b(r)(illed|illing|ingers*|oes*)\b_<e>$1<ZWJ>$2</e>_scanno
+w\rote\<estealth scanno>ro<ZWJ>te</e>\stealth scanno
+r_\b(ri)(ot[ei]*)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, riot-/not-
+  \r_\briot\b_not_stealth scanno
+  \w\rioted\noted\stealth scanno
+r_\b([rR]ive)([nt])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno for "river"
+r_\b([lprtLPRT])(oach)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, -oach/-each
+
+    =S=
+w\sago\<estealth scanno>sa<ZWJ>go</e>\stealth scanno
+w\Sago\<estealth scanno>Sa<ZWJ>go</e>\stealth scanno
+w\SBE\<e>S<ZWJ>BE</e>\scanno
+r_([sS]tov)(e|e[ds]|ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_([sS]ton)(e[ds]|ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_([sS]urfe)(rs{0,1})_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, surfer/suffer
+
+    =T=
+r_\b([tT]i[rl])(e|ings{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, tile- or tire- for the-
+  \r_\b([tT])il([ei])_$1h$2_stealth scanno, tile-/the-
+    \w\tile\the\stealth scanno
+    \w\Tile\The\stealth scanno
+    \w\tiling\thing\stealth scanno
+  \w\tire\the\stealth scanno
+  \w\Tire\The\stealth scanno
+  \w\tiring\thing\stealth scanno
+r_\b(I)(HE)\b_<e>$1<ZWJ>$2</e>_scanno
+r_\b(T)(BE)\b_<e>$1<ZWJ>$2</e>_scanno
+r_\b(T)(HB)\b_<e>$1<ZWJ>$2</e>_scanno
+w\TBIS\<e>TB<ZWJ>IS</e>THIS\scanno
+r_\b([tT])(ins)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, tile-/the-
+  \w\tins\this\stealth scanno
+  \w\Tins\This\stealth scanno
+r_\b([tT]hr)(oe)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, throe/three
+  \w\throe\three\stealth scanno
+r_\b([tT]hr)(ees)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, throe/three
+  \w\threes\throes\stealth scanno
+w\tiro\<estealth scanno>ti<ZWJ>ro</e>\stealth scanno
+w\tiros\<estealth scanno>ti<ZWJ>ros</e>\stealth scanno
+r_\b([tT]e)(es{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+w\toe\<estealth scanno>t<ZWJ>oe</e>\stealth scanno
+w\tor\<estealth scanno>t<ZWJ>or</e>\stealth scanno
+
+    =U=
+r_\b(us)(\s+much)_<estealth scanno>$1<ZWJ>$2</e>_us for as
+
+    =V=
+w\vas\<estealth scanno>v<ZWJ>as</e>\stealth scanno
+r_\b([vwVW]|[cC]h)(inos*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([vV][eo]rt)(ex|ices)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+
+    =W=
+r_([ghpwGHPW]a)(a)_<e>$1<ZWJ>$2</e>_scanno, -aa/-as
+r_\b([ghwGHW]a)(g)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, -ag/-as
+  \w\wag\was\stealth scanno
+  \w\Wag\Was\stealth scanno
+r_\b([cfprwCDFPRW]a)(ve)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, -ave/-are
+r_\b([wW]ea)(ned)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, 
+r_\b([wW]e)(n)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, 
+  w\wen\well\stealth scanno
+  w\Wen\Well\stealth scanno
+r_\b([wW]i)(f[bhn])\b_<e>$1<ZWJ>$2</e>_scanno 
+  \w\wifh\with\scanno
+  \w\Wifh\With\scanno
+
+    =Y=
+r_\b([yY]o)(n)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\yon\you\stealth scanno
+  \w\Yon\You\stealth scanno
+
+    =numbers=
+r_\b(l)([26]mo)\b_<e>$1<ZWJ>$2</e>_scanno (page size, 12mo, 16mo)
+w\Ato\<e>A<ZWJ>to</e>\scanno
+
+
+------------------------------------------------------------------------
+
+\simple scanno sequences
+
+r_\b(\S+)\s+(\1)\b_<e>$1<ZWJ> <ZWJ>$2</e>_repeated word
+
+r_([b-df-hj-np-tv-xz])([b-df-hj-np-tv-xz])([b-df-hj-np-tv-xz])([b-df-hj-np-tv-xz])([b-df-hj-np-tv-xz])_<e>$1<ZWJ>$2<ZWJ>$3<ZWJ>$4<ZWJ>$5</e>_flag 5 consecutive consonants
+
+\r_\B([^gGq])uess_<e>$1<ZWJ>$2</e>_scanno, -ness
+r_\B([a-z])(uess)_<e>$1<ZWJ>$2</e>_scanno, -ness
+  \s\iuess\iness\scanno
+    etc.
+
+r_([vV])([vV])_<e>$1<ZWJ>$2</e>_scanno
+  \s\vv\w\scanno
+  \s\Vv\w\scanno
+  \s\vV\w\scanno
+  r_[vV][vV]_W_scanno
+    \s\VV\W\scanno
+    \s\Vv\W\scanno
+    \s\vV\W\scanno
+
+r_([cstw])(ii)_<e>$1<ZWJ>$2</e>_scanno, "ii" for "h"
+  \s\tii\th\scanno
+
+s\gbt\<e>g<ZWJ>bt</e>\scanno
+
+-------------------------
+
+        cl/d confusion
+
+r_(cl)([bcdghjlmnprstw])_<e>$1<ZWJ>$2</e>_scanno, "cl" for "d" before selected consonants (possibly at start of word)
+
+r_([dglmptw])(cl)_<e>$1<ZWJ>$2</e>_scanno, "cl" for "d" after selected consonants
+
+r_cl\b_<e>c<ZWJ>l</e>_scanno, "cl" at end of word for "d"
+  \s\cl \d \scanno
+    etc.
+
+r_\b(cla)([my][ps]*|nk|nker|pper|re|rk|sh)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\bcl(a[my][ps]*)\b_d$1_stealth scanno, cla-/da-
+    \r_\bcl(a[my])\b_d$1_stealth scanno
+      \w\clay\day\stealth scanno
+      \w\clays\days\stealth scanno
+  \w\clank\dank\stealth scanno
+  \w\clapper\dapper\stealth scanno
+  \w\clare\dare\stealth scanno
+  \w\clark\dark\stealth scanno
+  \w\clash\dash\stealth scanno
+s\my clear\<estealth scanno>my <ZWJ>clear</e>\stealth scanno
+s\My clear\<estealth scanno>My <ZWJ>clear</e>\stealth scanno
+r_\b(cle)(arest|ck|w|ft)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, cle-/de-
+  \w\clew\dew\stealth scanno
+r_\b(cl)(i[mn]e)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(clo)(gs*|gged|ne|t|tted|tting|tty|ughs*|ur|ves*|wns*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\clog\dog\stealth scanno
+  \w\clogged\dogged\stealth scanno
+  \w\clone\done\stealth scanno
+  \w\clot\dot\stealth scanno
+  \w\clotted\dotted\stealth scanno
+  \w\clotting\dotting\stealth scanno
+  \w\clotty\dotty\stealth scanno
+  \w\clough\dough\stealth scanno
+  \w\cloughs\doughs\stealth scanno
+  \w\clour\dour\stealth scanno
+  \w\clove\dove\stealth scanno
+  \w\clown\down\stealth scanno
+  \w\clowns\downs\stealth scanno
+r_\b(clu)(cks*|cked|cking|nks*|nked|nking|e\s+to)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, clu-/du-
+  \s\cluck\duck\stealth scanno
+  \s\clunk\dunk\stealth scanno
+  \s\clue to\due to\stealth scanno
+
+r_\b(d)(a[dpw]s*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\dad\clad\stealth scanno
+r_\b(de)(ans*|ar\-|ft)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\dean\clean\stealth scanno
+r_\b(demen)(t|cy)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno for "clement"
+r_\b(d)([iu]ck)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno for "click" or "cluck"
+r_\b(d)([iu]n[gk]s*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, d for cl
+  \w\ding\cling\stealth scanno
+  \w\dung\clung\stealth scanno
+r_\b(do)(se[drst]*|sing|th|ut|wned|wning|wns)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, d for cl
+  \w\dose\close\stealth scanno
+  \w\dosed\closed\stealth scanno
+  \w\doth\cloth\stealth scanno
+  \w\dout\clout\stealth scanno
+  \w\downed\clowned\stealth scanno
+  \w\downing\clowning\stealth scanno
+  \w\downs\clowns\stealth scanno
+r_\b(du)(bs*|usters*|tch)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, d for cl
+  \w\dub\club\stealth scanno
+  \w\dubs\clubs\stealth scanno
+  \s\duster\cluster\stealth scanno
+  \s\dutch\clutch\stealth scanno
+
+---------------------------
+
+        li/h confusion
+
+
+r_\b(li)([u])_<e>$1<ZWJ>$2</e>_scanno, "li" for "h" at start of word
+
+r_\b([dkrwDKRW])(li[aeiouy])_<e>$1<ZWJ>$2</e>_scanno, "li" for "h" as 2nd letter
+  \s\ tli\ th\scanno
+r_\b([stST])(li[aeioruy])_<e>$1<ZWJ>$2</e>_scanno, "li" for "h" as 2nd letter
+
+r_(li)([iy])_<e>$1<ZWJ>$2</e>_scanno, "li" for "h" before selected vowels
+
+\r_\b([csCS])(li[aeiouy])_<e>$1<ZWJ>$2</e>_scanno, "li" for "h" as 2nd letter
+r_\b([csCS])(li[aiouy])_<e>$1<ZWJ>$2</e>_scanno, "li" for "h" as 2nd letter
+   False positives: client, slier, -est
+
+r_([b-df-hjkmnp-tv-zB-DF-HJKMNP-TV-Z])li\b_<e>$1l<ZWJ>i</e>_scanno, "li" for "h" at end of word
+
+r_\b(li)(er*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+
+r_\b([fFI])(h[aeioruy])_<e>$1<ZWJ>$2</e>_scanno, "h" for "li" as 2nd letter
+
+w\lien\<estealth scanno>li<ZWJ>en</e>\stealth scanno
+w\lier\<estealth scanno>li<ZWJ>er</e>\stealth scanno
+
+w\hon\<estealth scanno>h<ZWJ>on</e>\stealth scanno
+
+----------------------------
+
+          rn/m confusion
+
+r_\brn_<e>r<ZWJ>n</e>_scanno, "rn" for "m" at start of word
+  \s\ rn\ m\scanno
+
+\r_(rn)([bmnp])_<e>$1<ZWJ>$2</e>_scanno, "rn" for "m" before selected consonants
+  False positives: government, internment, discernment, etc.; cornpone, turnpike
+  Most of these involve the "m" followed by "e". Let's break this in two:
+r_(rn)([bnp])_<e>$1<ZWJ>$2</e>_scanno, "rn" for "m"
+  \s\rnp\mp\scanno
+  \s\rnb\mb\scanno
+r_(rn)(m[^e])_<e>$1<ZWJ>$2</e>_scanno, "rn" for "m"
+  \s\rnma\mma\scanno
+  \s\rnmi\mmi\scanno
+  \s\rnmo\mmo\scanno
+  \s\rnmu\mmu\scanno
+
+r_([b-df-hj-np-tv-xzIS])(rn)_<e>$1<ZWJ>$2</e>_scanno, "rn" for "m" after consonant or I or S (possibly at end of word)
+  \s\mrn\mm\scanno
+
+s\rnrn\<e>rn<ZWJ>rn</e>\scanno
+
+r_\b([bwyBWY]a)(m)\b_<e>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+r_\b([btBT]u)(m)\b_<e>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \r_\b([bB][au])m_$1rn_stealth scanno, "m" for "rn"
+r_\b([btBT]u)(m[^bmpsu])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\bum\burn\stealth scanno
+  \w\bums\burns\stealth scanno
+  \w\bumt\burnt\scanno
+  \w\tum\turn\stealth scanno
+  \w\tums\turns\stealth scanno
+w\carne\<estealth scanno>ca<ZWJ>rne</e>came\stealth scanno, "rn" for "m"
+r_\b([cC]hu)(m)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\chum\churn\stealth scanno, "m" for "rn"
+r_\b([cC]o)(me[rt])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\comer\corner\stealth scanno, "m" for "rn"
+  \w\comers\corners\stealth scanno, "m" for "rn"
+  \w\comet\cornet\stealth scanno, "m" for "rn"
+r_\b([cC]o)(rning)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "rn" for "m"
+  \w\corning\coming\stealth scanno, "rn" for "m"
+r_\b([dD]a)(rn)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "rn" for "m"
+w\fornent\foment\stealth scanno, "rn" for "m"
+r_\b([gG]a)(me[rt])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\gamer\garner\stealth scanno, "m" for "rn"
+r_\b([hH]e)(rn)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "rn" for "m"
+w\homed\<estealth scanno>ho<ZWJ>med</e>\stealth scanno, "m" for "rn"
+w\leam\<estealth scanno>le<ZWJ>am</e>\stealth scanno, "m" for "rn"
+r_\b([lL]eam)(ed|er|ing|s)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\leamed\learned\stealth scanno, "m" for "rn"
+  \w\leamer\learner\stealth scanno, "m" for "rn"
+  \w\leaming\learning\stealth scanno, "m" for "rn"
+r_\b([mM]ode)(m)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\modem\modern\stealth scanno, "m" for "rn"
+r_\b([mtMT]o)(m)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "rn"
+  \w\mom\morn\stealth scanno, "m" for "rn"
+  \w\tom\torn\stealth scanno, "m" for "rn"
+r_\b([tyTY]a)(rn)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "rn" for "m"
+
+-----------------------------
+
+       m/in confusion
+
+r_\b([dgt]ra)(m)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "in"
+  \w\gram\grain\stealth scanno
+  \w\tram\train\stealth scanno
+r_\b([cC])(oining)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\coining\coming\stealth scanno
+  \w\Coining\Coming\stealth scanno
+r_\b([gG]am)(ed|ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\gamed\gained\stealth scanno, "m" for "in"
+  \w\gaming\gaining\stealth scanno, "m" for "in"
+r_\b([fglmprvCGLPRV]a)(m)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "m" for "in"
+  \w\gam\gain\stealth scanno
+  \w\lam\lain\stealth scanno
+  \w\ram\rain\stealth scanno
+w\Spam\<estealth scanno>Sp<ZWJ>am</e>\stealth scanno, "m" for "in"
+w\swain\<estealth scanno>sw<ZWJ>ain</e>\stealth scanno
+
+  \r_\bm\b_in_scanno
+   False positive: "I'm"
+r_ m\b_<e> <ZWJ>m</e>_scanno
+  \s\ m \ in \scanno
+
+-----------------------------
+
+           c/e/o confusion
+
+s\mcnt\<e>mc<ZWJ>nt</e>\scanno, "c" for "e"
+  \s\mcnt\mont\scanno, "c" for "o"
+
+r_\b([b-df-hj-np-rtv-z])(c)_<e>$1<ZWJ>$2</e>_scanno, "c" for "e"
+r_(b[blt]|c[hkt]|dd|f[ft]|g[gh]|l[dlt]|m[bmnp]|n[cdgknst]|p[pt]|r[bmnprst]|s[hkst]|t[ilt]|[aiolru]th)([co]d)\b_<estealth scanno>$1<ZWJ>$2</e>_c/e/o confusion
+
+r_\b([bB]ett|[lL]ess)(or)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b([lL]ess)or_$1er_stealth scanno
+
+w\en\<estealth scanno>e<ZWJ>n</e>\stealth scanno
+r_\b([BlmLMT])(oss)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "o" for "e"
+r_\b([bhlmwBHLMW])(o)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+    \w\bo\be\scanno
+    \w\ho\he\scanno
+  \r_\b([bhlBHL])o\b_$1e_stealth scanno, o/e
+r_\b([bB]eard)(ed|ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\bearded\boarded\stealth scanno, o/e
+  \w\bearding\boarding\stealth scanno, o/e
+r_\b([aA]|[mM]y|[hH]is)(\s+been)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+r_\b([bB])(een\s+companion)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+r_\b([bB])(eets{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/e
+r_\b([bB]leat)(ed|er|ers|ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\bleated\bloated\stealth scanno
+  \w\bleating\bloating\stealth scanno
+r_\b([bB]l)(oat)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, o/a
+  \w\bloating\bleating\stealth scanno
+r_\b([bB]oar)(d|ds|ding|s|ded|ish)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b([bB])o(ar[ds]{0,1})\b_$1e$2_stealth scanno
+    \w\boar\bear\stealth scanno
+    \w\board\beard\stealth scanno
+    \w\boars\bears\stealth scanno
+  \w\boarded\bearded\stealth scanno
+  \w\boarish\bearish\stealth scanno
+r_\b([bB]oas)(t|ts|tly)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\boast\beast\stealth scanno
+  \w\boasts\beasts\stealth scanno
+r_\b([bB]oat)(er|ing)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\boating\beating\stealth scanno
+r_\b([bchlBCHL]oc)(ks{0,1}|ked|king)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([bB]o)(d|ing|gged|g|ll|rate|t)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([bB]o)(d|ing|g|ll|rate|t)s\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\bogged\begged\stealth scanno
+  \w\boing\being\stealth scanno
+  \r_\b([bB])o(ts{0,1})\b_$1e$2_scanno
+    \w\bot\bet\scanno
+    \w\bots\bets\scanno
+w\boo\<estealth scanno>b<ZWJ>oo</e>\stealth scanno
+r_\b(boo)([fnrs])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\boon\been\stealth scanno
+  \w\boor\beer\stealth scanno
+  \w\boos\bees\stealth scanno
+r_\b([cC]e)(il|llar|lt|ltish|re)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([cC]e)(il|llar|lt|re)s\b_<estealth scanno>$1<ZWJ>$2s</e>_stealth scanno
+r_\b([cC]he)(ek)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(\-che)(cked)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b(c)(u[rt])\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\cur\our\stealth scanno
+r_\b([dD]e)(cile|le)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([dD]o)(cent)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([hH]o)(ar[ds]{0,1}|lm|re)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "o" for "e"
+  \r_\b([hH]o)(ar[ds])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \w\hoar\hear\stealth scanno
+  \w\holm\helm\stealth scanno
+  \w\hore\here\stealth scanno
+  \w\hoard\heard\stealth scanno
+  \w\hoars\hears\stealth scanno
+r_\b([hH])(al|er|om)o\b_<estealth scanno>$1<ZWJ>$2o</e>_stealth scanno, "o" for "e"
+  \w\hero\here\stealth scanno
+  \w\Hero\Here\stealth scanno
+  \w\homo\home\stealth scanno
+r_\b([hH]e)(ist|ller|me|p|st|t|w)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([hH]e)(ist|ller|me|p|st)s\b_<estealth scanno>$1<ZWJ>$2s</e>_stealth scanno
+  \w\heme\home\stealth scanno
+  \w\hep\hop\stealth scanno
+  \w\het\hot\stealth scanno
+  \w\hest\host\stealth scanno
+r_\b([hwHW]o)(re)\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+r_\b([lL]oa)([dfn]s{0,1}|[dfn]ing)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b([lL])o(a[dfn]ing)_$1e$2_stealth scanno
+w\mako\<estealth scanno>ma<ZWJ>ko</e>\stealth scanno
+w\makos\<estealth scanno>ma<ZWJ>kos</e>\stealth scanno
+r_\b([mM]e)(ld|th|wed)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([mM]oa)([nt]s{0,1}|nings{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b([mM])oat\b_$1eat_stealth scanno
+  \r_\b([mM])o(anings{0,1})\b_$1e$2_stealth scanno
+r_\b([mM]o)([dnst]|dal|te|ttle)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+  \r_\b([mM])o([dnst])\b_$1e$2_stealth scanno
+  \r_\b([sS])c(a[mrt])_$1e$2_stealth scanno ("c" for "e")
+r_\b(a|A|[lL]ow|[yY]ou)\s+(o[au][rt])\b_<estealth scanno>$1 <ZWJ>$2</e>_stealth scanno
+r_\b([pP]er)(\s+so)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([pwPW]o)([nr]t)\b_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno
+r_\b([pP]re)(mise[sd]{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([rR])oo(ks{0,1}|king|ke[dr])\b_$1oc$2_scanno or stealth scanno
+r_\b([sS]c)(a[mt]s{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno ("c" for "e")
+  \w\scat\seat\stealth scanno
+  \w\Scat\Seat\stealth scanno
+r_\b([sS]c)(a[lr]ed)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno ("c" for "e")
+r_\b([sS]e)(a[lr]ed)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno ("c" for "e")
+r_\b([sS]e)(rer*|wn)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno ("e" for "o")
+r_\b([sS]co)(nes{0,1})_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno ("c" for "e")
+r_\b([sS]te)([lrv]es{0,1})_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno ("c" for "e")
+r_\b([tT]al)(c)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([tT]al)(cs)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno
+r_\b([tT]h)([aocs])\b_<e>$1<ZWJ>$2</e>_"a", "o", "c", or "s" for "e" in "the"
+  w\tho\the\stealth scanno
+r_([wW]h)(ore)_<estealth scanno>$1<ZWJ>$2</e>_scanno or stealth scanno, whore/where
+  \w\whore\where\stealth scanno
+  \w\Whore\Where\stealth scanno
+
+----------------------------------------------------------------------------
+
+  \standalone or terminal "j" as semicolon (mind the blanks!)
+r_\s*j\b_<esemicolon><ZWJ><jay><ZWJ></e>_scanno, "j" for semicolon & possibly close up leading space
+  \s\ j \; \"j" for semicolon & close up leading space
+  \s\j \; \"j" for semicolon
+  \s\j-\;-\"j" for semicolon
+--------------------------
+
+   b/h confusion
+
+     "b" for "h"
+        letter patterns
+r_\b([bcdgkprstwBCDGKPRSTW])(b)_<e>$1<ZWJ>$2</e>_scanno, "b" for "h" as 2nd letter
+  \w\tbe\the\scanno
+  \w\Tbe\The\scanno
+  \w\tbere\there\scanno
+  \s\cb\ch\scanno
+r_\b([sS]c)(b)_<e>$1<ZWJ>$2</e>_scanno, "b" for "h"
+
+r_([cgpst])(b)\b_<e>$1<ZWJ>$2</e>_scanno, "b" for "h" at end of word
+
+r_([cgpst]b)(e[drs])_<e>$1<ZWJ>$2</e>_scanno, "b" for "h"
+
+        words
+r_(b)([ao]cks*)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \s\bock\hock\stealth scanno, "b" for "h"
+r_\b(b)(a[dgmty]s*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  w\bad\had\stealth scanno, "b" for "h"
+  w\bag\hag\stealth scanno, "b" for "h"
+r_\b(ba)([il]ls*|[nr][dkm]s*|ngs*|nger|rrows*|sh|shes|st|te)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \r_\bb(a[il]ls*)\b_h$1_stealth scanno, "b" for "h"
+    \w\bail\hail\stealth scanno
+    \w\bails\hails\stealth scanno
+    \w\ball\hall\stealth scanno
+    \w\balls\halls\stealth scanno
+  \w\bang\hang\stealth scanno
+  \w\bash\hash\stealth scanno, "b" for "h"
+  \w\bashes\hashes\stealth scanno, "b" for "h"
+  \w\bast\hast\stealth scanno, "b" for "h"
+  \w\banger\hanger\stealth scanno
+  \r_\bb(a[nr][dkm]s*)\b_h$1_stealth scanno, "b" for "h"
+    \w\band\hand\stealth scanno
+    \w\bands\hands\stealth scanno
+    \w\bard\hard\stealth scanno
+  \s\barrow\harrow\stealth scanno, "b" for "h"
+  \w\bate\hate\stealth scanno
+r_\b(ba)(il|n[dg]|rrow|sh|t)(ed|ing)_<estealth scanno>$1<ZWJ>$2<ZWJ>$3</e>_stealth scanno, "b" for "h"
+  w\bailed\hailed\stealth scanno
+  w\bailing\hailing\stealth scanno
+  \w\banded\handed\stealth scanno
+  w\banged\hanged\stealth scanno
+  w\banging\hanging\stealth scanno
+r_\b(b)([au]sh)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \w\baste\haste\stealth scanno, "b" for "h"
+w\bead\<estealth scanno>be<ZWJ>ad</e>\stealth scanno, "b" for "h"
+r_\b(be)(ad|ar)(ed|ing)_<estealth scanno>$1<ZWJ>$2<ZWJ>$3</e>_stealth scanno, "b" for "h"
+r_\b(bi)(dden|de|ding|nder|nge[ds]*)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  w\bidden\hidden\stealth scanno, "b" for "h"
+  w\bide\hide\stealth scanno, "b" for "h"
+  w\biding\hiding\stealth scanno, "b" for "h"
+  s\binder\hinder\stealth scanno, "b" for "h"
+  s\binge\hinge\stealth scanno, "b" for "h"
+s\bind leg\<estealth scanno>bind<ZWJ> <ZWJ>leg</e>\stealth scanno, "b" for "h"
+r_\b(bo)([dgptw]s{0,1}|les{0,1}|wls{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \s\bop\hop\stealth scanno, "b" for "h"
+  \w\bot\hot\scanno, "b" for "h"
+  \w\bow\how\stealth scanno, "b" for "h"
+  \w\bole\hole\stealth scanno, "b" for "h"
+  \w\bowl\howl\stealth scanno, "b" for "h"
+r_\b(bo)(l|n|pp|us|wl)(ed|ing)_<estealth scanno>$1<ZWJ>$2<ZWJ>$3</e>_stealth scanno, "b" for "h"
+  r_b(ous[ei])_h$1_stealth scanno, "b" for "h"
+  w\bowled\howled\stealth scanno, "b" for "h"
+  w\bowling\howling\stealth scanno, "b" for "h"
+r_\b(bu)(ffy|[bgm]s*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \w\buffy\huffy\stealth scanno, "b" for "h"
+  \r_\bbum\b_hum_stealth scanno, "b" for "h"
+r_\bbumbl_<estealth scanno>bum<ZWJ>bl</e>_stealth scanno, "b" for "h"
+  \s\bumble\humble\stealth scanno, "b" for "h"
+    \w\bumbled\humbled\stealth scanno, "b" for "h"
+    \w\bumbler\humbler\stealth scanno, "b" for "h"
+    \w\bumbles\humbles\stealth scanno, "b" for "h"
+r_\b(bu)(ff|gg|l[kl]|mm|nch|rl|sh)(ed|ing)_<estealth scanno>$1<ZWJ>$2<ZWJ>$3</e>_stealth scanno, "b" for "h"
+r_\b(b)([iu]n[kt])_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \w\bint\hint\stealth scanno, "b" for "h"
+  \s\bunt\hunt\stealth scanno
+    \w\bunts\hunts\stealth scanno
+    \w\bunter\hunter\stealth scanno
+    \w\bunted\hunted\stealth scanno
+    \w\bunting\hunting\stealth scanno
+r_\b(bu)(ffs{0,1}|l[kl]s{0,1}|nche{0,1}[ds]{0,1}|ng|rls{0,1}|sks{0,1}|ts)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  \w\busk\husk\stealth scanno
+  \w\bung\hung\stealth scanno, "b" for "h"
+r_\b(b)([ai]tch)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "b" for "h"
+  s\bitch\hitch\stealth scanno
+    \w\bitches\hitches\stealth scanno
+    \w\bitched\hitched\stealth scanno
+    \w\bitching\hitching\stealth scanno
+    \w\batching\hatching\stealth scanno
+w\butch\<estealth scanno>bu<ZWJ>tch</e>\stealth scanno, "b" for "h"
+w\witb\<estealth scanno>wi<ZWJ>tb</e>\scanno, "h" for "b"
+
+      "h" for "b"
+         letter patterns
+r_\b(h)([hl])_<e>$1<ZWJ>$2</e>_scanno, "h" for "b" at start of word
+r_^(h)(r)_<e>$1<ZWJ>$2</e>_scanno, "h" for "b" at start of line
+r_(\sh)(r[aiou])_<e>$1<ZWJ>$2</e>_scanno, "h" for "b" at start of word
+
+r_([bhilmruI])(h)\b_<e>$1<ZWJ>$2</e>_scanno, "h" for "b" at end of word
+   False positives: catarrh, myrrh
+
+r_([Aabimoru])(hl[eioy])_<e>$1<ZWJ>$2</e>_scanno, "h" for "b"
+  \s\ahle\able\scanno
+    etc.
+s\hble\<e>hb<ZWJ>le</e>\scanno
+s\hbli\<e>hb<ZWJ>li</e>\scanno
+
+          words
+r_\b(h)([ae][cnr]k)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+  \w\hack\back\stealth scanno
+  \w\hacked\backed\stealth scanno
+  \w\hacker\backer\stealth scanno
+  \w\hackers\backers\stealth scanno
+  \w\hacking\backing\stealth scanno
+  \w\hacks\backs\stealth scanno
+  \w\hank\bank\stealth scanno
+  \w\hanks\banks\stealth scanno
+  \w\hanker\banker\stealth scanno
+  \w\hankers\bankers\stealth scanno
+  \w\hark\bark\stealth scanno
+  \w\heck\beck\stealth scanno, "h" for "b"
+r_\b(ha)([kr]e|l[em]|rrier|rrow|th|tte[dr]|y)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+r_\b(ha)([kr]e|l[em]|rrier|rrow|th|tter|y)s\b_<estealth scanno>$1<ZWJ>$2s</e>_stealth scanno, "h" for "b"
+  \w\hake\bake\stealth scanno, "h" for "b"
+  \w\hakes\bakes\stealth scanno, "h" for "b"
+  \w\halm\balm\stealth scanno, "h" for "b"
+  \w\hay\bay\stealth scanno, "h" for "b"
+  \w\hays\bays\stealth scanno, "h" for "b"
+  \w\harrier\barrier\stealth scanno, "h" for "b"
+  \s\harrow\barrow\stealth scanno, "h" for "b"
+  \w\hath\bath\stealth scanno, "h" for "b"
+  \r_\bhatte([dr])\b_batte$1_stealth scanno, "h" for "b"
+    w\hatter\batter\stealth scanno, "h" for "b"
+r_\b(hea)(dy|ter)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+  w\heater\beater\stealth scanno, "h" for "b"
+r_\b(he)(lls{0,1}|[ns]*t|rms{0,1})_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+  \w\hell\<estealth scanno>he<ZWJ>ll</e>\stealth scanno, "h" for "b"
+  \w\hells\<estealth scanno>he<ZWJ>lls</e>\stealth scanno, "h" for "b"
+  \w\het\bet\stealth scanno
+  \w\hets\bets\stealth scanno
+  \w\hest\best\stealth scanno
+  \w\herm\berm\stealth scanno, "h" for "b"
+r_\b(hi)(des{0,1}|ding|ghts{0,1}|nds{0,1})\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+  \w\hide\bide\stealth scanno, "h" for "b"
+  \w\hiding\biding\stealth scanno, "h" for "b"
+  \w\hight\bight\stealth scanno, "h" for "b"
+  \w\hind\bind\stealth scanno, "h" for "b"
+  \w\hinds\binds\stealth scanno, "h" for "b"
+r_\b([hH]o)ar\b_<estealth scanno>$1<ZWJ>ar</e>_stealth scanno, "h" for "b"
+r_\b(ho)(o[kt]s{0,1}|ughs{0,1})_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+  \w\hook\book\stealth scanno, "h" for "b"
+  \w\hooks\books\stealth scanno, "h" for "b"
+  \w\hoot\boot\stealth scanno, "h" for "b"
+  \w\hoots\boots\stealth scanno, "h" for "b"
+  \w\hooter\booter\stealth scanno, "h" for "b"
+  \w\hooted\booted\stealth scanno, "h" for "b"
+  \w\hough\bough\stealth scanno, "h" for "b"
+  \w\houghs\boughs\stealth scanno, "h" for "b"
+r_\b([aA]|[hH]is) how\b_<estealth scanno>$1<ZWJ> <ZWJ>how$2</e>_stealth scanno, "h" for "b"
+s\how and arro\<estealth scanno>how<ZWJ> <ZWJ>and arrow</e>\stealth scanno, "how" for "bow"
+r_\b(hu)(ff|l[kl]|mp|sh)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+  \r_\bhush_bush_stealth scanno, "h" for "b"
+  \r_\bhump\B_bump_stealth scanno, "h" for "b"
+    \r_\bhump(ing|ed|er|y)_bump$1_stealth scanno
+r_\b(h)(u[bgm]s*)\b_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+r_\bhunch\B_<estealth scanno>hu<ZWJ>nch</e>_stealth scanno, "h" for "b"
+  \w\hunch\bunch\stealth scanno
+r_\b(hunk)(er|s)_<estealth scanno>$1<ZWJ>$2</e>_stealth scanno, "h" for "b"
+w\hy\<e>h<ZWJ>y</e>\scanno, "h" for "b"
+
+     HAD FOR BAD   
+r_\bhad\s+(leg|man|side|way)\b_<estealth scanno><ZWJ>had<ZWJ> $1</e>_had for bad
+r_\bhad\s+(mann|weath)er_<estealth scanno><ZWJ>had<ZWJ> $1er</e>_had for bad
+r_\b([aA]s|[vV]ery|[tT]oo|[aA]wfully|[eE]xtremely)\s+had\b_<estealth scanno>$1 <ZWJ>had<ZWJ></e>_had for bad
+
+r_\b([iI]ts|[tT]he|[hH]er)\s+how\b_<estealth scanno>$1 <ZWJ>how<ZWJ></e>_how for bow
+r_\b(port|starboard|weather|lee)\s+how\b_<estealth scanno>$1 <ZWJ>how<ZWJ></e>_how for bow
+
+----------------------------------------------------------------------------
+
+  he/be confusion, tests using multiple words or punctuation
+
+r_([:;"])\s+be\b_<estealth scanno>$1 <ZWJ>be</e>_be for he
+  \s\: be \: he \he/be confusion
+  \s\; be \; he \he/be confusion
+
+r_\b([aiAI][fs])\s+be\b_<estealth scanno>$1 <ZWJ>be</e>_be for he
+  \s\if be \if he \he/be confusion
+  \s\ is be \ is he \he/be confusion
+
+  "be" followed by the past tense of synonyms of "said"
+r_\bbe\s+(add|admitt|answer|ask|averr|believ|call|cri|declar|demand|exclaim|murmur|mutter|repli|shout)ed\b_<estealth scanno>be<ZWJ> $1ed</e>_be for he
+r_\bbe\s+([bh]i|sai|tol)d\b_<estealth scanno>be<ZWJ> $1d</e>_be for he
+r_\bbe\s+(swears|swore|spoke|speaks)\b_<estealth scanno>be<ZWJ> $1</e>_be for he
+
+  "be" followed by past tense of an regular verb
+r_\bbe\s+(look|seem|show|wa[in]t)ed\b_<estealth scanno>be<ZWJ> $1ed</e>_be for he
+
+r_\bbe\s+(ate|[bm]ade|began|came|[bh]id|broke|chose|drank|drove|fell|forbade|forgave|foresaw|froze|got|[gh]ave|[lw]ent|ran|ro[ds]e|[rs]ang|saw|shrank|sprang|swam|[tw]ore|trod|woke|wrote)\b_<estealth scanno>be<ZWJ> $1</e>_be for he
+  \s\ be began\ he began\be for he
+  \s\ be have\ he have\he/be confusion
+  \s\ be went\ he went\he/be confusion
+r_\bbe\s+([bfs]l|[dg]r|kn|str|thr|overthr|overdr|withdr)ew\b_<estealth scanno>be<ZWJ> $1ew</e>_be for he (before irr. past participle)
+r_\bbe\s+(be|over|mis|re|par|under|)took\b_<estealth scanno>be<ZWJ> $1took</e>_be for he (before irr. past participle)
+
+  "be" followed by verbs usually used in active voice
+r_\bbe\s+(felt|put|thought)\b_<estealth scanno>be<ZWJ> $1</e>_be for he
+
+  "be" followed by common present-tense third-person verb (ending in "s")
+r_\bbe\s+(feel|hold|know|put|seem|think|want)s\b_<estealth scanno>be<ZWJ> $1s</e>_be for he
+r_\bbe\s+(add|admit|answer|ask|aver|call|demand|exclaim|murmur|mutter|shout)s\b_<estealth scanno>be<ZWJ> $1s</e>_be for he
+r_\bbe\s+(believ|cri|declar|mak|repli)es\b_<estealth scanno>be<ZWJ> $1es</e>_be for he
+
+  "be" followed by "biblical" form of verb (e.g., "be abideth")
+r_\bbe\s+([a-z]{3,}eth)\b_<estealth scanno>be<ZWJ> $1</e>_be for he
+r_\bBe\s+([a-z]{3,}eth)\b_<estealth scanno>Be<ZWJ> $1</e>_Be for He
+
+  "be" followed by auxiliary verb
+r_\bbe\s+(be|being|can|cannot|[cw]ould|did|do|does|had|[hw]as|hath|is|may|might|must|ought|shall|were|will)\b_<estealth scanno>be<ZWJ> $1</e>_be for he
+  \s\ be can\ he can\be for he
+  \s\ be did\ he did\be for he
+  \s\ be is \ he is \he/be confusion
+  \s\ be could\ he could\he/be confusion
+  \r_\bbe\s+([hw]as)\b_he $1_he/be confusion
+    \s\ be has\ he has\he/be confusion
+    \s\ be was \ he was \he/be confusion
+  \s\ be might\ he might\he/be confusion
+  \s\ be will\ he will\he/be confusion
+r_\bbe\s+(ai|ca|[cw]ould|did|does|ha[ds]|is|may|might|ought|sha'*|was|were|wo)n't\b_<estealth scanno>be<ZWJ> $1n't</e>_be for he
+  \s\ be isn\ he isn\he/be confusion
+
+  "be" followed by adverb
+r_\bbe\s+(never|only)\b_<estealth scanno>be<ZWJ> $1</e>_be for he
+
+r_\bbe\s+(goes|know|lay|[lt]ook|ma[dk]e|sa[twy])_<estealth scanno>be<ZWJ> $1</e>_be for he
+  \s\ be does\ he does\he/be confusion
+  \s\ be goes\ he goes\he/be confusion
+  \r_\bb(e\s[lms]ay)_h$1_he/be confusion
+    \s\ be may\ he may\he/be confusion
+    \s\ be say\ he say\he/be confusion
+      etc.
+  \r_b(e\s[cw]ould)_h$1_he/be confusion
+    \s\ be would\ he would\he/be confusion
+  \s\ be made\ he made\he/be confusion
+  \s\ be make\ he make\he/be confusion
+
+
+r_\b([dD])(are|id|idn't|oes|oesn't)\s+be\b_<estealth scanno>$1<ZWJ>$2 be</e>_be for he
+r_\b([iI])(f|n|s|t)\s+be\b_<estealth scanno>$1<ZWJ>$2 be</e>_be for he
+r_\b([sS]a)(d|id|ith|[kv]e|w|y|ying|ys)\s+be\b_<estealth scanno>$1<ZWJ>$2 be</e>_be for he
+r_\b([twTW]h[ae][nt])\s+be\b_<estealth scanno>$1<ZWJ> be</e>_be for he
+r_\b([twTW]here])\s+be\b_<estealth scanno>$1<ZWJ> be</e>_be for he
+r_([uU]n)(less|til)\s+be\b_<estealth scanno>$1<ZWJ>$2 be</e>_be for he
+r_([wW]h)(atever|atsoever|ence|enever|ether|ich|ile)\s+be\b_<estealth scanno>$1<ZWJ>$2 be</e>_be for he
+r_([wW]here)(a[st]|by|in|o[fn]|soever|ver|upon)\s+be\b_<estealth scanno>$1<ZWJ>$2 be</e>_be for he
+
+r_(ca)(n|nnot|n't)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+r_([cw]oul)(d|dn't)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+r_\b([dD])(o|on't)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+r_\b([fF]ai)(n|r|rly|th)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+r_\b([hH]ardly)\s+he\b_<estealth scanno>$1<ZWJ> he</e>_he for be
+r_\b([hH]e)(art|aven|lp|r)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+r_\b([hH]e)\s+he\b_<estealth scanno>$1<ZWJ> he</e>_he for be
+r_\b([hH]i[ms])\s+he\b_<estealth scanno>$1<ZWJ> he</e>_he for be
+r_\b(h[ei][mr]|it|my|your)sel(f|ves)\s+he\b_<estealth scanno>$1<ZWJ>sel$2 he</e>_he for be
+r_\b\b(I|we)\s+he\b_<estealth scanno>$1<ZWJ> he</e>_he for be
+r_\b([lL]e)(t|t's)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+r_\b([tT])(he[my]|hou|o|will|would)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+  \s\ to he \ to be \he/be confusion
+r_\b([yY])(e|ou)\s+he\b_<estealth scanno>$1<ZWJ>$2 he</e>_he for be
+
+r_'(d|ll)\s+he\b_<estealth scanno>'$1<ZWJ> he</e>_he for be
+  r_([iI]t')(d|ll)\s+he\b_$1$2 be_he for be
+
+r_(need|ly)\s+he\b_<estealth scanno>$1<ZWJ> he</e>_he for be
+  \s\need he \need be \he for be
+  \s\ly he \ly be \he for be
+
+r_\bhe\s+(a|an|for|in|the|with)\b_<estealth scanno>he <ZWJ>$1</e>_he for be (before article or prep.)
+  \s\ he for \ be for \he/be confusion
+  \s\ he with \ be with \he/be confusion
+
+   "he" followed by the present participle of a verb
+r_\bhe\s+([a-z]{3,})ing\b_<estealth scanno>he <ZWJ>$1ing</e>_he for be (before a present participle)
+
+   "he" followed by an adjective
+r_\bhe\s+([a-z]{3,})([ae]nt|[aei]te|[ai]ble|ful|ic|ive|ical|ional|[ao]ic|ous|ty)\b_<estealth scanno>he<ZWJ> $1$2</e>_he for be (before an adj.)
+r_\bhe\s+(able|better|bold|brave|certain|easy|glad|good|happy|here|honest|just)\b_<estealth scanno>he<ZWJ> $1</e>_he for be (before an adj.)
+r_\bhe\s+(kind|late|like|more|much|off|o[fn]|quick|qui[et][et]|ready|strong|[ps]ure|[st]o|such|true|well|wise)\b_<estealth scanno>he <ZWJ>$1</e>_he for be (before an adj.)
+
+   "he" followed by a pronoun or possessive
+r_\bhe\s+(he|his|I|its{0,1}|mine|my|one|she|they|that|thine|thou|thy|you|yourself)\b_<estealth scanno>he<ZWJ> $1</e>_he for be (before a pronoun)
+r_\bhe\s+(he|ou|thei|you)(rs{0,1})\b_<estealth scanno>he<ZWJ> $1$2</e>_he for be (before a poss. pronoun)
+
+
+   "he" followed by the past participle of an irregular verb
+   (unlikely, except in a question)
+r_\bhe\s+(beat|behold|chos|eat|fall|forese|froz|ris|se|stol)en\b_<estealth scanno>he <ZWJ>$1en</e>_he for be (before irr. past participle)
+r_\bhe\s+(forbi|[bhr]i|stri|tro)dden\b_<estealth scanno>he <ZWJ>$1dden</e>_he for be (before irr. past participle)
+r_\bhe\s+(bi|forgo|go|smi|wri)tten\b_<estealth scanno>he <ZWJ>$1tten</e>_he for be (before irr. past participle)
+r_\bhe\s+(bro|drun|foresa|mista|overta|parta|sha|spo|stric|ta|underta|a{0,1}wo)ken\b_<estealth scanno>he <ZWJ>$1ken</e>_he for be (before irr. past participle)
+r_\bhe\s+(dri|forgi|gi|pro|sha|wo)ven\b_<estealth scanno>he <ZWJ>$1ven</e>_he for be (before irr. past participle)
+r_\bhe\s+(begun|borne{0,1}|[dg]one|drunk|s{0,1}lain|[rs]ung|shorn|sprung|swum|[tw]orn)\b_<estealth scanno>he <ZWJ>$1</e>_he for be (before irr. past participle)
+r_\bhe\s+([bf]lo|[dms]o|gro|kno|sh[eo]|stre|thro|overthro|dra|withdra|[hs]e)wn\b_<estealth scanno>he <ZWJ>$1wn</e>_he for be (before irr. past participle)
+
+r_\b([wW]ould\-)he\b_<estealth scanno>$1<ZWJ>he</e>_he for be
+
+ ------------------------------------
+
+   hut/but confusion, multi-word regex's
+
+  Trying to do better than this:
+    w\hut\but\stealth scanno
+
+w\Hut\<eBut>H<ZWJ>ut</e>\stealth scanno, Hut for But
+
+r_\b([aA]|[tT]he|grass|mud|reed|thatch|thatched)\s+b(uts{0,1})\b_<ehut>$1 <ZWJ>b$2</e>_"but" for "hut"
+  \s\ a but \ a hut \h/b confusion
+  \r_\b([tT]he\s)but\b_$1hut_"but" for "hut" after word "the"
+    \s\ the but \ the hut \"but" for "hut" after word "the"
+  \s\hatched but\hatched hut\but for hut
+
+r_\bbut([\.;:\?!\)])_<ehut>b<ZWJ>ut$1</e>_but for hut
+  \s\ but.\ hut.\h/b confusion
+    etc.
+    \s\ but,\ hut,\h/b confusion    (not used: too many false positives)
+
+r_([,;])\s+hut\b_<ebut>$1 h<ZWJ>ut</e>_hut for but
+  \s\, hut \, but \h/b confusion
+  \s\; hut \; but \h/b confusion
+
+r_\bhut\s+(a|an|the|no)\b_<ebut>hut<ZWJ> $1</e>_hut for but
+  \s\ hut a \ but a \h/b confusion
+  \s\ hut an \ but an \h/b confusion
+  \s\ hut the \ but the \h/b confusion
+
+-----------------------------
+
+   us/as confusion, multi-word regex's
+
+  Trying to do better than this:
+    w\us\as\stealth scanno
+    w\as\us\stealth scanno
+
+r_\b([aA][st]|[tT]o|[fF]or|[fF]rom|[wW]ith|[bB]y|[oO]f)\s+as\b_<eus>$1 <ZWJ>as</e>_stealth scanno, "as" for "us"
+r_\b([cC]lose|[dD]eep|[eE]arly|[fF]ar|[lL]ong|[hnHN]ot|[sS]hort|[sS]harp|[sS]weet|[wW]ide)\s+us\b_<eas>$1 <ZWJ>us</e>_stealth scanno, "us" for "as"
+
+-----------------------------
+
+    PUNCTUATION
+
+    Parentheses, etc.
+
+  s\}\)\brace for paren
+  s\{\(\brace for paren
+  s\}\]\brace for bracket
+  s\{\[\brace for bracket
+
+    Spacing around punctuation
+
+r_\s+(['"])\s*$_<eclose up space> <ZWJ>$1<ZWJ></e>_close up dangling apostrophe or quote at end of line
+
+r_^\s*(['"])\s+_<eclose up space><ZWJ>$1<ZWJ> </e>_close up dangling apostrophe or quote at beginning of line
+
+r_\b([mM])'\s+l(a|or|u)d_<eclose up space>$1<ZWJ>' l<ZWJ>$2d</e>_close up space
+
+  r_\.([a-dfh-z])_<eclose up space>.<ZWJ>$1</e>_leave a space after "."
+    \s\.a\. a\leave a space
+      etc.
+    \s\.e\. e\leave a space    [commented out--too many false positives!]
+    \s\.g\. g\leave a space  [commented out "e.g."]
+
+  r_\.([A-Z\(\[][a-zA-Z])_<e>.<ZWJ>$1</e>_leave a space after "."
+    \s\.Aa\. Aa\leave a space
+      etc.
+
+r_([,:\?!\)\]\}])([a-zA-Z\(\[])_<e>$1<ZWJ>$2</e>_leave a space after punctuation
+  \r_([,:;\?!\)\]\}])([a-zA-Z\(\[])_<e>$1<ZWJ>$2</e>_leave a space after punctuation
+
+r_([a-zA-Z][,\?!\)\]\}])(\d)_<e>$1<ZWJ>$2</e>_leave a space after punctuation before number
+  r_([a-zA-Z][,:;\?!\)\]\}])(\d)_<e>$1<ZWJ>$2</e>_leave a space after punctuation before number
+
+r_(\s+)([,:;\?!\)\]\}])_<eclose up space><ZWJ>$1<ZWJ>$2</e>_close up space before punctuation or closing parens
+  \s\ ,\,\close up space before comma
+  \s\ )\)\close up space
+    etc.
+
+r_([\(\{\[])(\s+)_<eclose up space>$1<ZWJ>$2<ZWJ></e>_close up space after opening parens
+  \s\( \(\close up space
+  \s\[ \[\close up space
+    etc.
+
+r_([,:;\?!\)\}\]\.])\s{2,}([a-zA-Z])_<eclose up space>$1<ZWJ> <ZWJ> <ZWJ>$2</e>_close up extra space after punctuation
+  \r_\.\s{2,}([a-zA-Z])_. $1_remove extra space after "."
+    \s\.  a\. a\remove extra space
+      etc.
+
+s\ " \<eclose up space> <ZWJ>"<ZWJ> </e>\close up space before quote
+  \s\ " \ "\close up space after quote
+
+r_("[a-z]+) "([a-z])_<e>$1<ZWJ> "<ZWJ>$2</e>_adjust spacing of quotation mark about word
+r_([a-z])" ([a-z]+")_<e>$1<ZWJ>" <ZWJ>$2</e>_adjust spacing of quotation mark about word
+
+s\ . \<e> <ZWJ>.<ZWJ> </e>\close up space before period
+
+r_('")([a-zA-Z])_<e>$1<ZWJ>$2</e>_Single- and double-quotes out of order
+r_([a-zA-Z,\.])("')_<e>$1<ZWJ>$2</e>_Single- and double-quotes out of order
+
+
+    Periods
+
+r_([a-z])\s+\. _<eclose up space>$1 <ZWJ>.<ZWJ> </e>_close up space before period
+  \s\a . \a. \close up space before period
+    etc.
+
+r_\b([vV][oO][lL]\.)([cdilmvxCDILMVX]+)\b_<e>$1<ZWJ>$2</e>_leave a space after "."
+
+r_([a-zA-Z]\.)(\d)_<e>$1<ZWJ>$2</e>_leave a space after "."
+  \s\p.1\p. 1\leave a space
+    etc.
+
+r_([a-df-hj-zA-Z])\.([a-z])_<e>$1<ZWJ>.<ZWJ>$2</e>_remove extra period
+r_([a-z])\.([A-Z])_<e>$1<ZWJ>.<ZWJ>$2</e>_remove extra period
+  \s\a.a\a a\remove extra period
+    etc.
+  \e.g\e g\remove extra period       e.g.
+  \i.e\i e\remove extra period-->NO! i.e.
+
+r_([a-z]\.)([a-dfh-z])_<e>$1<ZWJ>$2</e>_leave a space after "."
+  \s\.a\. a\leave a space
+    etc.
+  \.e\. e\leave a space    [commented out--too many false positives!]
+  \s\.g\. g\leave a space  [commented out "e.g."]
+
+r_\b([tT])(he[,\.])_<e>$1<ZWJ>$2</e>_remove comma or period after "the"
+
+
+    Apostrophes & Contractions
+
+s\`\<e{grave accent}></e>\grave accent for apostrophe
+
+s\ ' \<e> <ZWJ>'<ZWJ> </e>\close up space before apostrophe
+  \s\ ' \ '\close up space after apostrophe
+s\' ll\<e>' <ZWJ>ll</e>\close up space after apostrophe
+s\ 'll\<e> <ZWJ>'ll</e>\close up space before apostrophe
+
+\quote for apostrophe
+  \s\ "ll\'ll\quote for apostrophe & close up space
+s\"ll\<e>"<ZWJ>ll</e>\quote for apostrophe
+
+r_([a-z]I[`"])([dnrstv])_<e>$1<ZWJ>$2</e>_quote or accent for apostrophe
+r_([A-Z][`"])([DNRSTV])_<e>$1<ZWJ>$2</e>_quote or accent for apostrophe in u.c. text
+  \s\a"s\a's\quote for apostrophe
+    etc.
+  \s\n"t\n't\quote for apostrophe
+  \s\sha"n\sha'n\quote for apostrophe
+r_(\s*")([rv]e|d|ll)\b_<e>$1<ZWJ>$2</e>_quote for apostrophe
+  \s\"ve \'ve \quote for apostrophe
+  \s\"re \'re \quote for apostrophe
+  \s\ "ve \'ve \quote for apostrophe & close up space
+  \s\ "re \'re \quote for apostrophe & close up space
+r_\b(I")([dm])\b_<e>$1<ZWJ>$2</e>_quote for apostrophe
+r_\b(I\s+')([dm])\b_<e>$1<ZWJ>$2</e>_close up space
+r_\b(I'\s+)([dm])\b_<e>$1<ZWJ>$2</e>_close up space
+
+r_\b([doDO])(['"`]\s+)_<e>$1<ZWJ>$2<ZWJ></e>_close up space
+
+r_([`'"]\s*)([tT])\s+is_<e>$1<ZWJ>$2<ZWJ> is</e>_close up contraction, possible " or ` for '
+  \s\'T is\'Tis\close up space in contraction
+  \s\'t is\'tis\close up space
+  \s\"T is\'Tis\quote for apostrophe & close up space
+  \s\"t is\'tis\quote for apostrophe & close up space
+  \s\`T is\'Tis\accent for apostrophe & close up space
+  \s\`t is\'tis\accent for apostrophe & close up space
+  \s\' T is\'Tis\close up space in contraction
+    etc.
+
+r_([`'"]\s*[tT])\s+w(as|ere)_<e>$1<ZWJ>$2</e>_close up contraction, possible " or ` for '
+  r_[`'"]\s*([tT])\s+was_'$1was_close up contraction, possible " or ` for '
+    \s\"T was\'Twas\quote for apostrophe & close up space
+      etc.
+  r_[`'"]\s*([tT])\s+were_'$1were_close up contraction, possible " or ` for '
+    \s\'T were\'Twere\close up space
+      etc.
+
+r_([`'"]\s*[tT])(\s+ain)_<e>$1<ZWJ>$2</e>_close up contraction, possible " or ` for '
+  \s\'t ain\'tain\close up space
+    etc.
+
+r_(\s+[`'"]\s*)([rv]e|d)\b_<e>$1<ZWJ>$2</e>_close up space(s), possible " or ` for '
+r_(\s*[`'"]\s+)([rv]e|d)\b_<e>$1<ZWJ>$2</e>_close up space(s), possible " or ` for '
+  \s\ 've \'ve \close up space
+  \s\ 're \'re \close up space
+  \s\' ve \'ve \close up space
+    etc.
+
+r_([a-z]\s+)([`'"]\s*[dms])\b_<e>$1<ZWJ>$2</e>_close up space before "'m" or "'d" or "'s", possible " or ` for '
+r_([a-z]\s*)([`'"]\s+[dms])\b_<e>$1<ZWJ>$2</e>_close up space within "'m" or "'d" or "'s", possible " or ` for '
+  r_\bI [`'"]\s*([dms])\b_I'$1_close up space in "I'm" or "I'd" or "I's", possible " or ` for '
+  r_\bI\s*[`'"] ([dms])\b_I'$1_close up space in "I'm" or "I'd" or "I's", possible " or ` for '
+    \s\I 'm\I'm\close up space
+      etc.
+
+r_\b([hwyHWY]e|[iI]t|ou\s+[`'"])(\s*[ds]|ll)\b_<e>$1<ZWJ>$2</e>_close up space, possible " or ` for '
+r_\b([hwyHWY]e\s*[`'"])(\s+[ds]|ll)\b_<e>$1<ZWJ>$2</e>_close up space, possible " or ` for '
+  \s\he 's\he's\close up space
+  \s\He 's\He's\close up space
+    etc.
+  \s\he 'll\he'll\close up space
+    etc.
+  \s\it 's \it's \close up space
+  \s\it 'd \it'd \close up space
+    etc.
+
+r_(\s+n)(\s*'\s*t)\b_<e>$1<ZWJ>$2</e>_close up space(s) before (and possibly within) "n't"
+  \s\do n't\don't\close up space
+  \s\does n't\doesn't\close up space
+  \s\Do n't\Don't\close up space
+  \s\Does n't\Doesn't\close up space
+  \s\ n't\n't\close up space
+
+r_(\s*n\s+)('\s*t)\b_<e>$1<ZWJ>$2</e>_close up space(s) within (and possibly before) "n't"
+r_(\s*n\s*')(\s+t)\b_<e>$1<ZWJ>$2</e>_close up space(s) within (and possibly before) "n't"
+  s\n' t\n't\close up space
+  s\n 't\n't\close up space
+
+s_sha"n_<e>sha<ZWJ>"n</e>_quote for apostrophe in "sha'n't"
+
+r_([eoEO]\s*')(\s+e[nr])/b_<e>$1<ZWJ>$2</e>_close up space in contraction
+r_([eoEO]\s+')(\s*e[nr])/b_<e>$1<ZWJ>$2</e>_close up space in contraction
+
+
+    Commas
+
+r_([,:])([a-zA-Z])_<e>$1<ZWJ>$2</e>_leave a space
+  r_([,;:])([a-zA-Z])_<e>$1<ZWJ>$2</e>_leave a space
+  \s\,a\, a\leave a space
+    etc.
+
+r_(,)([a-zA-Z])_<e>$1<ZWJ>$2</e>_delete extra comma
+  \s\,a\ a\delete extra comma
+    etc.
+
+r_(,")([a-zA-Z])_<e>$1<ZWJ>$2</e>_leave a space after comma-quote
+  \s\,"a\," a\leave a space
+    etc.
+
+r_^(")([^\s])\s+"_<e>$1<ZWJ>$2 </e>_mis-spaced quote
+
+
+    Ellipsis
+
+r_([a-zI])(\.\.\.\s+)_<e>$1<ZWJ>$2</e>_leave space before ellipsis, possibly close up excess space after
+  \s\a... \a ... \leave a space before ellipsis
+    etc.
+
+s\ ....\<eclose up space> ..<ZWJ>..</e>\close up space
+
+r_([,\.\?!;])(\s+\.\.\.)_<eclose up space>$1<ZWJ>$2</e>_close up space between punct. & ellipsis
+  \s\, ...\,...\close up space
+    etc.
+
+r_(\.\.\.\s+)([\.\?!;])_<eclose up space>$1<ZWJ>$2</e>_close up space after ellipsis
+  \s\... .\....\close up space
+  \s\... ?\...?\close up space
+  \s\... !\...!\close up space
+
+r_(\.{4,4})(\.{1,})_<eellipsis too long>$1<ZWJ>$2</e>_ellipsis too long
+  \s\.....\....\ellipsis too long
+
+
+    Dashes and hyphens
+
+r_([a-zA-Z\s]-{4,4})(-{1,})_<edash too long>$1<ZWJ>$2</e>_long dash too long
+  \s\------\----\long dash too long
+  \s\-----\----\long dash too long
+
+r_([^-]-)(-{2}[^-])_<e3 hyphens>$1<ZWJ>$2</e>_change 3 hyphens to 2
+r_([^-]-)(-{2}\s*)$_<e3 hyphens>$1<ZWJ>$2</e>_change 3 hyphens to 2 at end of line
+r_^(-)(-{2}[^-])_<e3 hyphens>$1<ZWJ>$2</e>_change 3 hyphens to 2 at start of line
+  \r_^\*-{3}([^-])_$1--$2_change 3 hyphens to 2 at start of line
+
+r_\b([a-zA-HJ-Z]-)(-{1,2}[^-])_<elonger dash>$1<ZWJ>$2</e>_longer dash for "censored" word
+r_\b([a-zA-HJ-Z])(-{2,3}\s*)$_<elonger dash>$1<ZWJ>$2</e>_longer dash for "censored" word
+r_\b(I-)(-{2}[^-])_<elonger dash>$1<ZWJ>$2</e>_longer dash for "censored" word (I----)
+r_\b(I-)(-{3}\s*)$_<elonger dash>$1<ZWJ>$2</e>_longer dash for "censored" word (I----)
+  \s\A-- \A---- \longer dash
+    etc.
+
+  s\----\--\long dash too long
+r_(\s+)(--\s*)_<e>$1<ZWJ>$2</e>_close up space(s)
+  \s\ -- \--\close up spaces
+s\ - \<e> <ZWJ>-<ZWJ> </e>\close up spaces around hyphen
+s\-- .\<e>--<ZWJ> .</e>\close up space after dash
+s\-- ,\<e>--<ZWJ> ,</e>\close up space after dash
+
+
+    Abbreviations
+
+r_\b([BDFJMS][rR]|[chlpqwCFLMPSUV][tT])(,\s*)_<e>$1<ZWJ>$2,</e>_comma for period in abbreviation
+r_\b([BDFJMS][rR]|[chlpqwCFLMPSUV][tT])(,)$_<e>$1<ZWJ>$2</e>_comma for period in abbreviation
+  \s\Mr,\Mr.\comma for period
+  \s\Dr,\Dr.\comma for period
+    etc.
+  \s\St,\St.\comma for period
+    etc.
+
+r_\b([np],)(\s*\d)_<e>$1<ZWJ>$2</e>_comma for period in abbreviation
+
+r_\b([BDFJMS][rR]|[chlpqwCFLMPSUV][tT])(\s+)_<e>$1<ZWJ>$2</e>_missing period in abbreviation
+  \s\Mr \Mr. \missing period
+  \s\Dr \Dr.\missing period
+  \s\St \St.\missing period
+
+r_\b([BDFJMS][rR]|[chlpqwCFLMPSUV][tT])(\.[A-Z])+_<e>$1<ZWJ>$2</e>_space after abbreviation
+
+r_(Mrs|MRS|Prof|Inc|INC|incl|Capt|Cmdr|C[oO]|Col|Ens|[fF]ig|FIG|[eE]tc|ETC|Gen|Maj|Mlle|Mme|et\s+al)(,\s*)_<e>$1<ZWJ>$2</e>_comma for period, possibly mis-spaced
+  \r_(Mrs|MRS|Prof|Inc|INC|incl|Capt|Cmdr|C[oO]|Col|Ens|[fF}ig|FIG|[eE]tc|ETC|Gen|Maj|Mlle|Mme|et\s+al)(,)$_<e>$1<ZWJ>$2</e>_comma for period
+  \s\Mrs,\Mrs.\comma for period
+  \s\Prof,\Prof.\comma for period
+  \s\Fig,\Fig.\comma for period
+  \s\Inc,\Inc.\comma for period
+  \s\etc,\etc.\comma for period
+  \s\et al,\et al.\comma for period
+r_(Mrs|MRS|Prof|Inc|incl|INC|Capt|Cmdr|C[oO]|Col|Ens|[fF]ig|FIG|[eE]tc|ETC|Gen|Maj|Mlle|Mme|et\s+al)(\s+)_<e>$1<ZWJ>$2</e>_missing period
+  r_(Mrs|MRS|Prof|Inc|incl|INC|Capt|Cmdr|C[oO]|Col|Ens|[fF]ig|FIG|[eE]tc|ETC|Gen|Maj|Mlle|Mme|et\s+al)\s*$_$1. _missing period
+  s\Mrs \Mrs. \missing period
+  s\Prof \Prof. \missing period
+  s\etc \etc. \missing period
+r_(M[il])([il][ce],\s*)_<e>$1<ZWJ>$2</e>_comma for period in "Mlle." possibly misspelled or mis-spaced
+r_(M[il][il])([ce]\s+)_<e>$1<ZWJ>$2</e>_missing period in "Mlle." possibly misspelled or mis-spaced
+  s\Mlle,\Mlle.\comma for period
+  s\Mlle \Mlle.\missing period
+s\Mile.\<e>Mi<ZWJ>le.</e>\scanno
+s\Mlie.\<e>Ml<ZWJ>ie.</e>\scanno
+s\et. al.\<e>et.<ZWJ> al.</e>\extra period after "et"
+s\i. e.\<e>i. <ZWJ>e.</e>\close up space in i.e.
+s\e. g.\<e>e. <ZWJ>g.</e>\close up space in e.g.
+s\a. m.\<e>a. <ZWJ>m.</e>\close up space in a.m.
+s\p. m.\<e>p. <ZWJ>m.</e>\close up space in p.m.
+
+r_\b(No)(\s+\d)_<e>$1<ZWJ>$2</e>_period missing in abbrev. for "number"
+r_\b(No,)(\s+\d)_<e>$1<ZWJ>$2</e>_comma for period in abbrev. for "number"
+r_\b(No)(\s+[ivxlcdmIVXLCDM]+)\b_<e>$1<ZWJ>$2</e>_period missing in abbrev. for "number"
+r_\b(No,)(\s+[ivxlcdmVXLCDM][ivxlcdmIVXLCDM]*)\b_<e>$1<ZWJ>$2</e>_comma for period in abbrev. for "number"
+r_\b(No,)(\s+II)_<e>$1<ZWJ>$2</e>_comma for period in abbrev. for "number"
+
+r_(XV*I*)(L)\b_<e>$1<ZWJ>$2</e>_"L" for "I." in Roman numeral
+  \s\XVL\XVI.\"L" for "I." in Roman numeral
+  \s\XL\XI.\"L" for "I." in Roman numeral
+  \s\XIL\XII.\"L" for "I." in Roman numeral
+  \s\XIIL\XIII.\"L" for "I." in Roman numeral
+
+s\per cent \<e>per<ZWJ> cent <ZWJ></e>\missing period
+r_\b([pP]er\s+[cC]ent)(,)_<e>$1<ZWJ>$2</e>_comma for period
+  s\per cent,\per cent.\comma for period
+  s\Per cent,\Per cent.\comma for period
+  s\Per Cent,\Per Cent.\comma for period
+
+r_\b([aeipA-Z])(,\s*[egmA-Z]\.)_<e>$1<ZWJ>$2</e>_comma for period, possibly with space
+  \s\A,D.\A.D.\comma for period
+  \s\B,C.\B.C.\comma for period
+  \s\e,g.\e.g.\comma for period
+  \r_\bi,\s*e\._i.e._comma for period, possibly with space
+    \s\i,e.\i.e.\comma for period
+
+r_\b([eiA-Z]\.)(\s*[egA-Z],)_<e>$1<ZWJ>$2<ZWJ></e>_comma for period, possibly with space
+  \s\A.D,\A.D.\comma for period
+  \s\B.C,\B.C.\comma for period
+  \s\e.g,\e.g.\comma for period
+  \s\i.e,\i.e.\comma for period
+
+  BOOKS OF THE BIBLE
+r_\b(Co[lr]|Eccl|Eph|Gal|Matt|Phil|Rev|Rom|Thess|Tim)(,)_<e>$1<ZWJ>$2</e>_comma for period
+
+
+\Comma/period confusion, with short capitalized word as a tipoff:
+r_,\s+(A|A[dhmnstuwy]|[BHLMWY]e|[BMO]y|[DGHST]o)\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, At \. At \comma for period
+  \s\, Ah,\. Ah,\comma for period
+  \s\, Ah!\. Ah!\comma for period
+  \s\, As \. As \comma for period
+  \s\, An \. An \comma for period
+s\, All \<e>,<ZWJ> All </e>\comma for period
+s\, Also\<e>,<ZWJ> Also</e>\comma for period
+r_,\s+(An[dy])\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, And \. And \comma for period
+  \s\, Any\. Any\comma for period
+ \r_,\s+([BHMWY]e)\b_. $1_comma for period
+  \s\, Be \. Be \comma for period
+  \s\, He \. He \comma for period
+  \s\, He'\. He'\comma for period
+  \s\, We \. We \comma for period
+s\, But \<e>,<ZWJ> But </e>\comma for period
+\r_,\s+([BM]y)\b_. $1_comma for period
+  \s\, My \. My \comma for period
+  \s\, By \. By \comma for period
+s\, Did \<e>,<ZWJ> Did </sc>\comma for period
+\r_,\s+([DGHST]o)\b_. $1_comma for period
+  \s\, Do \. Do \comma for period
+  \s\, No,\. No,\comma for period
+  \s\, No \. No \comma for period
+  \s\, So \. So \comma for period
+  \s\, To \. To \comma for period
+s\, Every\<e>,<ZWJ> Every</e>\comma for period
+s\, For \<e>,<ZWJ> For </e>\comma for period
+r_,\s+([BCHLMNRSTVW]ow|I[fnst]|[BGLMNPSY]et|O[fhnorwx]|[STW]h[eoy])\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, How \. How \comma for period
+  \s\, Now \. Now \comma for period
+  \s\, Now,\. Now,\comma for period
+s\, Howev\<e>,<ZWJ> Howev</e>\comma for period
+s\, His\<e>,<ZWJ> His</e>\comma for period
+s\, Her \<e>,<ZWJ> Her </e>\comma for period
+\r_,\s+(I[fnst])\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, If \. If \comma for period
+  \s\, In \. In \comma for period
+  \s\, Is \. Is \comma for period
+  \s\, It \. It \comma for period
+\r_,\s+([BGLMNPSY]et)\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, Let \. Let \comma for period
+  \s\, Yet\. Yet\comma for period
+s\, Many\<e>,<ZWJ> Many</e>\comma for period
+\r_,\s+(O[fhnorwx])\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, On \. On \comma for period
+  \s\, Of\. Of\comma for period
+  \s\, Oh,\. Oh,\comma for period
+  \s\, Oh!\. Oh!\comma for period
+r_, O(ne|nly|ur|ver)\b_<e>,<ZWJ> O$1</e>_comma for period
+  \s\, Only\. Only\comma for period
+  \s\, Our\. Our\comma for period
+  \s\, Over \. Over \comma for period
+\r_,\s+([STW]h[eoy])\b_<e>,<ZWJ> $1</e>_comma for period
+  \s\, She \. She \comma for period
+  \s\, The \. The \comma for period
+  \s\, Tho \. Tho \comma for period
+  \s\, Tho'\. Tho'\comma for period
+  \s\, Thy \. Thy \comma for period
+  \s\, Why \. Why \comma for period
+  \s\, Who \. Who \comma for period
+s\, Some\<e>,<ZWJ> Some</e>\comma for period
+\r_,\s+([TW]hat)_<e>,<ZWJ> $1</e>_comma for period
+  \s\, That \. That \comma for period
+  \s\, What\. What\comma for period
+r_, Th(eir|is)_<e>,<ZWJ> Th$1</e>_comma for period
+  \s\, Their\. Their\comma for period
+  \s\, There\. There\comma for period
+  \s\, Then \. Then \comma for period
+  \s\, This \. This \comma for period
+  \s\, They\. They\comma for period
+s\, 'Tis\<e>,<ZWJ> 'Tis</e>\comma for period
+s\, Unti\<e>,<ZWJ> Unti</e>\comma for period
+s\, Up \<e>,<ZWJ> Up </e>\comma for period
+r_,\s+([TW]h)(at|e[nry])_<e>,<ZWJ> $1$2</e>_comma for period
+  \s\, When\. When\comma for period
+  \s\, Where\. Where\comma for period
+s\, With \<e>,<ZWJ> With </e>\comma for period
+s\, Yo\<e>,<ZWJ> Yo</e>\comma for period
+s\, Yes\<e>,<ZWJ> Yes</e>\comma for period
+
+  Similarly, with a " in the way:
+r_,"\s+(A[hmnstwy]{0,1})\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," At \." At \comma for period
+  \s\," As \." As \comma for period
+  \s\," An \." An \comma for period
+  \r_,"\s+(A)\b_." $1_comma for period
+  \s\," A \." A \comma for period
+r_,"\s+(An[dy])\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," And \." And \comma for period
+  \s\," Any\." Any\comma for period
+r_,"\s+([BHMWY]e)\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," He \." He \comma for period
+  \s\," He'\." He'\comma for period
+  \s\," We \." We \comma for period
+r_,"\s+([BM]y)\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," By \." By \comma for period
+  \s\," My \." My \comma for period
+r_,"\s+([DGHNSTY]o)\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," Do \." Do \comma for period
+  \s\," No,\." No,\comma for period
+  \s\," No \." No \comma for period
+  \s\," So \." So \comma for period
+  \s\," To \." To \comma for period
+r_,"\s+([BCHLMNRSTVW]ow)\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," How \." How \comma for period
+  \s\," Now \." Now \comma for period
+  \s\," Now,\." Now,\comma for period
+r_,"\s+([BGLMNPSY]et)\b_<e>,<ZWJ>" $1</e>_comma for period
+r_,"\s+(I[fnst])\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," If \." If \comma for period
+  \s\," In \." In \comma for period
+  \s\," Is \." Is \comma for period
+  \s\," It \." It \comma for period
+r_,"\s+(O[fhnoruwxy])\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," On \." On \comma for period
+  \s\," Of \." Of \comma for period
+r_,"\s+([STW]h[eoy])\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," She \." She \comma for period
+  \s\," The \." The \comma for period
+  \s\," Why \." Why \comma for period
+  \s\," Who \." Who \comma for period
+r_,"\s+([TW]h)(at|e[inry]|i[ns])_<e>,<ZWJ>" $1$2</e>_comma for period
+  \s\," That \." That \comma for period
+  \s\," There\." There\comma for period
+  \s\," Then \." Then \comma for period
+  \s\," This \." This \comma for period
+  \s\," They\." They\comma for period
+  \s\," What\." What\comma for period
+  \s\," When\." When\comma for period
+  \s\," Where\." Where\comma for period
+
+r_,"\s+(All|Also|But|For|His|Her|Many|Over|One|Only|Some|Until|With|Yes|You|Your)\b_<e>,<ZWJ>" $1</e>_comma for period
+  \s\," All \." All \comma for period
+  \s\," Also\." Also\comma for period
+  \s\," But \." But \comma for period
+  \s\," For \." For \comma for period
+  \s\," His\." His\comma for period
+  \s\," Her \." Her \comma for period
+  \s\," Many\." Many\comma for period
+  \s\," Over \." Over \comma for period
+  \s\," One \." One \comma for period
+  \s\," Only\." Only\comma for period
+  \s\," Some\." Some\comma for period
+  \s\," Until\." Until\comma for period
+  \s\," With \." With \comma for period
+  \s\," Yes\." Yes\comma for period
+  \s\," Yo\." Yo\comma for period
+
+r_([AEO]h);_<e>$1<ZWJ>;</e>_semicolon for comma
+  \s\Ah;\Ah,\semicolon for comma
+  \s\Oh;\Oh,\semicolon for comma
+
+r_\b([vV]iz\.);_<e>$1<ZWJ>;</e>_semicolon for colon
+
+
+    NUMBERS
+
+r_(ary|ber)(\s*,\d)_<e>$1<ZWJ>$2</e>_leave a space after comma
+r_(\d\s*,)(\d{4,4})_<e>$1<ZWJ>$2</e>_leave a space after comma
+
+    ZERO/OH and ONE/I/EL CONFUSION
+w\0\<e>0<ZWJ></e>\zero for letter "O"
+  \s\ 0,\ O,\zero for "O"
+r_([A-Z])([01l])_<e>$1<ZWJ>$2</e>_zero for letter "O"
+r_([01])([a-su-zA-CE-Z])_<e>$1<ZWJ>$2</e>_zero for letter "O"
+r_([a-zA-Z])(I[a-z])_<e>$1<ZWJ>$2</e>_I for el
+  \r_\b0([fhlnrFHLNR])\b_O$1_zero for letter "O"
+    \w\0h\Oh\zero for letter "O"
+    \w\0F\OF\zero for letter "O"
+    \w\0N\ON\zero for letter "O"
+  \s\0a\Oa\zero for "O"
+    etc.
+  \s\0t\Ot\zero for "O"       [commented out--too many false positives!]
+
+r_(\d)([oOiIl])_<e>$1<ZWJ>$2</e>_"O" or "o" for zero
+r_([oOiLl])([\d%°¢])_<e>$1<ZWJ>$2</e>_"O" or "o" for zero
+  \s\1O\10\"O" for zero
+    etc.
+  \s\o%\0%\"o" for zero
+  \s\O%\0%\"O" for zero
+  \s\O°\0°\"O" for zero
+  \s\o°\0°\"o" for zero
+
+   ONE/I CONFUSION
+\Numbers, els, ohs, etc.
+r_\b(1l)\b_<e>$1<ZWJ></e>I_one for "I"
+  w\1\<e>1<ZWJ></e>\zero for letter "O"
+  \s\ 1 \ I \one for "I"
+
+    EL/I CONFUSION (for GutCutter, these have been included above)
+  \r_l([A-Z])_I$1_"el" for "I"
+  \r_([A-Z])l_$1I_"el" for "I" (too many false positives)
+  \r_\bl\b_I_"el" for "I"
+  \s\ l \ I \"el" for "I"
+  \r_([a-zA-Z])(I[a-z])_<e>$1<ZWJ>$2</e>_I for el
+
+    ONE/EL CONFUSION
+r_(\s*'1)([1l])_<e>$1<ZWJ>$2</e>_one(s) for el(s)
+  \s\'11\'ll\ones for els
+  \s\'1l\'ll\one for el
+s\'l1\<e>'l<ZWJ>1</e>\one for el
+r_([a-zA-Z])(11)_<e>$1<ZWJ>$2</e>_ones for els
+  \w\I11\Ill\stealth scanno
+r_\b([lI])([oO0]th)_<e>$1<ZWJ>$2</e>_scanno or stealth scanno
+r_(\d[lI])([oO0]th)_<e>$1<ZWJ>$2</e>_scanno or stealth scanno
+w\lst\<e>l<ZWJ>st</e>\scanno (el for one)
+w\111\<e>1<ZWJ>11</e>\stealth scanno
+r_([\d\$£#])([lI|])_<e>$1<ZWJ>$2</e>_"el" or "I" or pipe for one
+r_([lI\|])([\d%°¢])_<e>$1<ZWJ>$2</e>_"el" or "I" or pipe for one
+  \s\l0\10\"el" for one
+    etc.
+  \s\l%\1%\"el" for one
+  \s\l°\1°\"el" for one
+  \s\$l\$1\"el" for one
+  \s\£l\£1\"el" for one
+r_([lI\|])(,\d])_<e>$1<ZWJ>$2</e>_"el" or "I" or pipe for one
+r_\b([l\|])(\.)_<e>$1<ZWJ>$2</e>_"el" or pipe for one
+r_\b(l)(lth)\b_<e>$1<ZWJ>$2</e>_"els" for ones
+r_\b(1)(lth)\b_<e>$1<ZWJ>$2</e>_"el" for one
+r_\b(l)(1th)\b_<e>$1<ZWJ>$2</e>_"el" for one
+
+r_([\[\(\{])(l[\]\)\}])_<e>$1<ZWJ>$2</e>_"el" for one
+  \s\(l)\(1)\"el" for one
+  \s\[l]\[1]\"el" for one
+  \s\{l}\{1}\"el" for one
+r=([\[\(\{]_)(l_[\]\)\}])=<e>$1<ZWJ>$2</e>="el" for one
+  \s\(_l_)\(_1_)\"el" for one
+  \s\[_l_]\[_1_]\"el" for one
+
+
+    SEPARATED WORDS
+r_\b([bB]e)\s+(ached|aching|cause|devil|fall|fore|foul|gin|gone|guile|half|have|head|hind|hold|lay|long|moan|muse|rate|stir|tray|troth|ware|witch|yond)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space
+r_\b([eE]nd)\s+(ear|orse|owe|owing)_<e>$1<ZWJ> <ZWJ>$2</e>_re-join separated compound words (stealth scanno)
+r_\b([eE]very|[nN]o)\s+(thing|body|where)_<e>$1<ZWJ> <ZWJ>$2</e>_re-join separated compound words (stealth scanno)
+r_\b([iI]n)\s+(born|bred|cite|come|coming|credible|effective|famous|fancy|firm|fra|fuse|tact|to|vent)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space
+r_\b([iI]n)\s+d(ebt|eed|ices|oor|uct)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space
+r_\b([iI]n)\s+s(ane|anity|eparab|ide|ubordinat|ure)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space
+r_\b([iI]s)\s+(land|let)_<e>$1<ZWJ> <ZWJ>$2</e>_remove space
+
+
+    SYMBOLS
+
+  Confusion between degree symbol and masculine-ordinal symbol
+r_(\d)(º\s*[cfkrCFKR]\.*)_<e>$1<ZWJ>$2</e>_replace masculine-ordinal symbol by degree symbol
+  \r_(\d)º\s*([cC]entigrade|[cC]elsius|[fF]ahren|[kK]elvin|[rR]ankine)_$1° $2_replace masculine-ordinal symbol by degree symbol
+
+
+    Special for Copyright Renewals!
+
+  s\®\©\"registered" for "copyright"
+  s\@\©\"at" for "copyright"
+s\ c \ <e>c<ZWJ></e> \"c" for "copyright"
+s\ o \ <e>o<ZWJ></e> \"o" for "copyright"
+s\0ct\<e>0<ZWJ>ct</e>\zero for "oh"
+s\Ju1\<e>Ju<ZWJ>1</e>\one for "el"
+
+
+    AE & ae ligatures
+
+s\ntipodaean\<eligature>ntipoda<ZWJ>ean</e>\ae ligature
+  archaeology, etc.
+s\RCHAEO\<eligature>RCHA<ZWJ>EO</e>\AE ligature
+s\rchaeo\<eligature>rcha<ZWJ>eo</e>\ae ligature
+  caesar, caesarean, Caesar, Caesarea, etc.:
+s\CAESAR\<eligature>CA<ZWJ>ESAR</e>\AE ligature
+r_ae(sar|ter)_<eligature>a<ZWJ>e$1</e>_ae ligature
+  \s\aesar\æsar\ae ligature
+    aeternam, caetera, etc.:
+  \s\aeter\æter\ae ligature
+s\yclopaed\<eligature>yclopa<ZWJ>ed</e>\ae ligature
+s\ediaeval\<eligature>edia<ZWJ>eval</e>\ae ligature
+r_([cC]uri|ebul|erson|ingu|inuti|[nN]atur|ntenn|ormul)ae_<eligature>$1a<ZWJ>e</e>_ae ligature
+  \r_([cC]uri)ae_$1æ_ae ligature
+    \w\curiae\curiæ\ae ligature
+    \w\Curiae\Curiæ\ae ligature
+  \s\ebulae\ebulæ\ae ligature
+  \s\ersonae\ersonæ\ae ligature
+  \s\inutiae\inutiæ\ae ligature
+  \s\naturae\naturæ\ae ligature
+  \s\ntennae\ntennæ\ae ligature
+  \s\inguae\inguæ\ae ligature
+  \s\ormulae\ormulæ\ae ligature
+s\Glebae\<eligature>Gleba<ZWJ>e</e>\ae ligature
+s\himaer\<eligature>hima<ZWJ>er</e>\ae ligature
+s\himærae\<eligature>himæra<ZWJ>e</e>\ae ligature
+r_\b([hH]y)aena_<eligature></e>_ae ligature
+s\raetor\<eligature>ra<ZWJ>etor</e>\ae ligature
+s\raeter\<eligature>ra<ZWJ>eter</e>\ae ligature
+\
+  Words that often have ligatures:
+r_\bA([eE])(gean|GEAN|neid|NEID|neas|NEAS|on|ON|ol|OL|schyl|SCHYL|scula|SCULA|sop|SOP|ter|TER)_<eligature>A<ZWJ>$1$2</e>_AE ligature
+  w\AEgean\Ægean\AE ligature
+  w\Aegean\Ægean\AE ligature
+  r_\bA[eE](ne[ai][ds])_Æ$1_AE ligature
+    \w\AEneid\Æneid\AE ligature
+    \w\Aeneid\Æneid\AE ligature
+    \w\AEneas\Æneas\AE ligature
+    \w\Aeneas\Æneas\AE ligature
+  w\AENEAS\ÆNEAS\AE ligature
+  r_\bA[eE]([oO][nN])_Æ$1_AE ligature
+  r_\bA[eE]([oO][lL])_Æ$1_AE ligature
+    w\Aeolian\Æolian\AE ligature
+    w\AEolian\Æolian\AE ligature
+  r_\bA[eE](schyl|SCHYL)_Æ$1_AE ligature
+    \w\AEschylean\Æschylean\AE ligature
+    \w\Aeschylean\Æschylean\AE ligature
+    \w\AEschylus\Æschylus\AE ligature
+    \w\Aeschylus\Æschylus\AE ligature
+    \w\AESCHYLUS\ÆSCHYLUS\AE ligature
+  r_\bA[eE](scula|SCULA)_Æ$1_AE ligature
+    \w\AEsculapian\Æsculapian\AE ligature
+    \w\Aesculapian\Æsculapian\AE ligature
+    \w\AEsculapius\Æsculapius\AE ligature
+    \w\Aesculapius\Æsculapius\AE ligature
+    \w\AESCULAPIUS\ÆSCULAPIUS\AE ligature
+  r_\bA[eE](sop|SOP)_Æ$1_AE ligature
+    w\AEsop\Æsop\AE ligature
+    w\Aesop\Æsop\AE ligature
+    w\AESOP\ÆSOP\AE ligature
+    w\AEsopian\Æsopian\AE ligature
+    w\Aesopian\Æsopian\AE ligature
+r_\bae(o[nl])_<eligature>a<ZWJ>e$1</e>_ae ligature
+  \w\aeon\æon\ae ligature
+  \w\aeonian\æonian\ae ligature
+  \w\aeons\æons\ae ligature
+  \w\aeolian\æolian\ae ligature
+r_ae(sthe[st]|stiv|ther)_<eligature>a<ZWJ>e$1</e>_ae ligature
+  \s\aesthes\æsthes\ae ligature
+  \s\aesthet\æsthet\ae ligature
+  \r_\baestiv_æstiv_ae ligature
+    \w\aestival\æstival\ae ligature
+  r_\baether_æther_ae ligature
+r_\bA([eE])(sthe[st]|STHE[ST]|ther|THER)_<eligature>A<ZWJ>$1$2</e>_AE ligature
+  \s\Aesthet\Æsthet\AE ligature
+  \s\AESTHET\ÆSTHET\AE ligature
+  \r_\bA[eE]ther_Æther_AE ligature
+r_\b([aA]n)aemi_<eligature>$1a<ZWJ>emi</e>_ae ligature
+  w\anaemic\anæmic\ae ligature
+  w\anaemia\anæmia\ae ligature
+r_\b([aA]then|[aA]mphor)ae_<eligature>$1a<ZWJ>e</e>_ae ligature
+  \w\amphorae\amphoræ\ae ligature
+  \w\Amphorae\Amphoræ\ae ligature
+r_\b(ATHE|PERSO)NAE_<eligature>$1A<ZWJ>E</e>_AE ligature
+  \s\PERSONAE\PERSONÆ\AE ligature
+r_\b([eE]cclesi)ae_<eligature>$1a<ZWJ>e</e>_ae ligature
+r_([hH]y)aena_<eligature>$1a<ZWJ>ena</e>_ae ligature
+r_\bSphaero_<eligature>Spha<ZWJ>ero</e>_ae ligature
+r_\bTaeni_<eligature>Ta<ZWJ>eni</e>_ae ligature
+r_\b([tT]enebr)ae_<eligature>$1a<ZWJ>e</e>_ae ligature
+
+   OE Ligatures
+r_poeia\b_<eligature>po<ZWJ>eia</e>_oe ligature
+r_rhoea\b_<eligature>rho<ZWJ>ea</e>_oe ligature
+
+
+   CLOSE UP SPACE BETWEEN INITIALS
+r_\b([A-Z]\.)(\s+[A-Z])\._<e>$1<ZWJ>$2.</e>_close up space between initials
+
+   MIDDLE DOT IN TIME OF DAY
+r_(\d{1,2})'(\d{1,2})_$1'<ZWJ>$2_Middle dot in time of day
+
+\These include southeast, south-eastern, etc.
+r_(o[ru]th)(ea|we)st_<ehyphen>$1<ZWJ>$2st</e>_add hyphen
+  \s\thwest\th-west\hyphen
+  \s\theast\th-east\hyphen
+\Includes housekeeper, housekeeping, etc.
+r_\b([hH]ouse)(keep|work)_<ehyphen>$1<ZWJ>$2</e>_hyphen
+  \s\ousekeep\ouse-keep\hyphen
+  \s\ousework\ouse-work\hyphen
+r_ee(lect|nter|ntr)_<ehyphen>e<ZWJ>e$1</e>_add hyphen
+  \s\eelect\e-elect\hyphen
+  \s\eenter\e-enter\hyphen
+  \s\eentr\e-entr\hyphen
+s\einstate\<ehyphen>e<ZWJ>instate</e>\hyphen
+s\imonthly\<ehyphen>i<ZWJ>monthly</e>\hyphen
+r_ood(by|night)_<ehyphen>ood<ZWJ>$1</e>_add hyphen
+  \s\oodby\ood-by\hyphen
+  \s\oodnight\ood-night\hyphen
+
+    Unusual but correct spelling (used in Punch)
+  s\Shakespe\Shakspe\alternate spelling
+  s\SHAKESPE\SHAKSPE\alternate spelling
+
+   Four dashes for missing name
+r_(Dr|Fr|Mr|Mrs|Miss|Mlle|Mme|Prof|M|Mons|Sr)(\.)(-{4,})_<espace>$1$2<ZWJ>$3</e>_insert missing space (possibly too many hyphens)
+  \s\Mr.----\Mr. ----\insert missing space
+  \s\Mrs.----\Mrs. ----\insert missing space
+  \s\Miss----\Miss ----\insert missing space
+  \s\Mlle.----\Mlle. ----\insert missing space
+r_(Sir|Lord|Baron|Count|Countess|Prince|Princess|King|Queen)(\-{4,})_<espace>$1<ZWJ>$2</e>_insert missing space (possibly too many hyphens)
+  \s\Sir----\Sir ----\insert missing space
+  \s\Lord----\Lord ----\insert missing space
+ r_\b([A-Z])\-{2,3}([^\-])_$1----$2_four hyphens for missing rest of name
+r_\b([A-Z])\-\-\-\-(\-{1,})_<e>$1--<ZWJ>--$2</e>_four hyphens for missing rest of name
+
+    INDENTS FOR POETRY, ETC.
+  r_^\s{1,1}([^\s])_  $1_Change a single-space indent into a double
+  r_^\s{1,1}([^\s])_$1_Remove a single-space indent
+  r_^\s{3,3}([^\s])_  $1_Change a three-space indent into two
+  r_^\s{3,3}([^\s])_    $1_Change a three-space indent into four
+  r_^\s{5,5}([^\s])_    $1_Change a five-space indent into four
+  r_^\s{5,5}([^\s])_      $1_Change a five-space indent into six
+  r_^\s{7,7}([^\*\s])_      $1_Change a seven-space indent into six
+  r_^\s{7,7}([^\*\s])_        $1_Change a seven-space indent into eight
+  r_^\s{9,9}([^\s])_        $1_Change a nine-space indent into eight
+  r_^\s{9,9}([^\s])_          $1_Change a nine-space indent into ten
+  r_^\s{11,}_          _Reduce a too-long indent into ten spaces
+
+\Three hyphens for dash
+r_([a-zA-Z>\)\.,])---([\(<a-zA-Z])_<edash>$1--<ZWJ>-$2</e>_three hyphens for dash
+r_([^-])---([^-])_<edash>$1--<ZWJ>-$2</e>_three hyphens for dash
+\dash for hyphen
+r_\b([tT]o)--(day|morrow|night)_<ehyphen>$1-<ZWJ>-$2</e>_dash for hyphen
+  \s\to--night\to-night\dash for hyphen
+  \s\to--day\to-day\dash for hyphen
+  \s\to--morrow\to-morrow\dash for hyphen
+r_\b([hH]alf|[dfDF]ull|[aiAI]ll|[aoAO]x|[bB]y|[cC]lose|[cC]ross|[eoEO]ver|[fF]ai{0,1}r|[hH]igh|[lL]ong|[wW]ell|[nsNS]o|[sS]elf|[sS]ingle|[tT]wice|[gG]reat|[aoAO]ft)--([a-zA-Z])_<e>$1-<ZWJ>-$2</e>_dash for hyphen
+  \s\half--\half-\dash for hyphen
+  \s\full--\full-\dash for hyphen
+r_\b([aA]|[nN]eo|[nN]on|[rR]e|[pP]re|[dhsDHS]emi|[eE]x|[uU]ltra)--([a-zA-Z])_<ehyphen>$1-<ZWJ>-$2</e>_dash for hyphen
+  \s\ re--\ re-\dash for hyphen
+r_\b([dD]ou|[tT]re)ble--([a-zA-Z])_<ehyphen>$1ble-<ZWJ>-$2_</e>dash for hyphen
+r_\B(ly)--([a-zA-Z])_<ehyphen>$1-<ZWJ>-$2</e>_dash for hyphen
+r_([a-z])--(ward|like|side|white|red|blue|green|black|yellow|brown|shop|store|factory)_<ehyphen>$1-<ZWJ>-$2</e>_dash for hyphen
+r_([a-z])-(a|as|for|if|that|the|who)\b_<edash>$1-<ZWJ>$2</e>_hyphen for dash
+  \r_([a-z])-(a|as|at|by|for|if|in|the|who)\b_$1--$2_hyphen for dash  TOO MANY FALSE POSITIVES!
+r_--(eye|centur)_<ehyphen>-<ZWJ>-$1</e>_dash for hyphen
+  \s\--eye\<ehyphen>-<ZWJ>-eye</e>\dash for hyphen
+  \s\--centur\<ehyphen>-<ZWJ>-centur</e>\dash for hyphen
+
+r_([vw]en|[io][rx]|if|ine)ty--(one|two|three|four|five|six|seven|eight|nine)_<ehyphen>$1ty-<ZWJ>-$2</e>_dash for hyphen in number
+ \s\wenty--one\wenty-one\dash for hyphen
+    etc.
+  \s\rty--one\rty-one\dash for hyphen
+    etc.
+
+  Words that used to take hyphens:
+r_\b([tT]o|[mM]id)(day|morrow|night)_<ehyphen>$1<ZWJ>$2</e>_hyphen
+  \w\today\to-day\hyphen
+  \w\Today\To-day\hyphen
+  \s\omorrow\o-morrow\hyphen
+  \w\tonight\to-night\hyphen
+  \w\Tonight\To-night\hyphen
+  \w\midday\mid-day\hyphen
+r_\b([dD]own|[uU]p)(stairs{0,1})\b_<ehyphen>$1<ZWJ>$2</e>_hyphen
+  \s\ownstairs\own-stairs\hyphen
+  \w\upstairs\up-stairs\hyphen
+
+  Words that sometimes take hyphens:
+r_\b([bB]all)(rooms{0,1})\b_<ehyphen>$1<ZWJ>$2</e>_hyphen
+  \w\ballroom\ball-room\hyphen
+w\bittersweet\<ehyphen>bitter<ZWJ>sweet</e>\hyphen
+w\carefree\<ehyphen>care<ZWJ>free</e>\hyphen
+w\cheekbone\<ehyphen>cheek<ZWJ>bone</e>\hyphen
+s\ommonplace\<ehyphen>ommon<ZWJ>place</e>\hyphen
+w\coop\<ehyphen>co<ZWJ>op</e>\hyphen
+w\coops\<ehyphen>co<ZWJ>ops</e>\hyphen
+s\ountryside\<ehyphen>ountry<ZWJ>side</e>\hyphen
+w\daredevil\<ehyphen>dare<ZWJ>devil</e>\hyphen
+s\yewitness\<ehyphen>ye<ZWJ>witness</e>\hyphen
+w\fireplace\<ehyphen>fire<ZWJ>place</e>\hyphen
+w\foxtrot\<ehyphen>fox<ZWJ>trot</e>\hyphen
+w\grownup\<ehyphen>grown<ZWJ>up</e>\hyphen
+w\halfway\<ehyphen>half<ZWJ>way</e>\hyphen
+r_\b([hH]ead)(masters{0,1}|quarters{0,1})\b_<ehyphen>$1<ZWJ>$2</e>_hyphen
+  \s\eadmaster\ead-master\hyphen
+  \s\eadquarters\ead-quarters\hyphen
+w\hillside\<ehyphen>hill<ZWJ>side</e>\hyphen
+w\hothouse\<ehyphen>hot<ZWJ>house</e>\hyphen
+w\keyhole\<ehyphen>key<ZWJ>hole</e>\hyphen
+w\latecomer\<ehyphen>late<ZWJ>comer</e>\hyphen
+w\marketplace\<ehyphen>market<ZWJ>place</e>\hyphen
+r_\b([nN]ew)(borne{0,1}s{0,1}|comers{0,1})\b_<ehyphen>$1<ZWJ>$2</e>_hyphen
+  \w\newcomer\new<ZWJ>comer\hyphen
+w\nightgown\<ehyphen>night<ZWJ>gown</e>\hyphen
+r_\b([oO]ut)door_<ehyphen>$1<ZWJ>door</e>_hyphen
+  \w\outdoor\out-door\hyphen
+  \w\outdoors\out-doors\hyphen
+w\overhand\<ehyphen>over<ZWJ>hand</e>\hyphen
+w\sawbones\<ehyphen>saw<ZWJ>bones</e>\hyphen
+w\skyline\<ehyphen>sky<ZWJ>line</e>\hyphen
+w\tockholder\<ehyphen>tock<ZWJ>holder</e>\hyphen
+s\traightforward\<ehyphen>traight<ZWJ>forward</e>\hyphen
+w\twopenny\<ehyphen>two<ZWJ>penny</e>\hyphen
+w\weekend\<ehyphen>week<ZWJ>end</e>\hyphen
+w\wildflower\<ehyphen>wild<ZWJ>flower</e>\hyphen
+
+   ACCENTED WORDS
+
+r_\b([aA]bb)[eèê]s{0,1}\b_<eaccent>$1<ZWJ>e</e>_acute accent on "e"
+r_\b([aA][bg]r)([eèêë]g)([eèêë])_$1<ZWJ>$2<ZWJ>$3_acute accents on "e"s
+r_\b([aâá])(\s+Becket)_<eaccent>$1<ZWJ>$2</e>_grave accent on "a"
+r_\b([aA]e)(ro[bdnp]|rial)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "e"
+  \w\aeroplane\aëroplane\diaeresis on "e"
+  \w\aerial\aërial\diaeresis on "e"
+r_([aA]ga)([cg]ant)_<eaccent>$1<ZWJ>$2</e>_cedilla on "c"
+r_([aA]gr)([eèêë]men)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b(A[iî])(da)\b_<eaccent>$1<ZWJ>$2</e>_diaeresis on "i"
+r_\b([aâá])(\s+la)\b_<eaccent>$1<ZWJ>$2</e>_accent grave in "à la"
+r_\b([aâá])(\s+l')_<eaccent>$1<ZWJ>$2</e>_accent grave in "à l'"
+r_([aA][l1I]c)(azar)_<eaccent>$1<ZWJ>$2</e>_acute accent on "a"
+r_([aA]ll)([eèêë][eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([aA]ng)([eèêë][lI1]ique)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([aA]per)([cg]u)_<eaccent>$1<ZWJ>$2</e>_cedilla on "c"
+r_([aA]pp)([eèêë]tit)\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([aA]ppliqu)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([aA]pr)([eéêë]s)\b_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_\b([aâá])(\s+propos)\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "a"
+r_\b(ar{1,2})(et)_<eaccent>$1<ZWJ>$2</e>_circumflex on "e"
+r_([aA]ttach)([eèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([aA]usl)(ander)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([bB][eèêë])(arnaise|casse|nitier|ret|ton)_<eaccent>$1<ZWJ>$2</e>_accute accent on "e"
+r_\b([bB]las)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([bB][eéèë])(ch|tis)e_<eaccent>$1<ZWJ>$2</e>e_circumflex on "e"
+r_([bB]ient)([o6]t)_<eaccent>$1<ZWJ>$2</e>_circumflex on "o"
+r_(Boh[eéêë])(me)_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([bB]o)([iï]te)_<eaccent>$1<ZWJ>$2</e>_circumflex on "i"
+r_(B[oôö])([oô]tes)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "o"
+r_([bBtT]ou)(c[lI1]|rr)([eèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+r_([bBtT]ou)(ch[eèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+s\ric-a-brac\<eaccent>ric-a<ZWJ>-brac</e>\grave accent
+r_\b([bB]r)(is|och)([eèêë])_<eaccent>$1$2<ZWJ>$3</e>_acute accent on "e"
+r_([bB]ru)(ck|nnhild)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+
+r_\bca\b_<eaccent>c<ZWJ>a</e>_cedilla on "c"
+r_\b([cC]a)(br|f|nap)([eèëê])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+  \r_([cC]anap)e_$1é_acute accent on "e"
+r_\b([cC][eèëê])([lI1][eéêë]bre)_<eaccent>$1<ZWJ>$2</e>_accents on "e"s
+r_\b([cC][eèëê])(rise)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"s
+r_\b([cC]ha)(mbr|mplev|ss)([eèëê])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+r_\b([cC]har\-a)(\-banc)_<eaccent>$1<ZWJ>$2</e>_grave accent on "a"
+r_([cC]h|[gG])([aàá]teau)_$<eaccent>$1<ZWJ>$2</e>_circumflex on "a"
+r_\b([cC]i[nr])(e)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([cC]l[ei]ch)([eèëê])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([cC]lient)([eéêë]le)_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_([cC]ommuniqu)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([cC]onsomm)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+s\ooperat\oöperat\diaeresis on 2nd "o"
+r_([cC]om)([eèëê]die)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+ \cooperate, cooperating, cooperative, etc.
+s\oordinat\oördinat\diaeresis on 2nd "o"
+ \coordinate, coordinating, etc.
+r_([cC]ong)([eèêë])\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([cC]ong)([eèêë][ds])\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([cC]ornets*)(\-a\-piston)_<eaccent>$1<ZWJ>$2</e>_accent grave on "a"
+r_([cC]ort)([eéêë]ge)_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([cC])([oö6]tes*)\b_<eaccent>$1<ZWJ>$2</e>_circumflex on "o"
+  \r_([cC])[oö6]tes\b_$1ôtes_circumflex on "o"
+r_([cC]orv)(ee)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([cC]ou[dlp])([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(Cou)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([cC]r[eéêë])([mv]|ch)e_<eaccent>$1<ZWJ>$2e</e>_accent grave on "e"
+r_\b([cC]r)([eéèë]pe)_<eaccent>$1<ZWJ>$2</e>_circumflex on "e"
+r_\b([cC])(rout)_<eaccent>$1<ZWJ>$2</e>_circumflex on "u"
+r_\b([cC]ura[cg])([ao][ao])_<eaccent>$1<ZWJ>$2</e>_cedilla on "c"
+r_\b([cC]uv)([eèëê])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([dD]a)([iî]s)\b_<eaccent>$1<ZWJ>$2</e>_diaeresis on "i"
+r_\b([dD][eèêë]b)(onn|ouch|ris|ut)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([dD][eèêë]c)(ime|lass|ollet|or)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([dD][eéèêë]c)(lass|ollet)([eèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+r_\b([dD][eèêë])(gag|gring|jeun|marche|noue|shab|ten[tu]|tour|traq)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b(d[eéèê])(\s+gr[aàá]ce)_<eaccent>$1<ZWJ>$2</e>_circumflex on "a"
+r_\b([dD])([eèêë]j[aàá])_<eaccent>$1<ZWJ>$2</e>_accents on "déjà"
+r_\b([dD][eèêë])(jeune)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([dD][eèêë])(nouement)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([dD]istingu)(e)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([dD]ivorc)([eèêë][eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(Dohn)([aàâ]nyi)_<eaccent>$1<ZWJ>$2</e>_acute accent on "a"
+r_\b([dD]onn)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(Dor)([aàâ]ti)_<eaccent>$1<ZWJ>$2</e>_acute accent on "a"
+r_(Dor)([eèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute acent on "e"
+r_\b(Du)(rer|sseldorf)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+  \w\Durer\Dürer\umlaut on "u"
+  \w\Dusseldorf\Düsseldorf\umlaut on "u"
+r_(Dvor)([aàâ]k)_<eaccent>$1<ZWJ>$2</e>_acute accent on "a"
+
+r_\b([eèêë]b)(auch|oul|rill)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eèêë]c)(art|lair|lat|ole|oss|out|ras|uell|uri)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b(Ec)(art|lair|lat|ole|oss|out|ras|uell|uri)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eéèêë]c)(art|out)([eèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accents on "e"
+r_\b([eèêë]g)(al)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b(Eg)(al|yptien)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eèêë][lI1])(an|ite|oge)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b(El)(an|ite|oge)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eèêë]p)(erdu|icie|ata|ée|rouv)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([EÉ]lys)([eèêë][eèéêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eèêë])(chapp|corch|migr|p)([eèéêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accents on "e"s
+r_\b([eèéêë])(chapp|corch|migr|p)([eèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accents on "e"s
+r_\b([eE]mploy)([eêèë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eE]mploy)([eêèë]s)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+  \w\employe\employé\acute accent on "e"
+  \w\employes\employés\acute accent on "e"
+  \w\Employe\employé\acute accent on "e"
+  \w\Employes\employés\acute accent on "e"
+r_(en-sc)([eéêë]ne)_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_([eêéèë]ntr)([eêèë][eêéèë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([EÉ]ntr)([eêèë][eêéèë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([eèêë]t)(ag|ap|at|oile|ourd|rang|renn|rier|ud|ui)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b(Et)(ag|ap|at|ienne|oile|ourd|rang|renn|rier|ud|ui)_<eaccent>$1<ZWJ>$2</e>_acute accent on "E"
+r_(étrang)([eéêë])_<eaccent>$1<ZWJ>$2</e>_grave accent on 2nd "e"
+r_(Espa)(na)_<eaccent>$1<ZWJ>$2</e>_tilde on "n"
+r_\b([eéèë])(tre)_<eaccent>$1<ZWJ>$2</e>_circumflex on "e"
+
+r_([fF]a[cg])(ade|on)_<eaccent>$1<ZWJ>$2</e>_cedilla on "c"
+r_Fa(berg|ur)([eêèë])_Fa<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+  \r_Faur[eêèë]_Fauré_acute accent on "e"
+r_\b([fF]a)(ience)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "i"
+r_\b([fF]ain[eèêë])an([ct])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\bfe\b_<eaccent>f<ZWJ>e</e>_acute accent on "e"
+r_\b([bftBFT])([eéèë]te)_<eaccent>$1<ZWJ>$2</e>_circumflex on "e"
+  \r_\b([tT])[eéèë]t[eéèêë]_$1ête_circumflex on "e"
+r_(F[eêèë][lI1])(ibr)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([fF]ianc)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([fF][ir])(an[cg][ao]i)_<eaccent>$1<ZWJ>$2</e>_scanno: "c" or "g" for "c" w/cedilla
+r_\b([fF])(lamb|rapp)([eèêë])_<eaccent>$1$2<ZWJ>$3</e>_acute accent on "e"
+r_([fF]l)(ane)_<eaccent>$1<ZWJ>$2</e>_circumflex on "a"
+r_([fF]l)([eéêë]che)_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([fF]or)([cg]at)_<eaccent>$1<ZWJ>$2</e>_cedilla on "c"
+r_\b([fF]ra)([iï]ch)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([fF]rat)([eéèêë]rnit[eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([fF]r)(aulein)_<eaccent>$1<ZWJ>$2</e>_umlaut on "a"
+r_([fF]r)([eéêë]r[eéèêë])_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([fF])(uhrer)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+
+r_\b([gG]al[eéêë])(r[eéèêë])_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_\b([gG]ar|[sS]oup|[lL]ima)([cg]on)_<eaccent>$1<ZWJ>$2</e>_cedilla
+  \s\garcon\garçon\cedilla
+  \s\soupcon\soupçon\cedilla
+  \s\limacon\limaçon\cedilla
+r_\b([gG]em)(utlich)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+r_\b([gG])(lac|ratin)e_<eaccent>$1<ZWJ>$2<ZWJ>e</e>_acute accent on "e"
+r_(G[oô])(teborg)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+r_(G[oô]tt)(erdämmerung|ingen)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+r_\b(gr)([eèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(gu[eèêë]r[iíï])(don|te)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(Gu)(nz)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+
+r_\b([hH]ab[iíï]tu)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([hH])([oö6]te)_<eaccent>$1<ZWJ>$2</e>_circumflex on "o"
+
+r_\b([iI]d)([eèêë][eèéêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(I)(le-de-France)_<eaccent>$1<ZWJ>$2</e>_circumflex on "I"
+r_\b([iI]ng)([eèêë]nu)\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([jJ])(ager)_<eaccent>$1<ZWJ>$2</e>_umlaut on "a"
+r_([jJ])(alapeno)_<eaccent>$1<ZWJ>$2</e>_tilde on "n"
+r_\b([jJ][eéèêë])(t[eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_(Ko)(chel|ln)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+r_([kK]u)(mmel)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+
+r_\b([lL][eéêë])(s[eéèêë])\b_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_([lL]ibert)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([lL]yc)([eèêë][eèéêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([mM]a[iíï])(tre)_<eaccent>$1<ZWJ>$2</e>_circumflex on "i"
+r_\b([mM]a)(cram|jest|lgr|nqu)([eèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+r_\b([mM]an[eéêë]g)([ei])_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_\b([mM]ar[eèêë])(chal)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([mM]atin)([eèêë][eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(M[eèêë])(doc)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([mM][eêèë])(lan|na)ge_<eaccent>$1<ZWJ>$2</e>ge_acute accent on "e"
+r_\b([mM][eéè])([lI1][eéèêë][eéèêë])_<eaccent>$1<ZWJ>$2</e>_circumflex and acute accent
+r_\b([mM][eéè])(m[eéèêë])_<eaccent>$1<ZWJ>$2</e>_circumflex
+r_([mM][eêèë])(moire|salliance)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([mpMP][eéêë])(r[eéèêë])\b_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+  \r_\b([pP])[eéê]r[eéèêë]\b_$1ère_grave accent on "e"
+r_([mM][eêèë]ta)(irie|yage|yer)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([mM][eêèë]t[iíï])(er|sse)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+w_Minie_<eaccent>Mini<ZWJ>e</e>_acute accent on "e"
+r_(M[oô])(b[iíï]us)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "o"
+r_([mM]is|Moli)([eéêë]r[eéèêë])_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+  \w\Moliere\Molière\grave accent on "e"
+r_(Mu)(nch)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+r_\b([mM]us)([eèêë][eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([nN]a[iîí])(f|ve)_<eaccent>$1<ZWJ>$2</e>_diaeresis
+r_\b([nN]aïvet)([eêèë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([nN][eèêë])([eéèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([nN][eèêë])(glig|gociant)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([nN]églig)([eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([nN][iîíï][cg])(o[iîíï]s[eéèêë])_<eaccent>$1<ZWJ>$2</e>_cedilla on "c"
+r_\b([nN][oö])([eéèê]l)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "e"
+r_(Nu)(rnberg)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+
+r_\b([oO])(l|utr)([eêèë])\b_<eaccent>$1$2<ZWJ>$3</e>_acute accent on "e"
+r_(Orl[eêèë])(ans)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+w_Osterreich_<eaccent>O<ZWJ>sterreich</e>_diaeresis on "O"
+r_\b(O)(u)\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([pP][aàáâ])(t[eèêë])\b_<eaccent>$1<ZWJ>$2</e>_accents
+r_\b([pP][aàá])(t[eéèêë])\b_<eaccent>$1<ZWJ>$2</e>_accents
+r_\b([pP]a)(ss|tt)([eêèë][eéêèë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+r_\b([pP]ass)([eêèë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([pP]ens)([eêèë][eéêèë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(P[eêèë])(rig)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([pP][eêèë])(troleu)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([pP]ieds*)(-[aâá]-terre)_<eaccent>$1<ZWJ>$2</e>_grave accent on "a"
+r_\b([pP]r[eèêë])(cieus|lud)e_<eaccent>$1<ZWJ>$2</e>e_acute accent on "e"
+r_\b([pP]r[eèêë])(cis)\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([pP]rot)([eèêë]g[eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accents on "e"s
+r_\b(Proven[cg])(al)_<eaccent>$1<ZWJ>$2</e>_scanno: "c" or "g" for "c" w/cedilla
+r_\b([pP]ur)([eêèë][eéêèë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_(Pyr[eêèë])(n[eêèë][eéêèë]s)_<eaccent>$1<ZWJ>$2</e>_acute accents on "e"s
+
+r_\b(Qu[eèêë])(b[eéèêë]c)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([rR][eèêë])(gim*)([eéèêë])\b_<eaccent>$1<ZWJ>$2$3</e>_acute accents on "e"s
+r_\b([rR][eèêë])(gim[eéèêë]s)\b_<eaccent>$1<ZWJ>$2</e>_acute accents on "e"s
+r_\b([rR]e[iî])(nstate)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "i"
+r_\b([rR]ee)(lect|nt[er])_<eaccent>$1<ZWJ>$2</e>_diaeresis on 2nd "e"
+r_\b([rR]eo)(pen|rder|rgan)_<eaccent>$1<ZWJ>$2</e>_diaeresis on "o"
+r_\b([rR][eèêë])(sum[eèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute accents on "e"s
+r_\b([rR][eéèêë])(cherch|pouss|trouv|veill)([eèêë])\b_<eaccent>$1<ZWJ>$2$3</e>_acute accents on "e"s
+r_(Rh[oö])(ne)_<eaccent>$1<ZWJ>$2</e>_circumflex on "o"
+r_\b([rR]isqu)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([rR]o)(ntgen)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+r_\b([rR][oö6])(deur)_<eaccent>$1<ZWJ>$2</e>_circumflex on "o"
+r_\b([rR][oö6])([lI1][eéèêë])_<eaccent>$1<ZWJ>$2</e>_circumflex on "o"
+ r_\b([rR]ou)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+r_\b([sS]a)(lom|nt|cr)([eèêë])\b_<eaccent>$1<ZWJ>$2$3</e>_acute accent on "e"
+r_\b([sS]aut)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([sS]ch)([oô]n)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+r_\b([sS][eèêë])(ance)_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([sS][eéèêë])(curit[eèêë])_<eaccent>$1<ZWJ>$2</e>_tilde on "n"
+r_\b([sS]e)(nor)_<eaccent>$1<ZWJ>$2</e>_tilde on "n"
+r_(S[eéêë])(vres)_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_\b([sS]i)([eéêë]cle)_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_\b([sS]oci)([eèêë]t[eéèêë])_<eaccent>$1<ZWJ>$2</e>_acute accents on "e"s
+r_\b([sS]oci)([eéèêë]t[eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accents on "e"s
+r_([sS]oi)(gn|r)([eèêë])_<eaccent>$1<ZWJ>$2$3</e>_acute accent on "e"
+r_([sS]olf)([eéêë]ge)_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_([sS]ouffl)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_([sS]p[eéèêë])(cialit[eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([sS]ucc)([eéêë]s)\b_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+w_Surete_<eaccent>Sur<ZWJ>ete</e>_accents
+
+r_Tannhauser_<eaccent>Tannha<ZWJ>user</e>_umlaut on "a"
+r_([tT][eèêë][lI1][eéèêë])(f|ph)([eéèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accents
+r_([tT][eéèêë][lI1][eèêë])(f|ph)([eéèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accents
+r_([tT][eéèêë][lI1][eéèêë])(f|ph)([eèêë])_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accents
+r_([tT])([eéèêë]te-[aáâ]-t[eéèêë]te)_<eaccent>$1<ZWJ>$2</e>_accents
+r_\b([tT]h)([eèêë]\s+dansant)_<eaccent>$1<ZWJ>$2</e>_acute accent
+r_\b([ptPT]r)([eéêë]s)\b_<eaccent>$1<ZWJ>$2</e>_grave accent on "e"
+r_\b([tT])(orch|rouv|uy)([eéêë]re)_<eaccent>$1<ZWJ>$2<ZWJ>$3</e>_acute accent on "e"
+
+r_(U)(ber)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+r_\b(u)(ber)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+
+r_(Vel[aà])([sz]quez)_<eaccent>$1<ZWJ>$2</e>_acute accent on "a"
+r_([vV])(icuna)_<eaccent>$1<ZWJ>$2</e>_tilde on "n"
+r_\b([vV]id)([eèêë])_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+r_\b([vV]is[\-\s])([aâá][\-\s]vis)_<eaccent>$1<ZWJ>$2</e>_grave accent on "a"
+r_\b([vV]oil)([aâá])\b_<eaccent>$1<ZWJ>$2</e>_grave accent on "a"
+r_(Vo)(lk)_<eaccent>$1<ZWJ>$2</e>_umlaut on "o"
+
+r_([wWZ])(ur)_<eaccent>$1<ZWJ>$2</e>_umlaut on "u"
+
+    ENDINGS & COMMON WORD PARTS
+r_\B([iy][eêéë])([mr][eéèêë])\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_\B(i[eêéë][mr])([eéèêë]s)\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+    bonbonniere, boutonniere, ferronniere, mentonniere
+  \r_onni[eéêë]re_onnière_grave accent on "e"
+r_\B(ill[eéêë])(re)_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_\B([dg][eêéë])(r[eéèêë])\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_\B([dg][eêéë])(r[eéèêë]s)\b_<eaccent>$1<ZWJ>$2</e>_accent grave on "e"
+r_(ch[aàá])(tel)_<eaccent>$1<ZWJ>$2</e>_circumflex on "a"
+      Neufchâtel
+r_haus\b_<eaccent>ha<ZWJ>us</e>_umlaut on "a"
+r_(sonn)([eèêë])\b_<eaccent>$1<ZWJ>$2</e>_acute accent on "e"
+
+
+=============================
+   MARKUPS
+
+   CHAPTER HEADINGS
+  \r_^\s*(Chapter.*)_<b>$1</b>_Chapter heading in bold markups
+  \r_^\s*(CHAPTER.*)_<b>$1</b>_Chapter heading in bold markups
+r_<sc>(CHAP)(TER\s+.*)<\/sc>_<e><s<ZWJ>c>$1<ZWJ>$2</s<ZWJ>c></e>_Chapter heading in small-caps markups
+
+  \r_([^\-])\-\*(.)_$1$2_Remove asterisked hyphen
+  \r_([^\-])\-\*(.)_$1-$2_Remove asterisk after hyphen
+    \s\-*\\Remove asterisked hyphen
+
+  Mangled mark-ups
+r_(<\s+)([bijBIJ]|sc|sp)(\s*>)_<efaulty markup>$1<ZWJ>$2$3</e>_faulty markup (remove space)
+r_(<\s*)([bijBIJ]|sc|sp)(\s+>)_<efaulty markup>$1$2<ZWJ>$3</e>_faulty markup (remove space)
+  r_<\s*\/\s+([bijBIJ])\s*>_</$1>_faulty markup (remove space)
+  r_<\s*\/\s*([bijBIJ]\s+)>_</$1>_faulty markup (remove space)
+  r_\/<([bijBIJ])>_</$1>_faulty markup
+  r_\/<s([cp])>_</s$1>_faulty markup
+  r_<\/(\/[bijBIJ])>_<$1>_faulty markup
+  r_<([bijBIJ])/>_</$1>_faulty markup
+  r_<\?([bijBIJ])>_</$1>_faulty markup
+  s\</>\</i>\faulty markup, taken as italic
+  s\</>\</b>\faulty markup, taken as bold
+  s\</s>\</sc>\faulty markup, taken as small-caps
+  r_<[ijIJ]<_<i>_faulty italic markup
+  r_<sc<_<sc>_faulty small caps markup
+  r_<[jJ;]>_<i>_faulty italic markup
+  r_<\/[jJ;]>_</i>_faulty italic markup
+  r_<\/[ijIJ]<_</i>_faulty italic markup
+  r_>[ijI]>_<i>_faulty italic markup
+  r_>\/[ijI]>_</i>_faulty italic markup
+  r_<[jJ;]>_<i>_faulty italic markup
+  r_<\/[jJ;]>_</i>_faulty italic markup
+  r_<[bB]<_<b>_faulty bold markup
+  r_<\/[bB]<_</b>_faulty bold markup
+  r_<\/sc<_</sc>_faulty small caps markup
+  r_>[bB]>_<b>_faulty bold markup
+  r_>\/[bB]>_</b>_faulty bold markup
+  r_>\/sc>_</sc>_faulty closing small-caps markup
+  r_<[bhBH]/(\d>)_</h$1_faulty header markup
+  r_<[bhBH](\d)\/>_</h$1>_faulty header markup
+  r_<\?[bhBH](\d>)_</h$1_faulty header markup
+  r_\/<[bhBH](\d>)_</h$1_faulty header markup
+
+    TWO OPENING MARKUPS IN SUCCESSION
+r_<([biBI]|[hH]\d|sc|sp)>([^<]+)<\1>_<efaulty markup><$1>$2<ZWJ>$1</e>_Change second opening italics markup to closing
+  r_<[iI]>([^<]+)<[iI]>_<i>$1</i>_Change second opening italics markup to closing
+  r_<[bB]>([^<]+)<[bB]>_<b>$1</b>_Change second opening bold markup to closing
+  r_<[hH](\d)>([^<]+)<[hH](\d)>_<h$1>$2</h$3>_Change second opening heading markup to closing
+  r_<[hH](\d)><[iI]>([^<]+)</[iI]><[hH](\d)>_<h$1><i>$2</i></h$3>_Change second opening heading markup to closing
+  r_<sc>([^<]+)<sc>_<sc>$1</sc>_Change second opening small-caps markup to closing
+  r_<sp>([^<]+)<sp>_<sp>$1</sp>_Change second opening spaced-print markup to closing
+  r_<[iI]>([^<]+)<[iI]>_</i>$1<i>_Change first opening italics markup to closing
+  r_<[bB]>([^<]+)<[bB]>_</b>$1<b>_Change first opening bold markup to closing
+
+    MISMATCHED MARKUPS
+r_<[hH]1>([^<]+)<\/[hH]([^1])>_<emismatched markups><h<ZWJ>1>$1</h<ZWJ>$2><e>_Change first heading markup to match the second
+r_<[hH]2>([^<]+)<\/[hH]([^2])>_<emismatched markups><h<ZWJ>2>$1</h<ZWJ>$2><e>_Change first heading markup to match the second
+r_<[hH]3>([^<]+)<\/[hH]([^3])>_<emismatched markups><h<ZWJ>3>$1</h<ZWJ>$2><e>_Change first heading markup to match the second
+r_<[hH]4>([^<]+)<\/[hH]([^4])>_<emismatched markups><h<ZWJ>4>$1</h<ZWJ>$2><e>_Change first heading markup to match the second
+r_<[hH]5>([^<]+)<\/[hH]([^5])>_<emismatched markups><h<ZWJ>5>$1</h<ZWJ>$2><e>_Change first heading markup to match the second
+r_<[hH]6>([^<]+)<\/[hH]([^6])>_<emismatched markups><h<ZWJ>6>$1</h<ZWJ>$2><e>_Change first heading markup to match the second
+  The following looks like it should work (to replace the above 6 rules) but doesn't!
+  \r_<[hH](\d)>([^<]+)<\/[hH]([^\1])>_<h$3>$2</h$3>_Change first heading markup to match the second
+  r_<[hH]1>([^<]+)<\/[hH][^1]>_<h1>$1</h1>_Change second heading markup to match the first
+  r_<[hH]2>([^<]+)<\/[hH][^2]>_<h2>$1</h2>_Change second heading markup to match the first
+  r_<[hH]3>([^<]+)<\/[hH][^3]>_<h3>$1</h3>_Change second heading markup to match the first
+  r_<[hH]4>([^<]+)<\/[hH][^4]>_<h4>$1</h4>_Change second heading markup to match the first
+  r_<[hH]5>([^<]+)<\/[hH][^5]>_<h5>$1</h5>_Change second heading markup to match the first
+  r_<[hH]6>([^<]+)<\/[hH][^6]>_<h6>$1</h6>_Change second heading markup to match the first
+
+  r_<[bB]>([^<]+)<\/[^bB]>_<b>$1</b>_Change closing markup to bold to match the first
+  r_<[^bB]>([^<]+)<\/[bB]>_<b>$1</b>_Change opening markup to bold to match the second
+  r_<[^iI]>([^<]+)<\/[iI]>_<i>$1</i>_Change opening markup to italic to match the second
+  r_<[iI]>([^<]+)<\/[^iI]>_<i>$1</i>_Change closing markup to italic to match the first
+  r_<[^uU]>([^<]+)<\/[uU]>_<u>$1</u>_Change opening markup to underline to match the second
+  r_<[uU]>([^<]+)<\/[^uU]>_<u>$1</u>_Change closing markup to underline to match the first
+
+    TAGS OUT OF ORDER
+  r_<[bB]><[pP]>_<p><b>_put opening paragraph tag before bold tag
+  r_<\/[pP]><\/[bB]>_</b></p>_put closing paragraph tag after bold tag
+  r_<[iI]><[pP]>_<p><i>_put opening paragraph tag before italic tag
+  r_<\/[pP]><\/[iI]>_</i></p>_put closing paragraph tag after italic tag
+  r_<[uU]><[pP]>_<p><>_put opening paragraph tag before underline tag
+  r_<\/[pP]><\/[uU]>_</u></p>_put closing paragraph tag after underline tag
+  r_<[iI]><[bB]>([^<]+)<\/[iI]><\/[bB]>_<b><i>$1</i></b>_sort out bold and italic markups
+  r_<[bB]><[iI]>([^<]+)<\/[bB]><\/[iI]>_<b><i>$1</i></b>_sort out bold and italic markups
+  r_<[uU]><[bB]>([^<]+)<\/[uU]><\/[bB]>_<b><u>$1</u></b>_sort out bold and underline markups
+  r_<[bB]><[uU]>([^<]+)<\/[bB]><\/[uU]>_<b><u>$1</u></b>_sort out bold and underline markups
+  r_<[uU]><[iI]>([^<]+)<\/[uU]><\/[iI]>_<i><u>$1</u></i>_sort out italic and underline markups
+  r_<[iI]><[uU]>([^<]+)<\/[iI]><\/[uU]>_<i><u>$1</u></i>_sort out italic and underline markups
+
+    MISSING OPENING TAGS
+  r_<[pP]>([^<]+)<\/[bB]><\/[pP]>_<p><b>$1</b></p>_add opening bold tag
+  r_<[pP]>([^<]+)<\/[iI]><\/[pP]>_<p><i>$1</i></p>_add opening italic tag
+  r_<[pP]>([^<]+)<\/[uU]><\/[pP]>_<p><u>$1</u></p>_add opening underline tag
+
+    MISSING CLOSING TAGS
+  r_<[pP]><[bB]>([^<]+)<\/[pP]>_<p><b>$1</b></p>_add closing bold tag
+  r_<[pP]><[iI]>([^<]+)<\/[pP]>_<p><i>$1</i></p>_add closing italic tag
+  r_<[pP]><[uU]>([^<]+)<\/[pP]>_<p><u>$1</u></p>_add closing underline tag
+
+
+    EXTRANEOUS MARKUPS
+  r_<\/*[pP]><[hH](\d)>_<h$1>_Remove paragraph tag before header tag
+  r_<\/[hH](\d)><\/*[pP]>_</h$1>_Remove paragraph tag after header tag
+  r_<\/*[pP]><\/[hH](\d)>_</h$1>_Remove paragraph tag before header tag
+  r_<[hH](\d)><\/*[pP]>_<h$1>_Remove paragraph tag after header tag
+
+
+    COMMON ABBREVIATIONS
+  Improperly applied markups
+  r_<[iI]>([a-zA-Z])\.\s*([a-zA-Z])<\/[iI]>\._<i>$1.$2.</i>_period of abbrev on wrong side of markup
+  r:_([a-zA-Z])\.\s*([a-zA-Z])_\.:_$1.$2._:period of abbrev on wrong side of markup
+    \s\<i>e.g</i>.\<i>e.g.</i>\period of abbrev. on wrong side of markup
+    \s\<i>i.e</i>.\<i>i.e.</i>\period of abbrev. on wrong side of markup
+    \s\<i>q.v</i>.\<i>q.v.</i>\period of abbrev. on wrong side of markup
+  r_<i>([eE]tc|\&[cC]|[vV]iz|[iI]bid|[iI]d|[sS]eq|[pP]rof|[cC]hap)</i>\._<i>$1.</i>_period of abbrev. on wrong side of markup
+  r:_([eE]tc|\&[cC]|[vV]iz|[iI]bid|[iI]d|[sS]eq|[pP]rof|[cC]hap)_\.:_$1._:period of abbrev. on wrong side of markup
+    \s\<i>etc</i>.\<i>etc.</i>\period of abbrev. on wrong side of markup
+    \s\<i>&c</i>.\<i>&c.</i>\period of abbrev. on wrong side of markup
+    \s\<i>viz</i>.\<i>viz.</i>\period of abbrev. on wrong side of markup
+    \s\<i>ibid</i>.\<i>ibid.</i>\period of abbrev. on wrong side of markup
+    \s\<i>Ibid</i>.\<i>Ibid.</i>\period of abbrev. on wrong side of markup
+    \s\<i>id</i>.\<i>id.</i>\period of abbrev. on wrong side of markup
+    \s\<i>Id</i>.\<i>Id.</i>\period of abbrev. on wrong side of markup
+    \s\<i>seq</i>.\<i>seq.</i>\period of abbrev. on wrong side of markup
+    \s\<i>Seq</i>.\<i>Seq.</i>\period of abbrev. on wrong side of markup
+
+   2 or more consonants is probably an abbreviation
+r_<i>([b-df-hj-np-tv-xzB-DF-HJ-NP-TV-XZ]{2,})</i>\._<e><i>$1</i><ZWJ></e>._period of abbrev. on wrong side of markup
+  r:_([b-df-hj-np-tv-xzB-DF-HJ-NP-TV-XZ]{2,})_\.:_$1._:period of abbrev. on wrong side of markup
+    \s\<i>cf</i>.\<i>cf.</i>\period of abbrev. on wrong side of markup
+    \s\<i>Cf</i>.\<i>Cf.</i>\period of abbrev. on wrong side of markup
+  r_([A-Z][a-z])</i>\._$1.</i>_period of abbrev. on wrong side of markup
+  r:([A-Z][a-z])_\.:$1._:period of abbrev. on wrong side of markup
+  r_<i>([aA]d)\s+(int|loc|lib)</i>\._<i>$1 $2.</i>_period of abbrev. on wrong side of markup
+  r:_([aA]d)\s+(int|loc|lib)_\.:_$1 $2._:period of abbrev. on wrong side of markup
+    \s\<i>ad int</i>.\<i>ad int.</i>\period of abbrev. on wrong side of markup
+    \s\<i>Ad int</i>.\<i>Ad int.</i>\period of abbrev. on wrong side of markup
+    \s\<i>ad loc</i>.\<i>ad loc.</i>\period of abbrev. on wrong side of markup
+  r_<i>([eE]t)\s+(al|seq|ux)</i>\._<i>$1 $2.</i>_period of abbrev. on wrong side of markup
+  r:_([eE]t)\s+(al|seq|ux)_\.:_$1 $2._:period of abbrev. on wrong side of markup
+    \s\<i>et al</i>.\<i>et al.</i>\period of abbrev. on wrong side of markup
+    \s\<i>et ux</i>.\<i>et ux.</i>\period of abbrev. on wrong side of markup
+    \s\<i>et seq</i>.\<i>et seq.</i>\period of abbrev. on wrong side of markup
+    \s\<i>Et seq</i>.\<i>Et seq.</i>\period of abbrev. on wrong side of markup
+  s\<i>op. cit</i>.\<i>op. cit.</i>\period of abbrev. on wrong side of markup
+  s\<i>Op. cit</i>.\<i>Op. cit.</i>\period of abbrev. on wrong side of markup
+  s\_op. cit_.\_op. cit._\period of abbrev. on wrong side of markup
+  s\_Op. cit_.\_Op. cit._\period of abbrev. on wrong side of markup
+  s\<i>qq. v</i>.\<i>qq. v.</i>\period of abbrev. on wrong side of markup
+  s\<i>q. pl</i>.\<i>q. pl.</i>\period of abbrev. on wrong side of markup
+  s\.,</i>\.</i>,\comma on wrong side of markup
+  s\.,_\._,\comma on wrong side of markup
+
+    A.D. and B.C.
+r_<sc>([A-Z\.,\-\s\d]+)</sc>_<esmall caps><s<ZWJ>c>$1</s<ZWJ>c></e>_Only ALL CAPS in small-caps markup
+  r_<sc>A\.D\.</sc>_<sc>a.d.</sc>_A.D. in small caps
+  r_<sc>B\.C\.</sc>_<sc>b.c.</sc>_b.c. in small caps
+  r_<sc>A\. D\.</sc>_<sc>a.d.</sc>_A.D. in small caps
+  r_<sc>B\. C\.</sc>_<sc>b.c.</sc>_b.c. in small caps
+  r_<sc>A\.D</sc>\._<sc>a.d.</sc>_A.D. in small caps
+  r_<sc>B\.C</sc>\._<sc>b.c.</sc>_b.c. in small caps
+
+  r_<sc>A\.M\.</sc>_<sc>a.m.</sc>_A.M. in small caps
+  r_<sc>P\.M\.</sc>_<sc>p.m.</sc>_P.M. in small caps
+  r_<sc>A\.M</sc>\._<sc>a.m.</sc>_A.M. in small caps
+  r_<sc>P\.M</sc>\._<sc>p.m.</sc>_P.M. in small caps
+
+
+  No italics on abbreviations
+  r_([^>])(e\.g|i\.e|q\.v|etc|viz|ibid|et\s+al|et\s+seq|[oO]p\.\s*cit)\.([^<])_$1<i>$2.</i>$3_add italics around abbreviations
+
+    ENGLISH MONEY
+  r_<[iI]>(\d+)l\. (\d+)s\. (\d+)d\.</[iI]>_$1<i>l.</i> $2<i>s.</i> $3<i>d.</i>_Correct italics markups for old English money 
+  r_<[iI]>£(\d+) (\d+)s\. (\d+)d\.</[iI]>_£$1 $2<i>s.</i> $3<i>d.</i>_Correct italics markups for old English money 
+  r_<[iI]>(\d+)s\. (\d+)d\.</[iI]>_$1<i>s.</i> $2<i>d.</i>_Correct italics markups for old English money 
+  r_(\d)\s*<[iI]>([dls])<\/[iI]>\._$1<i>$2.</i>_Move period inside italics markup for old English money
+  r:(\d)\s*_([dls])_\.:$1_$2._:Move period inside italics markup for old English money
+  r_(\d)\s*([dls]\.)_$1<i>$2</i>_Add italics markup for old English money
+  r_<[iI]>(\d+)([dls]\.)</[iI]>_$1<i>$2</i>_Correct italics markups for old English money
+  r_<[iI]>(\d+)([dls])</[iI]>\._$1<i>$2.</i>_Correct italics markups for old English money
+  r_(\d+[dl])([^\.])_$1.$2_Insert period after old English money
+  r_([2-9]+s)([^\.])_$1.$2_Insert period after old English money
+  r_(1+s)([^t\.])_$1.$2_Insert period after old English money
+
+    PAGE NUMBERS ("f." or "ff." abbreviation)
+r_(\d)(\s+)(f+\.)_<eclose up space>$1<ZWJ>$2<ZWJ>$3</e>_Close up space before "f." or "ff." abbreviation
+r_(\d)(\s*)(f+\.)_<eitalics>$1<ZWJ>$2<ZWJ>$3</e>_Add italics markup around "f." or "ff." abbreviation
+  r_(\d)\s*<[iI]>(f+)<\/[iI]>\._$1<i>$2.</i>_Move period inside italics markup for "f." or "ff." abbreviation
+  r_<[iI]>(\d+)\s*(f+)</[iI]>\._$1<i>$2.</i>_Correct italics markups for "f." or "ff." abbreviation
+  r_<[iI]>(\d+)\s*(f+\.)</[iI]>_$1<i>$2</i>_Correct italics markups for "f." or "ff." abbreviation
+
+   ITALICS AMIDST PARENS & BRACKETS
+  r_<[iI]>\(([^\)]+)\)\s*<\/[iI]>_(<i>$1</i>)_Move italic markups inside parentheses
+  r_<[iI]>\(([^\)]+)\)\.\s*<\/[iI]>_(<i>$1</i>)._Move italic markups inside parentheses
+  r_<[iI]>\[([^\]]+)\]\s*<\/[iI]>_[<i>$1</i>]_Move italic markups inside brackets
+  r_<[iI]>\[([^\]]+)\]\.\s*<\/[iI]>_[<i>$1</i>]._Move italic markups inside brackets
+
+  r_<[iI]>(['"\[\(])_$1<i>_Move punctuation before opening italic markup
+    \s\<i>"\"<i>\quote on wrong side of opening markup
+    \s\<i>'\'<i>\single-quote on wrong side of opening markup
+
+  r_(["';:,\]\)]|\-\-)</[iI]>_</i>$1_Move punctuation after closing italic markup
+    \s\"</i>\</i>"\quote on wrong side of markup
+      etc.
+
+  s\</i>.]\.</i>]\move period inside italic markup
+
+  r_\Bin</[iI]>'_in'</i>_Move apostrophe inside closing italic markup
+  \s\in</i>'\in'</i>\apostrophe on wrong side of markup
+
+  r_\b([A-Z])(</[biBI]>)\._$1.$2_Move period of abbrev. inside closing markup
+    \s\ A</i>.\ A.</i>\period on wrong side of closing italic markup
+      etc.
+
+    A single word & punct. inside markup:
+  r_<[iI]>([a-zA-Z]+)(["',;:?!\(\)\[\]]+)<\/[iI]>_<i>$1</i>$2_Move punct. outside italics markup
+  r*_([a-zA-Z]+)(["'\,\;\:\?\!\(\)\[\]]+)_*_$1_$2*Move punct. outside _italics_ markup
+
+  HELP FOR DRAMA
+
+  Speaker, then stage directions
+  r_^<[iI]>([^\s]+)\s+\(([^\)]+)\)<\/[iI]>_<i>$1</i> (<i>$2</i>)_Fix up italics markup around parens
+  r_^<[iI]>([^\s]+)\s+\(([^\)]+)\)\.<\/[iI]>_<i>$1</i> (<i>$2</i>)._Fix up italics markup around parens
+  r_^<[iI]>([^\s]+)\s+\(([^<]+)<\/[iI]>\)_<i>$1</i> (<i>$2</i>)_Fix up italics markup around parens
+
+  r_^<[iI]>([A-Z][^\(]*)\(([^\)]+)\)<\/[iI]>_<i>$1</i> (<i>$2</i>)_Fix up italics markup around parens
+  r_^<[iI]>([A-Z][^\(]*)\(([^\)]+)\)\.<\/[iI]>_<i>$1</i> (<i>$2</i>)._Fix up italics markup around parens
+  r_^<[iI]>([A-Z][^\(]*)\(([^<]+)<\/[iI]>\)_<i>$1</i> (<i>$2</i>)_Fix up italics markup around parens
+
+  Single-word "stage directions" or asides in italics within parentheses & brackets
+  r_\(<[iI]>([A-Z][a-zA-Z]*)<\/[iI]>([\.!?])\)_(<i>$1$2</i>)_Move punct. inside italics markup
+  r_\[<[iI]>([A-Z][a-zA-Z]*)<\/[iI]>([\.!?])\]_[<i>$1$2</i>]_Move punct. inside italics markup
+
+  Multi-word stage direction all on one line (no closing bracket).
+  r_\[<[iI]>([^<]+)<\/[iI]>\.\s*$_[<i>$1.</i>_Move period inside italics markup
+
+r_<i>\s*(Aside|Dies|Exeunt|Exeunt\s+omnes|Exit)\s*<\/i>\._<e><i<ZWJ>>$1</<ZWJ>i><ZWJ>.</e>_Move period inside italics markup
+  \s_<i>Aside</i>._<i>Aside.</i>_Move period inside italics markup
+  \s_<i>Dies</i>._<i>Dies.</i>_Move period inside italics markup
+  \s_<i>Exit</i>._<i>Exit.</i>_Move period inside italics markup
+  \s_<i>Exeunt</i>._<i>Exeunt.</i>_Move period inside italics markup
+  \s_<i>Exeunt omnes</i>._<i>Exeunt omnes.</i>_Move period inside italics markup
+r_<i>\s*Laugh(s|ing|ingly|ter)\s*<\/i>\s*\._<e><i<ZWJ>>Laugh$1</<ZWJ>i><ZWJ>.</e>_Move period inside italics markup
+  \s_<i>Laughs</i>._<i>Laughs.</i>_Move period inside italics markup
+  \s_<i>Laughing</i>._<i>Laughing.</i>_Move period inside italics markup
+  \s_<i>Laughter</i>._<i>Laughter.</i>_Move period inside italics markup
+r_<i>\s*(Exit|Frown|Kneel|Read|Stand|Yawn)(s|ing)\s*<\/i>\s*\._<e><i<ZWJ>>$1$2</<ZWJ>i><ZWJ>.</e>_Move period inside italics markup
+  \s_<i>Reads</i>._<i>Reads.</i>_Move period inside italics markup
+  \s_<i>Reading</i>._<i>Reading.</i>_Move period inside italics markup
+  \s_<i>Yawns</i>._<i>Yawns.</i>_Move period inside italics markup
+  \s_<i>Yawning</i>._<i>Yawning.</i>_Move period inside italics markup
+  \s_<i>Dies</i>._<i>Dies.</i>_Move period inside italics markup
+  \s_<i>Exit</i>._<i>Exit.</i>_Move period inside italics markup
+
+
+r_(['`]<[biBI]>)([aeiouAEIOU])_<eapostrophe outside markup>$1<ZWJ>$2</e>_Move apostrophe representing dropped "h" inside opening italics markup
+  r_['`]<[iI]>([aeiouAEIOU])_<i>'$1_Move apostrophe representing dropped "h" inside opening italics markup
+  r_['`]<[bB]>([aeiouAEIOU])_<b>'$1_Move apostrophe representing dropped "h" inside opening bold markup
+
+r_(['`]<[biBI]>[tT])([iI][sS]|[aA][iI][nN])_<eapostrophe outside markup>$1<ZWJ>$2</e>_Move apostrophe representing dropped "i" inside italics markup
+r_(['`]<[biBI]>[tT][wW])([aA][sS]|[eE][rR][eE]|[iI][lL][lL]|[oO][uU][lL][dD])_<eapostrophe outside markup>$1<ZWJ>$2</e>_Move apostrophe representing dropped "i" inside italics markup
+  r_['`]<[iI]>([tT][iI][sS])_<i>'$1_Move apostrophe representing dropped "i" inside italics markup
+  r_['`]<[iI]>([tT][wW][aA][sS])_<i>'$1_Move apostrophe representing dropped "i" inside italics markup
+  r_['`]<[iI]>([tT][aA][iI][nN])_<i>'$1_Move apostrophe representing dropped "i" inside italics markup
+  r_['`]<[iI]>([tT][wW][eE][rR][eE])_<i>'$1_Move apostrophe representing dropped "i" inside italics markup
+  r_['`]<[iI]>([tT][wW][iI][lL][lL])_<i>'$1_Move apostrophe representing dropped "i" inside italics markup
+  r_['`]<[iI]>([tT][wW][oO][uU][lL][dD])_<i>'$1_Move apostrophe representing dropped "i" inside italics markup
+
+  r_['`]<[bB]>([tT][iI][sS])_<b>'$1_Move apostrophe representing dropped "i" inside bold markup
+  r_['`]<[bB]>([tT][wW][aA][sS])_<b>'$1_Move apostrophe representing dropped "i" inside bold markup
+  r_['`]<[bB]>([tT][aA][iI][nN])_<b>'$1_Move apostrophe representing dropped "i" inside bold markup
+  r_['`]<[bB]>([tT][wW][eE][rR][eE])_<b>'$1_Move apostrophe representing dropped "i" inside bold markup
+  r_['`]<[bB]>([tT][wW][iI][lL][lL])_<b>'$1_Move apostrophe representing dropped "i" inside bold markup
+  r_['`]<[bB]>([tT][wW][oO][uU][lL][dD])_<b>'$1_Move apostrophe representing dropped "i" inside bold markup
+
+      Special for "Punch" and "Notes & Queries"
+r_(News|Times|Paper|Express|Press|Post|Echo|Chronicle|Gazette|Herald|Journal|Review)\.<\/i>_<eperiod inside markup>$1<ZWJ>.</i></e>_period on wrong side of markup
+  s\News.</i>\News</i>.\period on wrong side of markup
+  s\Times.</i>\Times</i>.\period on wrong side of markup
+  s\Paper.</i>\Paper</i>.\period on wrong side of markup
+  s\Express.</i>\Express</i>.\period on wrong side of markup
+  s\Press.</i>\Press</i>.\period on wrong side of markup
+  s\Post.</i>\Post</i>.\period on wrong side of markup
+  s\Echo.</i>\Echo</i>.\period on wrong side of markup
+  s\Chronicle.</i>\Chronicle</i>.\period on wrong side of markup
+  s\Guardian.</i>\Guardian</i>.\period on wrong side of markup
+  s\Gazette.</i>\Gazette</i>.\period on wrong side of markup
+  s\Herald.</i>\Herald</i>.\period on wrong side of markup
+  s\Inquirer.</i>\Inquirer</i>.\period on wrong side of markup
+  s\Journal.</i>\Journal</i>.\period on wrong side of markup
+  s\Review.</i>\Review</i>.\period on wrong side of markup
+  s\Dispatch.</i>\Dispatch</i>.\period on wrong side of markup
+  s\Observer.</i>\Observer</i>.\period on wrong side of markup
+  s\Spectator.</i>\Spectator</i>.\period on wrong side of markup
+  s\Tribune.</i>\Tribune</i>.\period on wrong side of markup
+  s\Messenger.</i>\Messenger</i>.\period on wrong side of markup
+  s\Magazine.</i>\Magazine</i>.\period on wrong side of markup
+  s\Mag</i>.\Mag.</i>\period on wrong side of markup for abbreviation
+
+  r_<\/[bB]>([\.\?;:\)!'"]+)_$1</b>_punctuation on wrong side of closing bold markup
+    \s\</b>.\.</b>\period on wrong side of closing bold markup
+    \s\</B>.\.</b>\period on wrong side of closing bold markup
+  r_<\/[hH](\d>)([\.\?!'"]+)_$2</h$1_punctuation on wrong side of closing header markup
+
+  r_^\s*("')<\/[bB]>_</b>$1_punctuation on wrong side of opening bold markup
+
+  r_(<\w>)\s+_$1_close up space after opening markup
+  r_\s+(<\/\w>)_$1_close up space before closing markup
+    \r_(<h[\d]>)\s+_$1_close up space
+    \r_ </h([\d])>_</h$1>_close up space
+    \r_ <(/[biBI])>_<$1>_close up space
+    \r_<([biBI])> _<$1>_close up space
+
+  r_(</[biBI]>)([a-zA-Z])_$1 $2_leave a space after closing markup
+    \s\</i>a\</i> a\leave a space
+      etc.
+    \s\</b>a\</b> a\leave a space
+      etc.
+
+  r_([a-zA-Z])(<[biBI]>)_$1 $2_leave a space before opening markup
+    \s\a<i>\a <i>\leave a space
+      etc.
+    \s\a<b>\a <b>\leave a space
+      etc.
+
+  r_([a-zA-Z])<([biBI]>)_$1</$2_change to closing markup
+    \s\a<i>\a</i>\change to closing markup
+      etc.
+    \s\a<b>\a</b>\change to closing markup
+      etc.
+
+  r_</([biBI]>)([a-zA-Z])_<$1$2_change to opening markup
+    \s\</i>a\<i>a\change to opening markup
+      etc.
+    \s\</b>a\<b>a\change to opening markup
+      etc.
+
+  Broken Thought Breaks
+  (a line consisting solely of 4 or more *'s and any
+   number of spaces but the proper 7)
+  r_^(\s{0,6}|\s{8,})(\*\s*){4,}_       *       *       *       *       *_Correct Thought Break spacing
+  r_^\s*\*(\s{0,6}|\s{8,})(\*\s*){3,}_       *       *       *       *       *_Correct Thought Break spacing
+  r_^(\s*\*){2,}(\s{0,6}|\s{8,})(\*\s*){2,}_       *       *       *       *       *_Correct Thought Break spacing
+  r_^(\s*\*){3,}(\s{0,6}|\s{8,})\*\s*_       *       *       *       *       *_Correct Thought Break spacing
+    \s\*      *\*       *\Correct 6 spaces to 7 in Thought Break
+    \s\*        *\*       *\Correct 8 spaces to 7 in Thought Break
+
+  Capitalized words
+s\[ILLUSTRATION\<eall caps>[ILLUST<ZWJ>RATION</e>\Don't capitalize "Illustration"
+s\[SIDENOTE\<eall caps>[SIDE<ZWJ>NOTE</e>\Don't capitalize "Sidenote"
+s\[FOOTNOTE\<eall caps>[FOOT<ZWJ>NOTE</e>\Don't capitalize "Footnote"
+s\[Illustration:]\<ecolon>[Illust<ZWJ>ration:]</e>\Don't capitalize "Illustration"
+  r_\s*\[\s*Illustration\s*:\s*\]_[Illustration]_Take ":" out of captionless illustration tag
+
+  r_\[Fotnote_[Footnote_correct spelling of "Footnote"
+  r_\[(Foot|Side)not\b_[$1note_correct spelling of "Footnote" or "Sidenote"
+
+  Too much space:
+r_(\s+\[)(Illustration|Sidenote|Footnote)_<eleading space>$1<ZWJ>$2</e>_close up leading space
+r_\[(Illustration|Sidenote|Footnote)(\s*:\s{2,})_<e>[$1<ZWJ>$2</e>_close up space
+    \s\[Illustration:  \[Illustration: \close up space
+    \s\[Sidenote:  \[Sidenote: \close up space
+    \s\[Footnote:  \[Footnote: \close up space
+r_(\[Footnote)(\s{2,})_<espace>$1<ZWJ>$2</e>_close up space
+    \s\[Footnote  \[Footnote \close up space
+
+  r_\*+\[\**(Foot|Side)note:_[$1note:_remove asterisk(s)
+  r_\[\*+(Foot|Side)note:_[$1note:_remove asterisk(s)
+  r_\[Footnote\s*:\s*(\d+)_[Footnote $1:_move footnote number
+  r_\[Footnote\s*(\d+)\._[Footnote $1:_period for colon
+  r_\[(Foot|Side)note([^,\]]+),\]_[$1note$2.]_comma for period at end of note
+
+
+====================================
+  THIS GOES LAST!
+r_<e([^>]+)>_<ins class="error" title="$1?">_replace temporary <e> markup with ins
+r_<e>_<ins class="error">_replace temporary <e> markup with ins
+r_</e>_</ins>_replace temporary <e> markup with ins
+====================================
+
+    ERRORS END HERE!
+
+
+
+r_\[\^(\d)\]_<sup>$1</sup>_raised number
+  \s\[^1]\<sup>1</sup>\raised "1"
+
+r_^\/d$_<div class="drama">_Drama begins
+r_^d\/$_</div>_Drama ends
+
+s\/#note\<blockquote class="note"><p>\"Note-style" blockquote begins
+s\/#\<blockquote><p>\Block quote begins
+s\#/\</p></blockquote>\Block Quote ends
+r_^\/p$_/*_alternate poetry markup
+r_^p\/$_*/_alternate poetry markup
+r_^p\/p$_*/*_alternate poetry markup
+s\*/*\  </div><div class="stanza">\New stanza
+s\/*\<div class="poem">  <div class="stanza">\Poem begins
+s\*/\  </div>  </div>\Poem ends
+
+
+s\<p>>>\<p class="author">\">>author" markup (2)
+
+   SMALL CAPS
+r_<sc>_<span class="sc">_opening small-caps markup
+r_</sc>_</span>_closing small-caps markup
+
+r_<h(\d)sc>_<h$1 class="sc">_header in small caps
+
+   TABLES
+
+r_\/\$#<(.*)_<table summary="$1" align="left" border="1">_begin bordered table, left-aligned
+r_\/\$#>(.*)_<table summary="$1" align="right" border="1">_begin bordered table, right-aligned
+r_\/\$#\^(.*)_<table summary="$1" align="center" border="1">_begin bordered table, centered
+r_\/\$#\=(.*)_<table summary="$1" align="center" border="1">_begin bordered table, centered, new style
+r_\/\$#(.*)_<table summary="$1" align="center" border="1">_begin bordered table, centered (default)
+r_\/\$<(.*)_<table summary="$1" align="left">_begin table, left-aligned
+r_\/\$>(.*)_<table summary="$1" align="right">_begin table, right-aligned
+r_\/\$\^(.*)_<table summary="$1" align="center">_begin table, centered
+r_\/\$\=(.*)_<table summary="$1" align="center">_begin table, centered, new style
+r_\/\$(.*)_<table summary="$1" align="center">_begin table, centered (default)
+s\$/\</table>\end table
+r_^\s*\|<_<tr><td align="left">_begin a Table row, left-align first row element
+r_^\s*\|>_<tr><td align="right">_begin a Table row, right-align first row element
+r_^\s*\|\^_<tr><td align="center">_begin a Table row, center first row element
+r_^\s*\|\=_<tr><td align="center">_begin a Table row, center first row element, new style
+r_^\s*\|_<tr><td>_begin a Table row, default-align first row element
+r_\|\s*$_</td></tr>_end a Table row
+s_|<_</td><td align="left">_next Table row element, left-align this element
+s_|>_</td><td align="right">_next Table row element, right-align this element
+s_|^_</td><td align="center">_next Table row element, center this element
+s_|=_</td><td align="center">_next Table row element, center this element, new style
+s_|_</td><td>_next Table row element, default-align this element
+
+
+   subscripts & superscripts
+r~_\{([^\}]*)\}~<sub>$1</sub>~subscript
+r~\^\{([^\}]*)\}~<sup>$1</sup>~superscript
+
+
+   IMPORTANT: This line (if used) must come BEFORE defining any HTML character entities
+s\&\&amp;\ampersand
+
+
+s\<ZWJ>\&#x200d;\replace <ZWJ> by zero-width joiner character
+s\<jay>\j\replace <jay> by j
+
+       =A=
+
+s\[a]\&#592;\inverted "a"
+    Latin-1
+s_[\a]_&#224;_"a" with grave
+s_à_&#224;_"a" with grave
+s_[\A]_&#192;_"A" with grave
+s_À_&#192;_"A" with grave
+s\[/a]\&#225;\"a" with acute
+s\á\&#225;\"a" with acute
+s\[/A]\&#193;\"A" with acute
+s\Á\&#193;\"A" with acute
+s\[^a]\&#226;\"a" with circumflex
+s\â\&#226;\"a" with circumflex
+s\[^A]\&#194;\"A" with circumflex
+s\Â\&#194;\"A" with circumflex
+s\[~a]\&#227;\"a" with tilde
+s\ã\&#227;\"a" with tilde
+s\[~A]\&#195;\"A" with tilde
+s\Ã\&#195;\"A" with acute
+s\[:a]\&#228;\"a" with umlaut
+s\ä\&#228;\"a" with umlaut
+s\[:A]\&#196;\"A" with umlaut
+s\Ä\&#196;\"A" with umlaut
+s\[oa]\&#229;\"a" with circle, å
+s\å\&#229;\"a" with circle, å
+s\[oA]\&#197;\"A" with circle
+s\Å\&#197;\"A" with circle
+
+   non-Latin-1 ("&#256;" and above)
+s\[=A]\&#256;\"A" with macron
+s\[=a]\&#257;\"a" with macron
+s\[)A]\&#258;\"A" with breve
+s\[)a]\&#259;\"a" with breve
+s\[.A]\&#x0226;\"A" with dot above
+s\[.a]\&#x0227;\"a" with dot above
+s\[A,]\&#260;\"A" with ogonek
+s\[a,]\&#261;\"a" with ogonek
+s\[vA]\&#461;\"A" with caron
+s\[va]\&#462;\"a" with caron
+
+   combining characters
+s\[a:]\a&#x0324;\"a" with inferior diaeresis
+s\[a.]\a&#x0323;\"a" with inferior dot
+
+       =C=
+
+s\ç\&#231;\"c" with cedilla, ç
+s\[c,]\&#231;\"c" with cedilla, ç
+s\[c]\&#596;\reflected "c" ("open o")
+s\[C]\&#390;\reflected "C" ("open O")
+
+
+       =E=
+
+s\[E]\&#398;\reversed "E"
+s\[e]\&#601;\turned "e", schwa
+    Latin-1
+s_[\e]_&#232;_"e" with grave
+s_è_&#232;_"e" with grave
+s_[\E]_&#200;_"E" with grave
+s_È_&#200;_"E" with grave
+s\[/e]\&#233;\"e" with acute
+s\é\&#233;\"e" with acute
+s\[/E]\&#201;\"E" with acute
+s\É\&#201;\"E" with acute
+s\[^e]\&#234;\"e" with circumflex
+s\ê\&#234;\"e" with circumflex
+s\[^E]\&#202;\"E" with circumflex
+s\Ê\&#202;\"E" with circumflex
+s\[:e]\&#235;\"e" with umlaut
+s\ë\&#235;\"e" with umlaut
+s\[:E]\&#203;\"E" with umlaut
+s\Ë\&#203;\"E" with umlaut
+
+   non-Latin-1
+s\[=E]\&#274;\"E" with macron
+s\[=e]\&#275;\"e" with macron
+s\[)E]\&#276;\"E" with breve
+s\[)e]\&#277;\"e" with breve
+s\[.E]\&#278;\"E" with dot above
+s\[.e]\&#279;\"e" with dot above
+s\[E,]\&#280;\"E" with ogonek
+s\[e,]\&#281;\"e" with ogonek
+s\[Ec]\&#x0228;\"E" with cedilla
+s\[ec]\&#x0229;\"e" with cedilla
+s\[vE]\&#282;\"E" with caron
+s\[ve]\&#283;\"e" with caron
+s\[~e]\&#x1EBD;\"e" with tilde
+s\[~E]\&#x1EBC;\"E" with tilde
+
+   combining characters
+s\[=EE]\E&#862;E\double "E" with macron
+s\[=ee]\e&#862;e\double "e" with macron
+s\[)EE]\E&#861;E\double "E" with breve
+s\[)ee]\e&#861;e\double "e" with breve
+
+      =F=
+
+s\[f]\&#607;\dotless j with stroke (looks like inverted f)
+
+      =G=
+
+s\[=G]\&#x1E20;\"G" with macron
+s\[=g]\&#x1E21;\"g" with macron
+s\[.g]\&#x121;\"g" with macron
+
+      =H=
+
+s\[h]\&#613;\turned "h"
+
+      =I=
+
+   Latin-1
+s_[\i]_&#237;_"i" with grave, ì
+s_ì_&#237;_"i" with grave, ì
+s_[\I]_&#205;_"I" with grave
+s_Ì_&#205;_"I" with grave
+s\[/i]\&#237;\"i" with acute, í
+s\í\&#237;\"i" with acute, í
+s\[/I]\&#205;\"I" with acute
+s\Í\&#205;\"I" with acute
+s\[^i]\&#238;\"i" with circumflex, 
+s\î\&#238;\"i" with circumflex, 
+s\[^I]\&#206;\"I" with circumflex
+s\Î\&#206;\"I" with circumflex
+s\[:I]\&#207;\"I" with umlaut
+s\Ï\&#207;\"I" with umlaut
+s\[:i]\&#239;\"i" with umlaut
+s\ï\&#239;\"i" with umlaut
+
+   non-Latin-1 ("&#256;" and above)
+s\[~I]\&#296;\"I" with tilde
+s\[~i]\&#297;\"i" with tilde
+s\[=I]\&#298;\"I" with macron
+s\[=i]\&#299;\"i" with macron
+s\[)I]\&#300;\"I" with breve
+s\[)i]\&#301;\"i" with breve
+s\[I,]\&#302;\"I" with ogonek
+s\[i,]\&#303;\"i" with ogonek
+s\[.I]\&#304;\"I" with dot
+s\[.i]\&#305;\"i" without dot(!)
+s\[vI]\&#463;\"I" with caron
+s\[vi]\&#464;\"i" with caron
+
+      =J=
+   (See "F")
+
+      =K=
+
+s\[k]\&#670;\inverted "k"
+
+      =M=
+
+s\[m]\&#623;\turned "m"
+
+      =N=
+
+s\[n]\<sup>n</sup>\raised "n"
+s\[~n]\&#241;\"n" with tilde
+s\ñ\&#241;\"n" with tilde
+s\[~N]\&#209;\"N" with tilde
+s\Ñ\&#209;\"N" with tilde
+
+
+      =O=
+
+s_[\o]_&#242;_"o" with grave
+s\ò\&#242;\"o" with grave
+s_[\O]_&#210;_"O" with grave
+s\Ò\&#210;\"O" with grave
+s\[/o]\&#243;\"o" with acute
+s\ó\&#243;\"o" with acute
+s\[/O]\&#211;\"O" with acute
+s\Ó\&#211;\"O" with acute
+s\[^o]\&#244;\"o" with circumflex
+s\ô\&#244;\"o" with circumflex
+s\[^O]\&#212;\"O" with circumflex
+s\Ô\&#212;\"O" with circumflex
+s\[~o]\&#245;\"o" with tilde
+s\õ\&#245;\"o" with tilde
+s\[~O]\&#213;\"O" with tilde
+s\Õ\&#213;\"O" with tilde
+s\[:O]\&#214;\"O" with umlaut
+s\Ö\&#214;\"O" with umlaut
+s\[:o]\&#246;\"o" with umlaut
+s\ö\&#246;\"o" with umlaut
+
+   non-Latin-1
+s\[=O]\&#332;\"O" with macron
+s\[=o]\&#333;\"o" with macron
+s\[)O]\&#334;\"O" with breve
+s\[)o]\&#335;\"o" with breve
+s\[.O]\&#x022E;\"O" with dot
+s\[.o]\&#x022F;\"o" with dot
+s\[O.]\&#x1ECC;\"O" with inferior dot
+s\[o.]\&#x1ECD;\"o" with inferior dot
+
+      =R=
+
+s\[r]\&#633;\turned "r"
+
+      =T=
+
+s\[t]\\turned "t"
+
+      =U=
+
+s_[\u]_&#249;_"u" with grave, ù
+s_ù_&#249;_"u" with grave, ù
+s_[\U]_&#217;_"U" with grave
+s_Ù_&#217;_"U" with grave
+s\[/u]\&#250;\"u" with acute, ú
+s\ú\&#250;\"u" with acute, ú
+s\[/U]\&#218;\"U" with acute
+s\Ú\&#218;\"U" with acute
+s\[^u]\&#251;\"u" with circumflex, 
+s\û\&#251;\"u" with circumflex, 
+s\[^U]\&#219;\"U" with circumflex
+s\Û\&#219;\"U" with circumflex
+s\[:u]\&#252;\"u" with umlaut
+s\ü\&#252;\"u" with umlaut, ü
+s\[:U]\&#220;\"U" with umlaut
+s\Ü\&&#220;\"U" with umlaut
+
+   non-Latin-1
+s\[~U]\&#360;\"U" with tilde
+s\[~u]\&#361;\"u" with tilde
+s\[=U]\&#362;\"U" with macron
+s\[=u]\&#363;\"u" with macron
+s\[)U]\&#364;\"U" with breve
+s\[)u]\&#365;\"u" with breve
+s\[oU]\&#366;\"U" with ring
+s\[ou]\&#367;\"u" with ring
+s\[U,]\&#370;\"U" with ogonek
+s\[u,]\&#371;\"u" with ogonek
+s\[U.]\&#x1EE4;\"U" with inferior dot
+s\[u.]\&#x1EE5;\"u" with inferior dot
+s\[U:]\&#x1E72;\"U" with inferior double-dot
+s\[u:]\&#x1E73;\"u" with inferior double-dot
+
+
+     =V=
+
+s\[v]\&#652;\turned "v"
+
+     =W=
+
+s\[w]\&#653;\turned "w"
+
+     =Y=
+
+   non-Latin-1
+s\[y]\&#654;\turned "y"
+s\[/Y]\&#221;\"Y" with acute
+s\[/y]\&#253;\"y" with acute
+s\[:Y]\&#159;\"Y" with umlaut
+s\[:y]\&#255;\"y" with umlaut
+s\[=Y]\&#x0232;\"Y" with macron
+s\[=y]\&#x0233;\"y" with macron
+
+s\[)y]\y&#x0306;\"y" with breve
+
+     =SPECIAL CHARACTERS=
+
+s\[!]\&#161;\inverted "!"
+
+s\[schwa]\&#601;\schwa (inverted "e")
+   s\[schwa]\&#x0259;\schwa (inverted "e")
+s\[ezh]\&#x0292;\ezh character
+
+
+   letters with diacritical marks (for BAE); use HTML character entities
+s\[~A]\&Atilde;\"A" with tilde
+s\[~E]\&Etilde;\"E" with tilde
+s\[~N]\&Ntilde;\"N" with tilde
+s\[~O]\&Otilde;\"O" with tilde
+s\[:A]\&Auml;\"A" with umlaut
+s\[:E]\&Euml;\"E" with umlaut
+s\[:I]\&Iuml;\"I" with umlaut
+s\[:O]\&Ouml;\"O" with umlaut
+s\[:U]\&Uuml;\"U" with umlaut
+s\[~a]\&atilde;\"a" with tilde
+s\[~e]\&etilde;\"e" with tilde
+s\[~n]\&ntilde;\"n" with tilde
+s\[~o]\&otilde;\"o" with tilde
+s\[:a]\&auml;\"a" with umlaut
+s\[:e]\&euml;\"e" with umlaut
+s\[:i]\&iuml;\"i" with umlaut
+s\[:o]\&ouml;\"o" with umlaut
+s\[:u]\&uuml;\"u" with umlaut
+
+
+   Greek letters; use HTML character entities
+s_[Alpha]_&Alpha;_Greek letter
+s_[Beta]_&Beta;_Greek letter
+s_[Gamma]_&Gamma;_Greek letter
+s_[Delta]_&Delta;_Greek letter
+s_[Epsilon]_&Epsilon;_Greek letter
+s_[Zeta]_&Zeta;_Greek letter
+s_[Eta]_&Eta;_Greek letter
+s_[Theta]_&Theta;_Greek letter
+s_[Iota]_&Iota;_Greek letter
+s_[Kappa]_&Kappa;_Greek letter
+s_[Lambda]_&Lambda;_Greek letter
+s_[Mu]_&Mu;_Greek letter
+s_[Nu]_&Nu;_Greek letter
+s_[Xi]_&Xi;_Greek letter
+s_[Omicron]_&Omicron;_Greek letter
+s_[Pi]_&Pi;_Greek letter
+s_[Rho]_&Rho;_Greek letter
+s_[Sigma]_&Sigma;_Greek letter
+s_[Tau]_&Tau;_Greek letter
+s_[Upsilon]_&Upsilon;_Greek letter
+s_[Phi]_&Phi;_Greek letter
+s_[Chi]_&Chi;_Greek letter
+s_[Psi]_&Psi;_Greek letter
+s_[Omega]_&Omega;_Greek letter
+s_[alpha]_&alpha;_Greek letter
+s_[beta]_&beta;_Greek letter
+s_[gamma]_&gamma;_Greek letter
+s_[delta]_&delta;_Greek letter
+s_[epsilon]_&epsilon;_Greek letter
+s_[zeta]_&zeta;_Greek letter
+s_[eta]_&eta;_Greek letter
+s_[theta]_&theta;_Greek letter
+s_[iota]_&iota;_Greek letter
+s_[kappa]_&kappa;_Greek letter
+s_[lambda]_&lambda;_Greek letter
+s_[mu]_&mu;_Greek letter
+s_[nu]_&nu;_Greek letter
+s_[xi]_&xi;_Greek letter
+s_[omicron]_&omicron;_Greek letter
+s_[pi]_&pi;_Greek letter
+s_[rho]_&rho;_Greek letter
+s_[sigmaf]_&sigmaf;_Greek letter
+s_[sigma]_&sigma;_Greek letter
+s_[tau]_&tau;_Greek letter
+s_[upsilon]_&upsilon;_Greek letter
+s_[phi]_&phi;_Greek letter
+s_[chi]_&chi;_Greek letter
+s_[psi]_&psi;_Greek letter
+s_[omega]_&omega;_Greek letter
+
+     OTHER HTML ENTITIES
+
+s_[nbsp]_&nbsp;_non-breaking space
+
+
+s\/$\<pre>\pre-formatted begins
+s\$/\</pre>\pre-formatted ends
+
+s\<p>          \<p class="i10">\Indent extra 10 spaces
+s\<p>        \<p class="i8">\Indent extra 8 spaces
+s\<p>      \<p class="i6">\Indent extra 6 spaces
+s\<p>    \<p class="i4">\Indent extra 4 spaces
+s\<p>  \<p class="i2">\Indent extra 2 spaces
+
+r_<link ([^>]+)>([^<]+)<\/link>_<a href="#$1">$2</a>_link
+r_<p><anchor\s*([^>]*)>([^<]*)</anchor></p>_<a name="$1" id="$1"></a>$2_anchor
+r_<anchor\s*([^>]*)>([^<]*)</anchor>_<a name="$1" id="$1"></a>$2_anchor
+r_<p><anchor\s*([^>]*)><h2>([^<]*)</h2></anchor></p>_<a name="$1" id="$1"></a><h2>$2</h2>_anchor
+r_<p><anchor\s*([^>]*)><h3>([^<]*)</h3></anchor></p>_<a name="$1" id="$1"></a><h3>$2</h3>_anchor
+r_<p><anchor\s*([^>]*)><h4>([^<]*)</h4></anchor></p>_<a name="$1" id="$1"></a><h4>$2</h4>_anchor
+
+   SELF-CLOSED ANCHORS <anchor name />
+r_<anchor\s*([^\/]*)\/>_<a name="$1" id="$1"></a>_anchor
+
+r_<anchor\s*([^>]*)><h2>([^<]*)</h2></anchor>_<a name="$1" id="$1"></a><h2>$2</h2>_anchor
+r_<anchor\s*([^>]*)><h3>([^<]*)</h3></anchor>_<a name="$1" id="$1"></a><h3>$2</h3>_anchor
+r_<anchor\s*([^>]*)><h4>([^<]*)</h4></anchor>_<a name="$1" id="$1"></a><h4>$2</h4>_anchor
+
+\Make sure you handle Page Separators and ampersands before treating dashes!
+s\--\&mdash;\em dash
+
+   Footnotes:
+r_\[(\d{1,3})\]_<a id="footnotetag$1" name="footnotetag$1"></a><a href="#footnote$1"><sup>$1</sup></a>_Footnote
+   If the closing bracket "]" falls on same line, capture the footnote caption.
+r_\[Footnote (\d+): ([^\]]+)\]_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1: </b><a href="#footnotetag$1">(return) </a><p>$2</p></blockquote>_Footnote
+   Can't find closing bracket; treat as well as possible
+r_\[Footnote (\d+):_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1: </b><a href="#footnotetag$1">(return) </a><p>***Put footnote text here***</p></blockquote>_Footnote
+
+
+  Sidenotes: (note that it grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote: ([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote
+
+
+   Help for Tables of Contents and Indices and "See p. ***"
+r_##(\d+)_<a href="#page$1">$1</a>_Go to page #
+r_##([ivxlc]+)_<a href="#page$1">$1</a>_Go to page #
+  \s\##\<a href="#page***">***</a></br>\Go to page #***
+

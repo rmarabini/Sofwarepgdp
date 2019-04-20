@@ -1,0 +1,61 @@
+\GCdefine.txt
+\Style definition file for GutCutter 0.3
+\ 4 January 2006
+\
+\For each style, this file defines, in order:
+\   1. Style name
+\   2. Plain-text conversion filename
+\   3. Plain-text header filename
+\   4. Plain-text trailer filename
+\   5. HTML conversion filename
+\   6. HTML header filename
+\   7. HTML trailer filename
+\Each of these is defined on a single line of text, in order, separated by backslashes.
+\Comment lines begin with backslashes.
+\
+Vanilla HTML\GCstyle0.txt\Empty.txt\Empty.txt\VanillaStyle.txt\VanillaHeader.txt\VanillaTrailer.txt
+\
+Show Errors (HTML only)\\\\ERRORstyle.txt\ERRORheader.txt\MiniHTMLtrailer.txt
+\
+Punch\GCstyle0.txt\PunchPTheader.txt\Empty.txt\PunchStyle.txt\PunchHTMLheader.txt\PunchHTMLtrailer.txt
+\
+My style\GCstyle0.txt\Empty.txt\Empty.txt\MYstyle.txt\MYheader.txt\MyHTMLtrailer.txt
+\
+Encyc. Brit.\GCstyle0.txt\Empty.txt\Empty.txt\EBstyle.txt\EBheader.txt\EBtrailer.txt
+\
+Amer. Miss.\GCstyle0.txt\Empty.txt\Empty.txt\AMstyle.txt\AMheader.txt\MyHTMLtrailer.txt
+\
+Euro style (UTF-8)\GCstyle0.txt\Empty.txt\Empty.txt\Eurostyle.txt\Euroheader.txt\MyHTMLtrailer.txt
+\
+Earths\EarthsPTstyle.txt\Empty.txt\Empty.txt\Earthstyle.txt\Earthheader.txt\MiniHTMLtrailer.txt
+\
+Women (Latin-1)\GCstyle0.txt\WomenNote.txt\Empty.txt\WomenStyle.txt\WomenHeader.txt\MyHTMLtrailer.txt
+\
+Women (UTF-8 Text only)\WomenUTF8.txt\WomenNote.txt\Empty.txt\\\
+\
+7-bit phonetic (Text only)\7style.txt\7head.txt\Empty.txt\\\
+\
+Intl. Weekly Misc.\GCstyle0.txt\IWMPTheader.txt\Empty.txt\IWMHTMLstyle.txt\IWMHTMLheader.txt\MyHTMLtrailer.txt
+\
+Lippincott's\GCstyle0.txt\LipPTheader.txt\Empty.txt\LipHTMLStyle.txt\LipHTMLheader.txt\PunchHTMLtrailer.txt
+\
+Mirror\GCstyle0.txt\MirrorPTheader.txt\Empty.txt\MirrorHTMLstyle.txt\MirrorHTMLheader.txt\MirrorHTMLtrailer.txt
+\
+Sci. Am.\SAPTstyle.txt\SAPTheader.txt\Empty.txt\SAHTMLstyle.txt\SAHTMLheader.txt\MiniHTMLtrailer.txt
+\
+Antique\AntPTstyle.txt\Empty.txt\Empty.txt\AnyHTMLstyle.txt\FMHTMLheader.txt\MiniHTMLtrailer.txt
+\
+The Full Monty\FMPTstyle.txt\Empty.txt\Empty.txt\FMHTMLstyle.txt\FMHTMLheader.txt\MiniHTMLtrailer.txt
+\
+Notes & Queries\N&QPTstyle.txt\N&QPTheader.txt\Empty.txt\N&QHTMLstyle.txt\N&QHTMLheader.txt\N&QHTMLtrailer.txt
+\
+Indoor Games\GCstyle0.txt\Empty.txt\Empty.txt\GamesHTMLStyle.txt\GamesHTMLheader.txt\PunchHTMLtrailer.txt
+\
+Pure English (Unicode)\PureEngPTstyle.txt\Empty.txt\Empty.txt\PureEngHTMLstyle.txt\PureEngHTMLheader.txt\MyHTMLtrailer.txt
+\
+Sign Language\GCstyle0.txt\Empty.txt\Empty.txt\SignStyle.txt\SignHeader.txt\MyHTMLtrailer.txt
+\
+Enigma\GCstyle0.txt\Empty.txt\Empty.txt\EnigmaStyle.txt\EnigmaHTMLheader.txt\MyHTMLtrailer.txt
+\
+Housewife\GCstyle0.txt\Empty.txt\Empty.txt\HouseHTMLStyle.txt\HouseHTMLHeader.txt\MiniHTMLtrailer.txt
+\

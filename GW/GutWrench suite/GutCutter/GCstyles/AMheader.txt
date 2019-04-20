@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>American Missionary - November, 1888.</title>
+    <style title="Standard Format" type="text/css">
+    /*<![CDATA[*/
+  <!--
+  body                 {margin-left: 10%; margin-right: 10%;}
+  p                    {text-align: justify;}
+  p.TOC                {text-align: left; font-variant: small-caps;}
+  p.sc                 {font-variant: small-caps;}
+  html>body p.TOC      {margin-left: 20%; margin-right: 20%;}
+  blockquote           {text-align: justify;}
+  h1,h2,h3,h4,h5,h6    {text-align: center;}
+  pre                  {font-size: 1.0em;}
+  hr                   {text-align: center; width: 50%;}
+  html>body hr         {margin-right: 25%; margin-left: 25%; width: 50%;}
+  hr.full              {width: 100%;}
+  html>body hr.full    {margin-right: 0%; margin-left: 0%; width: 100%;}
+  hr.short      {text-align: center; width: 20%;}
+  html>body hr.short   {margin-right: 40%; margin-left: 40%; width: 20%;}
+  .footnote            {font-size: 0.9em; margin-left: 10%; margin-right: 10%;}
+    /* To hide page numbers */
+    .newpage { display: none; }
+    /* To display right-aligned line numbers */
+    .poem {
+      margin: 0em 10% 0em 10%;
+      text-align: left;
+    }
+    .poem .stanza {
+      margin: 1em 0em 1em 0em;
+    }
+    .poem .author {
+      text-align: right;
+    }
+    .poem .line:after {
+      display: block;
+      content: attr(title);
+      text-align: right;
+    }
+    /* To indent wrapped lines */
+    .poem .line   {
+      height: auto;
+      margin-left: 3em;
+      text-indent: -3em;
+    }
+  .figure, .figcenter, .figright, .figleft
+  {padding: 1em; margin: 0; text-align: center; font-size: 0.8em;}
+  .figure img, .figcenter img, .figright img, .figleft img
+                       {border: none;}
+  .figure p, .figcenter p, .figright p, .figleft p
+                       {margin: 0; text-align: center;}
+  .figcenter           {margin: auto;}
+  .figright            {float: right;}
+  .figleft             {float: left;}
+span.rightnote {
+position: absolute;
+left: 88%;
+right: 1%;
+font-size: 0.7em;
+border-bottom: solid 1px;
+text-align: left;
+}
+  table.receipts       {margin-top: 2em; margin-left: 10%; width: 75%;}
+  table.estates        {margin-left: 10%; width: 75%;}
+/* Use this if there are inline transliterations. */
+/*    [lang][title]:after {content: " [Trans: " attr(title) "]";} */
+  -->
+    /*]]>*/
+                </style>
+    <style title="Original Page Numbers" type="text/css">
+    /*<![CDATA[*/
+  <!--
+  body                 {margin-left: 10%; margin-right: 10%;}
+  p                    {text-align: justify;}
+  p.TOC                {text-align: left; font-variant: small-caps;}
+  p.sc                 {font-variant: small-caps;}
+  html>body p.TOC      {margin-left: 20%; margin-right: 20%;}
+  blockquote           {text-align: justify;}
+  h1,h2,h3,h4,h5,h6    {text-align: center;}
+  pre                  {font-size: 1.0em;}
+  hr                   {text-align: center; width: 50%;}
+  html>body hr         {margin-right: 25%; margin-left: 25%; width: 50%;}
+  hr.full              {width: 100%;}
+  html>body hr.full    {margin-right: 0%; margin-left: 0%; width: 100%;}
+  hr.short      {text-align: center; width: 20%;}
+  html>body hr.short   {margin-right: 40%; margin-left: 40%; width: 20%;}
+  .footnote            {font-size: 0.9em; margin-left: 10%; margin-right: 10%;}
+    /* To show page numbers */
+    .newpage {position: absolute; left: 1%; right: 91%; font-size: 8pt;}
+    /* To display right-aligned line numbers */
+    .poem {
+      margin: 0em 10% 0em 10%;
+      text-align: left;
+    }
+    .poem .stanza {
+      margin: 1em 0em 1em 0em;
+    }
+    .poem .author {
+      text-align: right;
+    }
+    .poem .line:after {
+      display: block;
+      content: attr(title);
+      text-align: right;
+    }
+    /* To indent wrapped lines */
+    .poem .line   {
+      height: auto;
+      margin-left: 3em;
+      text-indent: -3em;
+    }
+  .figure, .figcenter, .figright, .figleft
+  {padding: 1em; margin: 0; text-align: center; font-size: 0.8em;}
+  .figure img, .figcenter img, .figright img, .figleft img
+                       {border: none;}
+  .figure p, .figcenter p, .figright p, .figleft p
+                       {margin: 0; text-align: center;}
+  .figcenter           {margin: auto;}
+  .figright            {float: right;}
+  .figleft             {float: left;}
+span.rightnote {
+position: absolute;
+left: 88%;
+right: 1%;
+font-size: 0.7em;
+border-bottom: solid 1px;
+text-align: left;
+}
+  table.receipts       {margin-top: 2em; margin-left: 10%; width: 75%;}
+  table.estates        {margin-left: 10%; width: 75%;}
+/* Use this if there are inline transliterations. */
+/*    [lang][title]:after {content: " [Trans: " attr(title) "]";} */
+  -->
+    /*]]>*/
+                </style>
+  </head>
+  <body>
+    <a name="page295" id="page295"></a><span class="newpage">[pg 295]</span>
+    <h1>The American Missionary</h1>
+    <hr class="short" />
+    <center>
+      November 1888
+    </center>
+    <center>
+      Volume XLII. No. I
+    </center> 

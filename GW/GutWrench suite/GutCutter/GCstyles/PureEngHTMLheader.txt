@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=user-defined" /> 
+
+  <title>Pure English, Tract No. ***.</title> 
+
+  <style type="text/css"> 
+  <!-- 
+  body                 {margin-left: 10%; margin-right: 10%;} 
+  p                    {text-align: justify;} 
+  blockquote           {text-align: justify;} 
+  h1,h2,h3,h4,h5,h6    {text-align: center;} 
+  pre                  {font-size: 0.7em;} 
+  .sc                  {font-variant: small-caps;}
+
+  hr                   {text-align: center; width: 50%;} 
+  html>body hr         {margin-right: 25%; margin-left: 25%; width: 50%;} 
+  hr.full              {width: 100%;} 
+  html>body hr.full    {margin-right: 0%; margin-left: 0%; width: 100%;} 
+  hr.short             {text-align: center; width: 20%;} 
+  html>body hr.short   {margin-right: 40%; margin-left: 40%; width: 20%;} 
+
+  .note
+  {margin-left: 10%; margin-right: 10%; font-size: 0.9em;} 
+
+  span.pagenum 
+  {position: absolute; left: 1%; right: 91%; font-size: 8pt;} 
+
+  .poem 
+  {margin-left:10%; margin-right:10%; margin-bottom: 1em; text-align: left;} 
+  .poem .stanza        {margin: 1em 0em 1em 0em;} 
+  .poem p              {margin: 0; padding-left: 3em; text-indent: -3em;} 
+  .poem p.i2           {margin-left: 1em;} 
+  .poem p.i4           {margin-left: 2em;} 
+  .poem p.i6           {margin-left: 3em;} 
+  .poem p.i8           {margin-left: 4em;} 
+  .poem p.i10          {margin-left: 5em;} 
+
+  .footnote            {font-size: 0.9em; margin-right: 10%; margin-left: 10%;}
+
+  .side { float:right;
+          font-size: 0.9em;
+          width: 25%;
+          padding-left:10px;
+          margin-left: 10px;
+          text-align: left;
+          text-indent: 0;
+          font-weight: bold;
+          font-style: italic;}
+
+  p.author {text-align: right;} 
+
+  div.trans-note {border-style: solid; border-width: 1px;
+      margin: 2em 15%; padding: 1em; text-align: center;}
+  --> 
+  </style> 
+</head> 
+<body> 
+    <div class="trans-note">
+        Transcriber's Note: ***Special phonetic characters are represented by the following symbols:
+
+[e] = upside-down "e" = schwa
+
+[er] = italicized inverted "e" = r-colored schwa
+
+[a] = lower-case alpha
+
+[o] = open "o" (appears as upside-down "c") = open-mid back rounded vowel
+
+[s] = "esh" (or long "s") character = voiceless palatoalveolar (or postalveolar) fricative
+
+[ng] = "eng" character = velar nasal
+
+[=u] = "u" with macron
+
+[z] = "ezh" (or "yogh") character = voiced palatoalveolar (or postalveolar) fricative***
+    </div>
+<hr class="full" />
+ <h1><i>S.P.E.</i></h1> 
+
+  <h1><i>Tract No. ***</i></h1>
+  <h2>ON</h2>
+  <h1>***********</h1>
+  <h3>BY</h3>
+  <h1>Robert Bridges</h1> 
+  <hr class="full" /> 
+
+  <hr class="full" /> 

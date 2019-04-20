@@ -1,0 +1,29 @@
+ExeRunner--What will DPers find it good for?
+
+Use it to run pg2html or linkchk. The command you want to run looks like this:
+
+> pg2html.exe Mytext.txt > Myhtml.htm
+
+or
+
+> linkchk.exe Mytext.htm > linkout.txt
+
+where Mytext.txt is the name of the text file, and Myhtml.htm will
+be the name of the resulting HTML file. Follow these instructions:
+
+1. Copy or move the ExeRunner.exe and pg2html.exe applications into 
+the folder containing the text file you are working on.
+2. Launch ExeRunner.exe (double-click it).
+3. In the left menu, select pg2html.exe.
+4. In the middle menu, select the text file to be converted to HTML.
+5. In the frame at right, select the bottom radio button to enter the
+name of a new .htm file to be created in the textbox. Alternatively,
+select an existing file to overwrite from the right-hand menu.
+6. Make sure the "Insert >" checkbox is selected.
+7. Click "Run".
+8. Answer the Message Box as to whether it is to run the proper command.
+9. If you clicked "Yes", close the new Message Box by clicking "OK" and
+close the Command Prompt window by clicking it and typing any letter.
+If you clicked "No", choose new settings and go back to Step 7.
+If you get stuck ("Run" won't work), click on the file names again.
+10. Close ExeRunner.exe by clicking the "x" box at upper right. 

@@ -1,0 +1,193 @@
+These are instructions on how to use GutCutter and GutHammer to help make an HTML version of an e-text for the Scientific American ("SciAm") project. You should have some familiarity with the basic scheme, which you can find laid out in detail in the DP Forum under Uberprojects --> SciAm.
+
+This is the version of these instructions of 22 June 2004 for GutCutter Version 0.3.
+
+You are going to make both a plain-text version and an HTML version, in three Phases. The first phase is to make a well-marked-up version, copies of which will be further worked on in the other two phases to produce both final versions.
+
+       *       *       *       *       *
+
+PHASE ONE. Error-checking and adding a little more mark-up.
+
+1. Optionally, first run GutSweeper on the text file. Then go thru the text with an editor:
+
+a) Add HTML Header markups as appropriate:
+<h2>...</h2> about chapter or major article titles;
+<h3>...</h3> about sub-titles or titles of small articles, and perhaps about titles of figures;
+<h4>...</h4> for smaller headings.
+
+b) Move Illustrations out of articles (unless they are part of the article). Separate them from surrounding articles (or each other) with Thought Breaks.
+
+Optional: Modify "[Illustration:" like these examples:
+"[Illustration 60:" scales the image to 60% (centered). (Any whole-number percentage is accepted.)
+"[Illustration L40:" scales the image to 40% and floats it left. (Any whole-number percentage is accepted.)
+"[Illustration R30:" scales the image to 30% and floats it right. (Any whole-number percentage is accepted.)
+"[Illustration C:" or "[Illustration:" leaves it centered, 100% scale.
+"[Illustration L:" or "[Illustration R:" floats left or right, 50% scale (default).
+"Float" means justify it to one side and wrap the text around it.
+This step will save you having to scale the figures in the HTML later.
+
+c) Adjust mark-ups:
+Change /*...*/ to /#...#/ around Block Quotes.
+Change /*...*/ to /$...$/ where needed. (But for best results, try to avoid using this mark-up, since it results in <pre>...</pre> HTML markups.)
+(Leave /*...*/ around poetry.)
+
+For help with setting up HTML tables, see the bottom of this file.
+
+2. Change any _low-line mark-ups_ of italics to <i>HTML style</i>.
+
+If you would like to have abbreviations like "etc." and "et al." appear in italics in the HTML, add tags around them now. (They will be stripped out automatically when you create the plain-text version with GutCutter.)
+
+3. Use out-of-line footnotes. Move them to the end of the article in which they appear. Number footnotes consecutively throughout the entire issue.
+
+4. Proofread and check for errors in the usual manner:
+GutAxe
+Gutcheck (Guiguts is recommended!)
+GutWrench
+Spellchecker
+(See the Checklist that comes with the GutWrench suite.)
+
+5. Inspect.
+
+6. You have completed making a "well-marked-up" version. Make a copy and keep it in a safe place. This file will be converted in Phases Two and Three into both the plain-text version and the HTML version.
+
+       *       *       *       *       *
+
+PHASE TWO: make the plain-text version:
+
+1. Optional: If you are planning to work on multiple similar projects, such as issues of a periodical, you can set up file header0.txt with a typical title header, which GC will add at the beginning of the output file; you can later edit the GC output with the correct information for this edition. 
+
+For SciAm, the header0.txt file should look like this:
+
+PUNCH, OR THE LONDON CHARIVARI.
+
+VOLUME 153.
+
+
+
+September 5, 1917.
+
+That is, Title, blank line, Volume number, three blank lines, date.
+Leave four blank lines after the date before the title of the first article.
+
+2. Run GutCutter  on the file you made in Phase One with 
+(radio button) Output As ... Plain Text
+and
+(menu) Style --> SciAm
+selected. This will do the following:
+--Replace HTML <hx>header</hx> tags by <b>bold</b> tags
+--Remove DP-style Page Separators.
+--Remove italics markups that shouldn't be used (e.g., around <i>e.g.</i>, <i>etc.</i>)
+--Restore the fancy markups introduced here back to the DP standard that's handled by most of the standard PP tools.
+
+GutCutter's output is named GCout.txt. Continue working with this file.
+
+3. Patch up any words that were hyphenated across Page Separators (or italics or bold markup that was interrupted by a Page Separator).
+
+4. Run GutHammer to re-wrap the text. (If you prefer, use RewrapIndent or Guiguts.)
+Adjust GutHammer's settings to also:
+--Apply an additive indent (select "Add") of 2 spaces to Poetry.
+--Change <i>HTML-style italics mark-up</i> to _low-line markup_.
+--Change text within <b>HTML-style bold mark-up</b> to ALL CAPS.
+
+5. Make a final inspection.
+
+       *       *       *       *       *
+
+PHASE THREE: make the HTML version. Start again with the well-marked-up version you made in Phase One. If you found any errors in making the plain-text version, correct them also in this file.
+
+1. Prepare the image files for the Illustrations by cropping them from the page scans (use IrfanView or Photoshop). Name them according to any convenient scheme. A suggested scheme is "PAGENUMBER.png", where PAGENUMBER is the page number (e.g., 123.png, where 123 is the page number). If there is more than one illustration on a page, name them "PAGENUMBER-1.png", etc. Put them in a folder named "images".
+
+2. Run GutCutter again on the file you made in Phase One but with "Output As ... HTML" selected, and using Style #5 (The Full Monty). The output of this program is named GCout.htm.
+
+3. In the title area of the header, add the volume number and the date.
+
+4. Fix up the page numbers. The output from GutCutter will look like this (where 002 is the scan image number):
+
+<span class="pagenum"><a name="page002" id="page002"></a>[pg 002]</span>
+
+This should be repaired to look like this (where the page number is 123):
+
+<span class="pagenum"><a name="page123" id="page123"></a>[pg 123]</span>
+                                   ^^^          ^^^          ^^^
+(A little trick: in the first editing pass through the file in Phase One, replace the scan numbers in the Page Separators with the page numbers. Then this step will already be partly done.)
+
+5. Fix up the Footnotes. In the GutCutter output, the tags (i.e., [3]) are automatically handled (may need number adjusted), and the footnotes may look like this:
+
+<a name="Footnote_3"></a><a href="#FNanchor_3">[3]</a><div class="note">***put text here***</div> This is the real footnote text.]
+
+Repair it to look like this:
+
+<a name="Footnote_3"></a><a href="#FNanchor_3">[3]</a><div class="note">This is the real footnote text.</div>
+
+(A little trick: If, in the well-marked-up version, the footnote text falls all on a single line, it will be handled completely automatically by GutCutter and require no clean-up.)
+
+6. Fix up the Table of Contents and the Index. GutCutter's output looks like this:
+
+Chapter I    <a href="#page***">***</a></br>5
+Chapter II  <a href="#page***">***</a></br>21
+Chapter III <a href="#page***">***</a></br>40
+
+Change this to:
+
+Chapter I    <a href="#page5">5</a></br>
+Chapter II  <a href="#page21">21</a></br>
+Chapter III <a href="#page40">40</a></br>
+
+7. Fix up the figure captions. The output from GutCutter will look like this:
+
+<div class="figcenter" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>??CAPTION??</p></div> <b>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</b>
+WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."]</p>
+
+This should be repaired to look like this (where the figure's image file is named "123.png"):
+
+<div class="figcenter" style="width:75%;"><a href="images/123.png"><img width="100%" src="images/123.png" alt="" /></a><h3>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</h3>
+<p>WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."</p></div>
+
+Don't forget to adjust the parameter "width:50%;" so that the percentage reflects the width of the image with respect to the original page (i.e., full width = 100%). Also, if the figure is associated with the surrounding text, change "figcenter" to "figright" or "figleft" and use "width:50%;" or smaller.
+
+8. Open with your favorite web-browser to inspect.
+
+9. Clean up your file with Tidy, and validate it at http://validator.w3.org/.
+
+You're done!
+
+       *       *       *       *       *
+
+HELP WITH SETTING UP HTML TABLES
+
+GutCutter can help with setting up HTML tables. You will have to type in a few extra characters, which GutCutter will convert to HTML markup. These characters and other HTML markups will be removed by GutCutter in preparing the plain-text version.
+
+1. Add <table ...> and </table> tags around the table.
+
+2. Optionally, put the table caption in <caption ...> and </caption> tags (or don't, but put it outside the table).
+
+3. Separate the table columns with vertical-line characters "|".
+
+4. Optionally, the horizontal alignment of each table element can be adjusted by adding a character immediately after the preceding "|":
+    |< for left-align
+    |> for right-align
+    |^ for centered
+
+5. Before running GutCutter, activate the lines for performing these operations in the files SAPTstyle.txt and SAHTMLstyle.txt (contained in the folder "GCstyler") by left-justifying the lines under "TABLES".
+
+An example marked-up table using this system:
+
+<table summary="Demo" align="center">
+<caption align="top">Batters' Statistics.</caption>
+|<Player's name.|Hits.|At bats.|Avg.|
+|<Joe Schmoe|>4|>5|^.800|
+|<Ed Glover|>3|>6|^.500|
+|<Cornelius Kolb|>2|>7|^.283|
+</table>
+
+which GutCutter will convert to:
+
+<p><table summary="Demo" align="center">
+<caption>Hitters' Statistics.</caption>
+<tr><td align="left">Player's name.</td><td>Hits.</td><td>At bats.</td><td>Avg.</td></tr>
+<tr><td align="left">Joe Schmoe</td><td align="right">4</td><td align="right">5</td><td align="center">.800</td></tr>
+<tr><td align="left">Ed Glover</td><td align="right">3</td><td align="right">6</td><td align="center">.500</td></tr>
+<tr><td align="left">Cornelius Kolb</td><td align="right">2</td><td align="right">7</td><td align="center">.283</td></tr>
+</table></p>
+
+Note that in preparing the plain-text version, the entire <table ...> and <caption ...> tags are removed, including any optional parameters. The <table...> and </table> tags are replaced with /$...$/ markups, to be removed later by GutHammer.

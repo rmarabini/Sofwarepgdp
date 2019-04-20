@@ -1,0 +1,158 @@
+\Auxiliary file AntHTMLstyle.txt for GutCutter 0.3
+\Converts text file with DP markups to an XHTML version 
+\For books in an antique style
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, s, or w.).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+s\       *       *       *       *       *full\<hr class="full" />\horizontal rule
+s\       *       *       *       *       *long\<hr />\horizontal rule
+s\       *       *       *       *       *short\<hr class="short" />\horizontal rule
+s\       *       *       *       *       *\<hr />\horizontal rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\       ***\<hr class="short" />\short horiz. rule
+s\<tb>\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+
+   Antique abbreviations--use superscripts to resemble original
+
+s\L'd\L<sup>d</sup>\Lord abbrev.
+s\Lo'p\Lo<sup>p</sup>\Lordship abbrev.
+s\S't\S<sup>t</sup>\Saint abbrev.
+s\M'r\M<sup>r</sup>\Mister abbrev.
+s\S'r\S<sup>r</sup>\Sir abbrev.
+s\W'm\W<sup>m</sup>\William abbrev.
+s\Marq's\Marq<sup>s</sup>\Marquess/Marquis abbrev.
+
+s\/#\<blockquote><p>\Block quote begins
+s\#/\</p></blockquote>\Block Quote ends
+s\*/*\  </div><div class="stanza">\New stanza
+s\/*\<div class="poem">  <div class="stanza">\Poem begins
+s\*/\  </div>  </div>\Poem ends
+
+   Tag illustrations like this: "[Illustration C50/###-#: text]" where "###-#.png" is the image filename.
+
+   These lines handle figures captioned with <hx>"..."</hx> tags with quotes, possibly missing final "]"
+   (Replace the double quotes with single quotes in the alt parameter.)
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$3'" /></a><h$2>"$3"</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration right ??%
+
+   These lines handle figures captioned with <hx>...</hx> tags, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$3" /></a><h$2>$3</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, with "quotes" around the caption, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$2'" /></a>"$2"</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$2" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration right ??%
+
+   Tag in-line illustrations like this: "[Illustration I20/###-#: alt-text]"
+     where "###-#.png" is the image filename and "alt-text" goes into the alt property.
+r_\[Illustration\s*I(\d+)\/([^:]+):\s*([^\]]*)\]*_<a href="images/$2.png"><img class="inline" src="images/$2.png" width="$1%" alt="$3" /></a>_In-line illustration
+   No size given: "[Illustration I/###-#: alt-text]"
+r_\[Illustration\s*I\/([^:]+):\s*([^\]]*)\]*_<a href="images/$1.png"><img class="inline" src="images/$1.png" alt="$2" /></a>_In-line illustration
+   No text given: "[Illustration I20/###-#]"
+r_\[Illustration\s*I(\d+)\/([^\]]+)\]*_<a href="images/$2.png"><img class="inline" src="images/$2.png" width="$1%" alt="" /></a>_In-line illustration
+
+   These four lines handle when the caption is not on this line "[Illustration C50/###-#:"
+r_\[Illustration\s*C(\d+)\/([^:]+):_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration right ??%
+
+   These four lines handle when there is no caption "[Illustration C50/###-#]"
+r_\[Illustration\s*C(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*L(\d+)\/([^\]]+)\]_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration left ??%, no caption
+r_\[Illustration\s*R(\d+)\/([^\]]+)\]_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration right ??%, no caption
+
+   Tagging for alignment and centering not used
+r_\[Illustration:\s*([^\]]*)\]*_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="$1" /></a>$1</div>_Illustration with caption
+
+  These four lines handle when the image name is not tagged.
+r_\[Illustration\s*C(\d+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+):\s*([^\]]*)\]*_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+):\s*([^\]]*)\]*_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration right ??%
+
+   These three lines handle when only the centering tag is used
+r_\[Illustration\s*C:\s*([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration centered, default width (100%)
+r_\[Illustration\s*L:\s*([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration left, default width (50%)
+r_\[Illustration\s*R:\s*([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration right, default width (50%)
+
+r_\[Illustration\s*C(\d+):\s*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+):\s*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+):\s*_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+):\s*_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right ??%
+
+r_\[Illustration\s*C:\s*_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered, default width (100%)
+r_\[Illustration\s*L:\s*_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left, default width (50%)
+r_\[Illustration\s*R:\s*_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right, default width (50%)
+
+s\[Illustration:\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION***</p></div>\Illustration
+
+r_\[Illustration\s*C(\d+)\]_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption centered ??%
+r_\[Illustration\s*(\d+)\]_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption centered ??%
+r_\[Illustration\s* L(\d+)\]_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption left ??%
+r_\[Illustration\s*R(\d+)\]_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption right ??%
+r_\[Illustration\s*C\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption centered, default width (100%)
+r_\[Illustration\s*L\]_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption left, default width (50%)
+r_\[Illustration\s*R\]_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption right, default width (50%)
+s\[Illustration]\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>\Illustration without caption
+
+   If not handled correctly by the above, try to do something
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>\Illustration
+
+
+s\/$\<pre>\pre-formatted begins
+s\$/\</pre>\pre-formatted ends
+
+s\<p>          \<p class="i10">\Indent extra 10 spaces
+s\<p>        \<p class="i8">\Indent extra 8 spaces
+s\<p>      \<p class="i6">\Indent extra 6 spaces
+s\<p>    \<p class="i4">\Indent extra 4 spaces
+s\<p>  \<p class="i2">\Indent extra 2 spaces
+
+s\&\&amp;\ampersand
+
+r_-{23}File:\s*(\d+)\.png-{25,30}_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+r_-+File:\s*(\d+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number 
+
+\Make sure you handle Page Separators and ampersands before treating dashes!
+s\--\&mdash;\em dash
+
+   Footnotes:
+r_\[(\d+)\]_<a id="footnotetag$1" name="footnotetag$1"></a><a href="#footnote$1"><sup>$1</sup></a>_Footnote
+r_\[Footnote (\d+): ([^\]]+)\]_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>$2</p></blockquote>_Footnote
+r_\[Footnote (\d+):_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>***Put footnote text here***</p></blockquote>_Footnote
+\Footnotes not handled above:
+s\[Footnote \<blockquote class="footnote"><a id="footnote??" name="footnote??"></a><b>Footnote ??:</b><a href="#footnotetag??">(return)</a><p>***put text here***</p></blockquote>\Footnote ??
+
+\Sidenotes: (note that this grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote: ([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote

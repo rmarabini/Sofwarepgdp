@@ -1,0 +1,21 @@
+/*
+Transcriber's Note: Phonetic characters are represented by the
+    following symbols:
+[xT] = any letter "x" with inferior inverted "T" (uptack)
+[=x] = any letter "x" with superior macron
+[vx] = any letter "x" with superior caret/caron
+[x=] = any letter "x" with inferior macron
+[)x] = any letter "x" with superior breve
+[`x] = any letter "x" with grave accent
+['x] = any letter "x" with acute accent
+[.x] = any letter "x" with superior dot (semi-dieresis)
+[x.] = any letter "x" with inferior dot (semi-dieresis)
+[:x] = any letter "x" with superior double-dot (dieresis)
+[x:] = any letter "x" with inferior double-dot (dieresis)
+[^x] = any letter "x" with superior circumflex
+[~x] = any letter "x" with superior tilde
+[x,] = any letter "x" with cedilla
+[=oo] = "oo" with superior macron
+[)oo] = "oo" with superior breve
+*/
+

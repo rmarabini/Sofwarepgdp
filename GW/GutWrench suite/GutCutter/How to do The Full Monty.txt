@@ -1,0 +1,219 @@
+These are instructions on how to use various computer tools to help make an HTML version of an e-text. This is an amalgam and a superset of the styles prescribed for "Punch" magazine and "The Mirror" (PM = Jon Ingram). I think it makes a very nice looking product, and should work well on other projects involving illustrations, poetry, footnotes, sidenotes, and page numbers. Some of the special features of this "Full Monty" style:
+--Figures can be semi-automatically scaled, justified, and "floated", about which text may be wrapped. These may set as centered or left- or right-justified.
+--Help for HTML Tables.
+--Help for Tables of Contents and Indices.
+These are handled by adding special markups to the well-marked-up text from which both the plain-text and HTML versions will be produced.
+
+See the file FMdemo.txt for examples. Run GC on this file to see the resulting HTML.
+
+This is the version of these instructions of 21 July 2004 for GutCutter Version 0.3.x.
+
+You are going to make both a plain-text version and an HTML version. The process is laid out here in three Phases. The first phase is to make a well-marked-up version, copies of which will be further worked on in the other two phases to produce both final versions.
+
+
+PHASE ONE. Error-checking and adding a little more mark-up.
+
+1. Optionally, first run GutSweeper on the text file. Then go thru the text with an editor:
+
+a) Add HTML Header markups as appropriate:
+<h2>...</h2> about chapter or major article titles;
+<h3>...</h3> about sub-titles or titles of small articles, and perhaps about titles of figures;
+<h4>...</h4> for smaller headings.
+
+b) Modify Thought Breaks for which you want the HTML to have a rule of a special length:
+
+Standard long rule:
+       *       *       *       *       *
+or
+       *       *       *       *       *long
+
+Short rule:
+       *       *       *       *       *short
+
+Full rule (margin-to-margin):
+       *       *       *       *       *full
+
+Also, this new break (invented for Punch) is recognized as a short rule:
+       ***
+
+which you might have to format like this:
+
+/$
+       ***
+$/
+
+depending on which computer tools you will use later (the GutWrench suite understands these new breaks, so /$...$/ is not needed).
+
+If you are separating articles or chapters by Breaks and an article ends at the bottom of a page, put the Break after the article but _just before_ the Page Separator. (This is so that the Page Number displayed in the HTML version will fall a little below the Rule--looks nicer.)
+
+c) Move Illustrations out of articles (unless they are part of the article). Separate them from surrounding articles (or each other) with Thought Breaks.
+
+Optional: Modify "[Illustration:" like these examples:
+"[Illustration 60:" scales the image to 60% (centered). (Any whole-number percentage is accepted.)
+"[Illustration L40:" scales the image to 40% and floats it left. (Any whole-number percentage is accepted.)
+"[Illustration R30:" scales the image to 30% and floats it right. (Any whole-number percentage is accepted.)
+"[Illustration C:" or "[Illustration:" leaves it centered, 100% scale.
+"[Illustration L:" or "[Illustration R:" floats left or right, 50% scale (default).
+"Float" means justify it to one side and wrap the text around it.
+This step will save you having to scale the figures in the HTML later.
+
+d) Adjust mark-ups:
+Change /*...*/ to /#...#/ around Block Quotes.
+Change /*...*/ to /$...$/ around Tables. You may add the HTML Table Summary parameter after the opening /$.
+(Leave /*...*/ around poetry.)
+
+2. Change any _low-line mark-ups_ of italics to <i>HTML style</i>.
+
+If you would like to have abbreviations like "etc." and "et al." appear in italics in the HTML, add tags around them now. (They will be stripped out automatically when you create the plain-text version with GutCutter.)
+
+3. Prepare the Table of Contents and Index, if any. Insert "##" before each page number in these:
+
+In the Table of Contents, change:
+
+  Chapter I    5
+  Chapter II  21
+  Chapter III 40
+
+to:
+
+  Chapter I    ##5
+  Chapter II  ##21
+  Chapter III ##40
+
+and, in the Index:
+
+  Aardvark   221
+  Bear    121, 303
+  Canary     244
+
+to:
+
+  Aardvark   ##221
+  Bear    ##121, ##303
+  Canary     ##244
+
+4. Format tables to convert to HTML. Use vertical-line symbol "|" to separate columns; also use "|" at beginning and end of each row. Immediately after "|", you can insert "<", ">", or "=" to left-justify, right-justify, or center the following element. (These same symbols can be inserted after the opening "/$" to align the entire table.) Add /$ or <table ...> before the table, and $/ or </table> after; optionally, add a <caption>CAPTION</caption>.
+
+Example: The simple table:
+
+/$^Contents
+|<Example|=22|>33|44|
+$/
+ 
+will be converted in the HTML to: 
+
+<table summary="Contents" align="center">
+<tr><td align="left">Example</td><td align="center">22</td><td align="right">33</td><td>44</td></tr>
+</table>
+
+5. Proofread and check for errors in the usual manner:
+GutAxe
+Gutcheck (Guiguts is recommended!)
+GutWrench
+Spellchecker
+(See the Checklist that comes with the GutWrench suite.)
+
+6. Inspect.
+
+
+PHASE TWO: make the plain-text version. Take one of the files you saved in Phase One and do the following:
+
+1. Optional: If you are planning to work on multiple similar projects, such as issues of a periodical, you can set up file header0.txt with a typical title header, which GC will add at the beginning of the output file; you can later edit the GC output with the correct information for this edition. 
+
+For "Punch", the header0.txt file should look like this:
+
+PUNCH, OR THE LONDON CHARIVARI.
+
+VOLUME 153.
+
+
+
+September 5, 1917.
+
+That is, Title, blank line, Volume number, three blank lines, date.
+Leave four blank lines after the date before the title of the first article.
+
+2. Run GutCutter  on the file you made in Phase One with 
+(radio button) Output As ... Plain Text
+and
+(menu) Style --> 0 Plain text
+selected. This will do the following:
+--Replace HTML <hx>header</hx> tags by <b>bold</b> tags
+--Remove DP-style Page Separators.
+--Remove italics markups that shouldn't be used (e.g., around <i>e.g.</i>, <i>etc.</i>)
+--Restore the fancy markups introduced here back to the DP standard that's handled by most of the standard PP tools.
+
+GutCutter's output is named GCout.txt. Continue working with this file.
+
+3. Patch up any words that were hyphenated across Page Separators (or italics or bold markup that was interrupted by a Page Separator).
+
+4. Run GutHammer to re-wrap the text. (If you prefer, use RewrapIndent or Guiguts.)
+Adjust GutHammer's settings to also:
+--Apply an additive indent (select "Add") of 2 spaces to Poetry.
+--Change <i>HTML-style italics mark-up</i> to _low-line markup_.
+--Change text within <b>HTML-style bold mark-up</b> to ALL CAPS.
+
+5. Make a final inspection.
+
+
+PHASE THREE: make the HTML version. Take the other file you saved from Phase One and do the following:
+
+1. If you found any errors in making the plain-text version, correct them also in this file.
+
+2. Prepare the image files for the Illustrations by cropping them from the page scans (use IrfanView or Photoshop). Name them according to any convenient scheme. A suggested scheme is "PAGENUMBER.png", where PAGENUMBER is the page number (e.g., 123.png, where 123 is the page number). If there is more than one illustration on a page, name them "PAGENUMBER-1.png", etc. Put them in a folder named "images".
+
+3. Run GutCutter again on the file you made in Phase One but with "Output As ... HTML" selected, and using Style #5 (The Full Monty). The output of this program is named GCout.htm.
+
+4. Fix up the title area of the header, adding the volume number and the date if necessary.
+
+5. Fix up the page numbers. The output from GutCutter will look like this (where 002 is the scan image number):
+
+<span class="pagenum"><a name="page??" id="page??"></a>[pg 002]</span>
+
+This should be repaired to look like this (where the page number is 123):
+
+<span class="pagenum"><a name="page123" id="page123"></a>[pg 123]</span>
+                                   ^^^          ^^^          ^^^
+(A little trick: in the first editing pass through the file in Phase One, replace the scan numbers in the Page Separators with the page numbers. Then this step will already be partly done.)
+
+6. Fix up the Table of Contents and the Index. GutCutter's output looks like this:
+
+Chapter I    <a href="#page***">***</a></br>5
+Chapter II  <a href="#page***">***</a></br>21
+Chapter III <a href="#page***">***</a></br>40
+
+Change this to:
+
+Chapter I    <a href="#page5">5</a></br>
+Chapter II  <a href="#page21">21</a></br>
+Chapter III <a href="#page40">40</a></br>
+
+7. Fix up the figure captions. The output from GutCutter will look like this:
+
+<div class="figcenter" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>??CAPTION??</p></div> <b>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</b>
+WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."]</p>
+
+This should be repaired to look like this (where the figure's image file is named "123.png"):
+
+<div class="figcenter" style="width:75%;"><a href="images/123.png"><img width="100%" src="images/123.png" alt="" /></a><h3>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</h3>
+<p>WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."</p></div>
+
+Don't forget to adjust the parameter "width:50%;" so that the percentage reflects the width of the image with respect to the original page (i.e., full width = 100%). Also, if the figure is associated with the surrounding text, change "figcenter" to "figright" or "figleft" and use "width:50%;" or smaller.
+
+8. Fix up the Footnotes. GutCutter output looks like this:
+
+<blockquote class="footnote"><a id="footnote1" name="footnote1"></a><b>Footnote 1:</b><a href="#footnotetag1"> (return) </a>***put text here***</blockquote> This is a test.]
+
+Repair this to look like this:
+
+<blockquote class="footnote"><a id="footnote1" name="footnote1"></a><b>Footnote 1:</b><a href="#footnotetag1"> (return) </a>This is a test.</blockquote>
+
+and put the Footnote where you want it (e.g., at end of Chapter).
+
+GutCutter is set up to handle well up to Footnote #10. For higher numbers, the generated HTML code will be less complete; alternatively, the associated Style plug-in GCstyleN.txt may be edited by the user before running GutCutter.
+
+9. Open with your favorite web-browser to inspect.
+
+10. Clean up your file with Tidy, and validate it at http://validator.w3.org/.
+
+You're done!

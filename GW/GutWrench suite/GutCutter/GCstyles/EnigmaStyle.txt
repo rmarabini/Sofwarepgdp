@@ -1,0 +1,352 @@
+\Auxiliary file EnigmaStyle.txt for GutCutter 0.3
+\Converts text file with DP markups to an XHTML version in the style of Jon Ingram (used for _Punch_)
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with a character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+s\       *       *       *       *       *short\<hr class="short" />\horizontal rule
+s\       *       *       *       *       *full\<hr class="full" />\horizontal rule
+s\       *       *       *       *       *long\<hr />\horizontal rule
+s\       *       *       *       *       *\<hr />\horizontal rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\       ***\<hr class="short" />\short horiz. rule
+s\<tb>\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+
+s\/#note\<blockquote class="note"><p>\Block quote note begins
+s\#/note\</p></blockquote>\Block quote note ends
+s\/#\<blockquote><p>\Block quote begins
+s\#/\</p></blockquote>\Block Quote ends
+
+s\/d\<div class="drama">\Drama begins
+s\d/\</div>\Drama ends
+
+s\<p>>>\<p class="author">\">>author" markup (2)
+
+r_<h(\d)sc>_<h$1 class="sc">_header in small caps
+
+s\*/*\  </div><div class="stanza">\New stanza
+s\/*\<div class="poem">  <div class="stanza">\Poem begins
+s\*/\  </div>  </div>\Poem ends
+
+   Tag illustrations like this: "[Illustration C50/###-#: text]" where "###-#.png" is the image filename.
+
+   These lines handle figures captioned with <hx>"..."</hx> tags with quotes, possibly missing final "]"
+   (Replace the double quotes with single quotes in the alt parameter.)
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$3'" /></a><h$2>"$3"</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration right ??%
+
+   These lines handle figures captioned with <hx>...</hx> tags, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$3" /></a><h$2>$3</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration right ??%
+
+   These lines handle figures captioned within parentheses ( ) to signify alt text only, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*\(([^\)]*)\)\s*]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*\(([^\)]*)\)\s*]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*\(([^\)]*)\)\s*]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$2" /></a></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*\(([^\)]*)\)\s*]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*\(([^\)]*)\)\s*]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration right ??%
+r_\[Illustration\s*I(\d+)\/([^:]+):\s*\(([^\)]*)\)\s*]*_<a href="images/$2.png"><img width="$1%" class="inline" src="images/$2.png" alt="$3" /></a>_Illustration in-line ??%
+
+   These four lines deal with when the whole thing falls on the same line, with "quotes" around the caption, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$2'" /></a>"$2"</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$2" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration right ??%
+
+   Tag in-line illustrations like this: "[Illustration I20/###-#: alt-text]"
+     where "###-#.png" is the image filename and "alt-text" goes into the alt property.
+r_\[Illustration\s*I(\d+)\/([^:]+):\s*([^\]]*)\]*_<a href="images/$2.png"><img class="inline" src="images/$2.png" width="$1%" alt="$3" /></a>_In-line illustration
+   No size given: "[Illustration I/###-#: alt-text]"
+r_\[Illustration\s*I\/([^:]+):\s*([^\]]*)\]*_<a href="images/$1.png"><img class="inline" src="images/$1.png" alt="$2" /></a>_In-line illustration
+   No text given: "[Illustration I20/###-#]"
+r_\[Illustration\s*I(\d+)\/([^\]]+)\]*_<a href="images/$2.png"><img class="inline" src="images/$2.png" width="$1%" alt="" /></a>_In-line illustration
+
+   These four lines handle when the caption is not on this line "[Illustration C50/###-#:"
+r_\[Illustration\s*C(\d+)\/([^:]+):_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a>***PUT CAPTION HERE***</div>_Illustration right ??%
+
+   These four lines handle when there is no caption "[Illustration C50/###-#]"
+r_\[Illustration\s*C(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*L(\d+)\/([^\]]+)\]_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration left ??%, no caption
+r_\[Illustration\s*R(\d+)\/([^\]]+)\]_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration right ??%, no caption
+
+   Tagging for alignment and centering not used
+r_\[Illustration:\s*([^\]]*)\]*_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="$1" /></a>$1</div>_Illustration with caption
+
+  These four lines handle when the image name is not tagged.
+r_\[Illustration\s*C(\d+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+):\s*([^\]]*)\]*_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+):\s*([^\]]*)\]*_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration right ??%
+
+   These three lines handle when only the centering tag is used
+r_\[Illustration\s*C:\s*([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration centered, default width (100%)
+r_\[Illustration\s*L:\s*([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration left, default width (50%)
+r_\[Illustration\s*R:\s*([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration right, default width (50%)
+
+r_\[Illustration\s*C(\d+):\s*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+):\s*_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+):\s*_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+):\s*_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right ??%
+
+r_\[Illustration\s*C:\s*_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered, default width (100%)
+r_\[Illustration\s*L:\s*_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left, default width (50%)
+r_\[Illustration\s*R:\s*_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right, default width (50%)
+
+s\[Illustration:\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION***</p></div>\Illustration
+
+r_\[Illustration\s*C(\d+)\]_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption centered ??%
+r_\[Illustration\s*(\d+)\]_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption centered ??%
+r_\[Illustration\s* L(\d+)\]_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption left ??%
+r_\[Illustration\s*R(\d+)\]_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption right ??%
+r_\[Illustration\s*C\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption centered, default width (100%)
+r_\[Illustration\s*L\]_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption left, default width (50%)
+r_\[Illustration\s*R\]_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>_Illustration without caption right, default width (50%)
+s\[Illustration]\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>\Illustration without caption
+
+   If not handled correctly by the above, try to do something
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>\Illustration
+
+   These two lines are deactivated (now using TABLES!)
+   s\/$\<pre>\pre-formatted begins
+   s\$/\</pre>\pre-formatted ends
+
+s\<p>          \<p class="i10">\Indent extra 10 spaces
+s\<p>        \<p class="i8">\Indent extra 8 spaces
+s\<p>      \<p class="i6">\Indent extra 6 spaces
+s\<p>    \<p class="i4">\Indent extra 4 spaces
+s\<p>  \<p class="i2">\Indent extra 2 spaces
+s\&\&amp;\ampersand
+
+
+r_-+File:\s*0*(\d+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+
+r_-+File:\s*([cdilmvx]+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number in Roman numerals
+
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number 
+
+\Make sure you handle Page Separators and ampersands before treating dashes!
+s\--\&mdash;\em dash
+
+   Footnotes:
+r_\[(\d+)\]_<a id="footnotetag$1" name="footnotetag$1"></a><a href="#footnote$1"><sup>$1</sup></a>_Footnote
+r_\[Footnote (\d+):\s*([^\]]+)\]*_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>$2</p></blockquote>_Footnote
+r_\[Footnote (\d+):\s*_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>***Put footnote text here***</p></blockquote>_Footnote
+s\[Footnote \<blockquote class="footnote"><a id="footnote??" name="footnote??"></a><b>Footnote ??:</b><a href="#footnotetag??"> (return) </a><p>***put text here***</p></blockquote>\Footnote ??
+
+   Sidenotes: (note that this grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote:\s*([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote
+
+   Enforce XHTML forms, in case the PPer used non-XHTML forms:
+s_<br>_<br />_convert HTML break to closed-break markup required by XHTML
+s_<hr>_<hr />_convert HTML rule to closed-rule markup required by XHTML
+
+   TABLES
+r_\/\$<(.*)_<table summary="$1" align="left" width="100%">_begin table, left-aligned
+r_\/\$>(.*)_<table summary="$1" align="right" width="100%">_begin table, right-aligned
+r_\/\$=(.*)_<table summary="$1" align="center" width="100%">_begin table, centered
+r_\/\$(.*)_<table summary="$1" align="center" width="100%">_begin table, centered (default)
+s\$/\</table>\end table
+
+r_^\s*\|<_<tr><td align="left">_begin a Table row, left-align first row element
+r_^\s*\|>_<tr><td align="right">_begin a Table row, right-align first row element
+  r_^\s*\|\^_<tr><td align="center">_begin a Table row, center first row element
+r_^\s*\|=_<tr><td align="center">_begin a Table row, center first row element
+r_^\s*\|\^_<tr><td valign="top">_begin a Table row, align first row element at top
+r+^\s*\|_+<tr><td valign="bottom">+begin a Table row, align first row element at bottom
+r_^\s*\|_<tr><td>_begin a Table row, default-align first row element
+
+r_\|\s*$_</td></tr>_end a Table row
+
+s_|<_</td><td align="left">_next Table row element, left-align this element
+s_|>_</td><td align="right">_next Table row element, right-align this element
+  s_|^_</td><td align="center">_next Table row element, center this element
+s_|=_</td><td align="center">_next Table row element, center this element
+s_|^_</td><td valign="top">_next Table row element, align this element at top
+s+|_+</td><td align="center">+next Table row element, align this element at bottom
+s_|_</td><td>_next Table row element, default-align this element
+
+    GREEK
+s_[Alpha]_&Alpha;_greek letter
+s_[Beta]_&Beta;_greek letter
+s_[Gamma]_&Gamma;_greek letter
+s_[Delta]_&Delta;_greek letter
+s_[Epsilon]_&Epsilon;_greek letter
+s_[Zeta]_&Zeta;_greek letter
+s_[Eta]_&Eta;_greek letter
+s_[Theta]_&Theta;_greek letter
+s_[Iota]_&Iota;_greek letter
+s_[Kappa]_&Kappa;_greek letter
+s_[Lambda]_&Lambda;_greek letter
+s_[Mu]_&Mu;_greek letter
+s_[Nu]_&Nu;_greek letter
+s_[Xi]_&Xi;_greek letter
+s_[Omicron]_&Omicron;_greek letter
+s_[Pi]_&Pi;_greek letter
+s_[Rho]_&Rho;_greek letter
+s_[Sigma]_&Sigma;_greek letter
+s_[Tau]_&Tau;_greek letter
+s_[Upsilon]_&Upsilon;_greek letter
+s_[Phi]_&Phi;_greek letter
+s_[Chi]_&Chi;_greek letter
+s_[Psi]_&Psi;_greek letter
+s_[Omega]_&Omega;_greek letter
+s_[alpha]_&alpha;_greek letter
+s_[beta]_&beta;_greek letter
+s_[gamma]_&gamma;_greek letter
+s_[delta]_&delta;_greek letter
+s_[epsilon]_&epsilon;_greek letter
+s_[zeta]_&zeta;_greek letter
+s_[eta]_&eta;_greek letter
+s_[theta]_&theta;_greek letter
+s_[iota]_&iota;_greek letter
+s_[kappa]_&kappa;_greek letter
+s_[lambda]_&lambda;_greek letter
+s_[mu]_&mu;_greek letter
+s_[nu]_&nu;_greek letter
+s_[xi]_&xi;_greek letter
+s_[omicron]_&omicron;_greek letter
+s_[pi]_&pi;_greek letter
+s_[rho]_&rho;_greek letter
+s_[sigmaf]_&sigmaf;_greek letter
+s_[sigma]_&sigma;_greek letter
+s_[tau]_&tau;_greek letter
+s_[upsilon]_&upsilon;_greek letter
+s_[phi]_&phi;_greek letter
+s_[chi]_&chi;_greek letter
+s_[psi]_&psi;_greek letter
+s_[omega]_&omega;_greek letter
+
+s_[Greek: Alpha]_&Alpha;_greek letter
+s_[Greek: A]_&Alpha;_greek letter
+s_[Greek: Beta]_&Beta;_greek letter
+s_[Greek: B]_&Beta;_greek letter
+s_[Greek: Gamma]_&Gamma;_greek letter
+s_[Greek: G]_&Gamma;_greek letter
+s_[Greek: Delta]_&Delta;_greek letter
+s_[Greek: D]_&Delta;_greek letter
+s_[Greek: Epsilon]_&Epsilon;_greek letter
+s_[Greek: E]_&Epsilon;_greek letter
+s_[Greek: Zeta]_&Zeta;_greek letter
+s_[Greek: Z]_&Zeta;_greek letter
+s_[Greek: Eta]_&Eta;_greek letter
+s_[Greek: H]_&Eta;_greek letter
+s_[Greek: Theta]_&Theta;_greek letter
+s_[Greek: Iota]_&Iota;_greek letter
+s_[Greek: I]_&Iota;_greek letter
+s_[Greek: Kappa]_&Kappa;_greek letter
+s_[Greek: K]_&Kappa;_greek letter
+s_[Greek: Lambda]_&Lambda;_greek letter
+s_[Greek: L]_&Lambda;_greek letter
+s_[Greek: Mu]_&Mu;_greek letter
+s_[Greek: M]_&Mu;_greek letter
+s_[Greek: Nu]_&Nu;_greek letter
+s_[Greek: N]_&Nu;_greek letter
+s_[Greek: Xi]_&Xi;_greek letter
+s_[Greek: Omicron]_&Omicron;_greek letter
+s_[Greek: O]_&Omicron;_greek letter
+s_[Greek: Pi]_&Pi;_greek letter
+s_[Greek: Rho]_&Rho;_greek letter
+s_[Greek: Sigma]_&Sigma;_greek letter
+s_[Greek: S]_&Sigma;_greek letter
+s_[Greek: Tau]_&Tau;_greek letter
+s_[Greek: T]_&Tau;_greek letter
+s_[Greek: Upsilon]_&Upsilon;_greek letter
+s_[Greek: Y]_&Upsilon;_greek letter
+s_[Greek: Phi]_&Phi;_greek letter
+s_[Greek: Chi]_&Chi;_greek letter
+s_[Greek: Psi]_&Psi;_greek letter
+s_[Greek: Omega]_&Omega;_greek letter
+s_[Greek: alpha]_&alpha;_greek letter
+s_[Greek: a]_&alpha;_greek letter
+s_[Greek: beta]_&beta;_greek letter
+s_[Greek: b]_&beta;_greek letter
+s_[Greek: gamma]_&gamma;_greek letter
+s_[Greek: g]_&gamma;_greek letter
+s_[Greek: delta]_&delta;_greek letter
+s_[Greek: d]_&delta;_greek letter
+s_[Greek: epsilon]_&epsilon;_greek letter
+s_[Greek: e]_&epsilon;_greek letter
+s_[Greek: zeta]_&zeta;_greek letter
+s_[Greek: z]_&zeta;_greek letter
+s_[Greek: eta]_&eta;_greek letter
+s_[Greek: theta]_&theta;_greek letter
+s_[Greek: iota]_&iota;_greek letter
+s_[Greek: i]_&iota;_greek letter
+s_[Greek: kappa]_&kappa;_greek letter
+s_[Greek: k]_&kappa;_greek letter
+s_[Greek: lambda]_&lambda;_greek letter
+s_[Greek: l]_&lambda;_greek letter
+s_[Greek: mu]_&mu;_greek letter
+s_[Greek: m]_&mu;_greek letter
+s_[Greek: nu]_&nu;_greek letter
+s_[Greek: n]_&nu;_greek letter
+s_[Greek: xi]_&xi;_greek letter
+s_[Greek: omicron]_&omicron;_greek letter
+s_[Greek: o]_&omicron;_greek letter
+s_[Greek: pi]_&pi;_greek letter
+s_[Greek: rho]_&rho;_greek letter
+s_[Greek: sigmaf]_&sigmaf;_greek letter
+s_[Greek: sigma]_&sigma;_greek letter
+s_[Greek: s]_&sigma;_greek letter
+s_[Greek: tau]_&tau;_greek letter
+s_[Greek: t]_&tau;_greek letter
+s_[Greek: upsilon]_&upsilon;_greek letter
+s_[Greek: phi]_&phi;_greek letter
+s_[Greek: chi]_&chi;_greek letter
+s_[Greek: psi]_&psi;_greek letter
+s_[Greek: omega]_&omega;_greek letter
+
+   non-Latin-1 ("&#256;" and above)
+s\[=A]\&#256;\"A" with macron
+s\[=a]\&#257;\"a" with macron
+s\[)A]\&#258;\"A" with breve
+s\[)a]\&#259;\"a" with breve
+    s\[.A]\&#???;\"A" with dot above
+    s\[.a]\&#???;\"a" with dot above
+s\[A,]\&#260;\"A" with ogonek
+s\[a,]\&#261;\"a" with ogonek
+s\[vA]\&#461;\"A" with caron
+s\[va]\&#462;\"a" with caron
+
+s\[=O]\&#332;\"O" with macron
+s\[=o]\&#333;\"o" with macron
+
+
+     OTHER HTML ENTITIES
+s_[ounce]_&ounce;_"ounce" character
+s_[dram]_&dram;_"dram" character
+s_[oe]_&oelig;_oe ligature
+s_[OE]_&OElig;_OE ligature
+
+s_[fist]_<font size="+1">&#x261e;</font>_"fist" character
+s_[hand]_<font size="+1">&#x261e;</font>_"fist" character
+s_[index]_<font size="+1">&#x261e;</font>_"fist" character
+s_[index mark]_<font size="+1">&#x261e;</font>_"fist" character

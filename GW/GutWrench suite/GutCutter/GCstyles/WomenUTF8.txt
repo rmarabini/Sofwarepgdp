@@ -1,0 +1,192 @@
+\Auxiliary file WomenUTF8.txt for GutCutter 0.3
+\Converts text file with DP markups and some HTML markups to a plain-text version
+\This file serves to remove the extra markups and to revert any HTML back to DP plain-text style
+\This file is intended for "Women Style" for the "Woman through the Ages" series of books
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, w, s, or o).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+s\*/*\\Blank line in poetry (introduced by GutCutter)
+
+r_<link [^>]*>__remove "link" markup
+r_</link>__remove closing "link" markup
+r_<anchor[^>]*>__remove "anchor" markup
+r_</anchor>__remove closing "anchor" markup
+
+s\[oe]\œ\change markup for oe ligature to ANSI character
+s\[Oe]\Œ\change markup for OE ligature to ANSI character
+s\[OE]\Œ\changee markup for OE ligature to ANSI character
+
+s\&amp;\&\ampersand
+s\&mdash;\—\em dash
+s\--\—\em dash
+
+r_<[hH](\d)sc>_<h$1>_header in small caps (remove "sc")
+
+    FRACTIONS
+r_-1/4_¼_fraction one-quarter
+r_-1/2_½_fraction one-half
+r_-3/4_¾_fraction three-quarters
+
+   HELP FOR TABLE OF CONTENTS
+   DO CASES WITH ITALICS FIRST
+o_^<[hH]2>(<[iI]>[^<]+<\/[iI]>)<\/[hH]2>_  $1_Major article heading <h2>
+
+o_^<[hH][34]>(<[iI]>[^<]+<\/[iI]>)<\/[hH][34]>_    $1_Article sub-heading <h3>
+
+   CASE WITH INTERIOR BREAK <BR />
+o_^<[hH]2>([^<]+)<br \/>([^<]+)<\/[hH]2>_  $1 $2_Major article heading <h2>
+
+o_^<[hH][34]>([^<]+)<br \/>([^<]+)<\/[hH][34]>_    $1 $2_Article sub-heading <h3>
+
+   NO ITALICS
+o_^<[hH]2>([^<]+)<\/[hH]2>_  $1_Major article heading <h2>
+
+o_^<[hH][34]>([^<]+)<\/[hH][34]>_    $1_Article sub-heading <h3>
+
+
+   Tag illustrations like this: "[Illustration C50/###-#: text]" where "###-#.png" is the image filename.
+
+   These four lines deal with when the whole thing is present on the same line, possibly missing final "]"
+o_\[Illustration\s*[CLR]\d+\/[^:]+:\s*([^\]]*)\]*_  $1_Illustration
+o_\[Illustration\s*\d+\/[^:]+:\s*([^\]]*)\]*_  $1_Illustration
+
+o_>>(.*)_ by $1_">>author" markup (2)
+
+s\>>\\Remove right-justifying token
+
+\Replace HTML Header tags by Bold tags:
+r_<[hH]\d>_<b>_Header-x to Bold
+r_<\/[hH]\d>_</b>_Header-x close to Bold close
+  \s\<h1>\<b>\Header-1 to Bold
+    etc.
+
+s\<blockquote>\/#\replace opening blockquote markup
+s\</blockquote>\#/\replace closing blockquote markup
+
+s\<hr>\       *       *       *       *       *\Rule to Thought Break
+s\<hr />\       *       *       *       *       *\Rule to Thought Break
+s\<hr class="short" />\       *       *       *       *       *\Short Rule to Thought Break
+s\<hr class="full" />\       *       *       *       *       *\Full Rule to Thought Break
+s\ * * * * *full\       *       *       *       *       *\full horizontal rule
+s\ * * * * *long\       *       *       *       *       *\long horizontal rule
+s\ * * * * *short\       *       *       *       *       *\short horizontal rule
+s\ * * * * *\       *       *       *       *       *\long horizontal rule
+
+
+s\<p class="i20">\                    \Indent extra 20 spaces
+s\<p class="i18">\                  \Indent extra 18 spaces
+s\<p class="i16">\                \Indent extra 16 spaces
+s\<p class="i14">\              \Indent extra 14 spaces
+s\<p class="i12">\            \Indent extra 12 spaces
+s\<p class="i10">\          \Indent extra 10 spaces
+s\<p class="i8">\        \Indent extra 8 spaces
+s\<p class="i6">\      \Indent extra 6 spaces
+s\<p class="i4">\    \Indent extra 4 spaces
+s\<p class="i2">\  \Indent extra 2 spaces
+
+s\<div class="poem">\/*\Poem begins
+s\<div class="stanza">\\Remove stanza markup
+
+    REMOVE VARIOUS HTML MARKUPS
+s\<p>\\Remove paragraph markup
+s\</p>\\Remove paragraph markup
+s\</div>\\Remove markup
+s\<center>\\Remove centering markup
+s\</center>\\Remove centering markup
+s\<u>\\Remove underline markup
+s\</u>\\Remove underline markup
+s\<big>\\Remove big markup
+s\</big>\\Remove big markup
+s\<small>\\Remove small markup
+s\</small>\\Remove small markup
+s\<br />\\Remove HTML breaks
+s\<br>\\Remove HTML breaks
+r_<font[^>]*>__Remove font markup
+s\</font>\\Remove font markup
+
+    REPLACE DP-style SMALL-CAPITALS MARKUP WITH HTML BOLD MARKUP
+s\<sc>\<b>\Replace small-caps markup with bold markup
+s\</sc>\</b>\Replace small-caps markup with bold markup
+
+r_<span class="pagenum"><a name="page(\d+)" id="page\d*"><\/a>\[pg \d*\]<\/span>_-----------------------File: $1.png-------------------------_replace page marker
+
+   Don't italicize letters used to enumerate lists:
+   (Putting these rules here allows them to be italicized in the HTML.)
+r_\(<i>([a-zA-Z])</i>\)_($1)_Don't italicize single letter in parens
+  \s\(<i>a</i>)\(a)\Don't italicize "(a)"
+    etc.
+
+r_\(<i>([cdilvx]{2,})</i>\)_($1)_Don't italicize l.c. Roman numeral in parens
+  s\(<i>ii</i>)\(ii)\Don't italicize "(ii)"
+  s\(<i>iii</i>)\(iii)\Don't italicize "(iii)"
+  s\(<i>iv</i>)\(iv)\Don't italicize "(iv)"
+  s\(<i>vi</i>)\(vi)\Don't italicize "(vi)"
+  s\(<i>vii</i>)\(vii)\Don't italicize "(vii)"
+  s\(<i>viii</i>)\(viii)\Don't italicize "(viii)"
+  s\(<i>ix</i>)\(ix)\Don't italicize "(ix)"
+  s\(<i>xi</i>)\(xi)\Don't italicize "(xi)"
+  s\(<i>xii</i>)\(xii)\Don't italicize "(xii)"
+  s\(<i>xiii</i>)\(xiii)\Don't italicize "(xiii)"
+  s\(<i>xiv</i>)\(xiv)\Don't italicize "(xiv)"
+
+r_\(<i>([\d+])</i>\)_($1)_Don't italicize number in parens
+
+\Don't italicize abbreviations:
+s\<i>i.e.</i>\i.e.\Don't italicize "i.e."
+s\<i>e.g.</i>\e.g.\Don't italicize "e.g."
+s\<i>etc.</i>\etc.\Don't italicize "etc."
+s\<i>et al.</i>\et al.\Don't italicize "et al."
+s\<i>Ib.</i>\Ib.\Don't italicize "Ib."
+s\<i>Ibid.</i>\Ibid.\Don't italicize "Ibid."
+s\<i>do.</i>\do.\Don't italicize "do."
+s\<i>Do.</i>\Do.\Don't italicize "Do."
+\British currency:
+r_<i>([dls]\.)</i>_$1_Don't italicize British currency
+  s\<i>l.</i>\l.\Don't italicize "l." for pound
+  s\<i>s.</i>\s.\Don't italicize "s." for shilling
+  s\<i>d.</i>\d.\Don't italicize "d." for pence
+
+\Convert Plates into Illustrations
+r_\[Plate _[Illustration _change Plate to Illustration
+
+\Undo special features used for Punch and Mirror:
+r_\[Illustration [CLRI]{0,1}\d*([:\]])_[Illustration$1_Illustration
+  \s\[Illustration L10:\[Illustration:\Illustration
+  \s\[Illustration L10]\[Illustration]\Illustration without caption
+    etc.
+
+r_\[Illustration [CLRI]{0,1}\d*\/[^:\]]+([:\]])_[Illustration$1_Illustration
+  \s\[Illustration L10/23-4:\[Illustration:\Illustration
+  \s\[Illustration L10/23-4]\[Illustration]\Illustration
+
+s\/#note\/#\blockquote class="note"
+
+\Undo special "Mirror", "Punch", and "Fully Monty" features
+s\       *       *       *       *       *full\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *long\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *short\       *       *       *       *       *\Thought Break
+
+s\##\\Remove link to page number
+
+
+    Take out tokens for HTML Tables
+r_<table[^>]*>__remove <table...> tag
+s\</table>\\remove </table> tag
+r_<caption[^>]*>__remove <caption...> tag
+s\</caption>\\remove </caption> tag
+s\|<\|\Table separator, left-align
+s\|>\|\Table separator, right-align
+s\|=\|\Table separator, center-align
+s\|^\|\Table separator, top-align
+s\|_\|\Table separator, bottom-align
+s\|\\remove vertical-line symbol
+
+    Take out special markups for fist symbol
+r_\[fist\]\s*__remove [fist]
+r_\[hand\]\s*__remove [hand]
+r_\[index\]\s*__remove [index]
+r_\[index mark\]\s*__remove [index mark]

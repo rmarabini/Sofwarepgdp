@@ -1,0 +1,161 @@
+\Auxiliary file GamesHTMLstyle.txt for GutCutter 0.3
+\
+\   For "THE BOOK OF INDOOR GAMES"
+\
+\Converts text file with DP and additional markups to an XHTML version in the 
+\general style of Jon Ingram (used for _Punch_ and _The Mirror_)
+\but with some other added features
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+   THOUGHT BREAKS --> HORIZONTAL RULES
+
+s\       *       *       *       *       *full\<hr class="full" />\full horizontal rule
+s\       *       *       *       *       *long\<hr />\long horizontal rule
+s\       *       *       *       *       *short\<hr class="short" />\short horizontal rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+s\<tb>\<hr class="short" />\long horizontal rule
+
+  NOTE: Using short rules as the default for this book!!
+s\       *       *       *       *       *\<hr class="short" />\short horizontal rule
+s\<tb>\<hr class="short" />\long horizontal rule
+
+s\/#\<blockquote><p>\Block quote begins
+s\#/\</p></blockquote>\Block Quote ends
+s\*/*\  </div><div class="stanza">\New stanza
+s\/*\<div class="poem">  <div class="stanza">\Poem begins
+s\*/\  </div>  </div>\Poem ends
+
+
+   TABLES
+
+r_\/\$<(.*)_<table summary="$1" align="left">_begin table, left-aligned
+r_\/\$>(.*)_<table summary="$1" align="right">_begin table, right-aligned
+r_\/\$=(.*)_<table summary="$1" align="center">_begin table, centered
+r_\/\$(.*)_<table summary="$1" align="center">_begin table, centered (default)
+s\$/\</table>\end table
+r_^\s*\|<_<tr><td align="left">_begin a Table row, left-align first row element
+r_^\s*\|>_<tr><td align="right">_begin a Table row, right-align first row element
+r_^\s*\|=_<tr><td align="center">_begin a Table row, center first row element
+r_^\s*\|_<tr><td>_begin a Table row, default-align first row element
+r_\|\s*$_</td></tr>_end a Table row
+s_|<_</td><td align="left">_next Table row element, left-align this element
+s_|>_</td><td align="right">_next Table row element, right-align this element
+s_|=_</td><td align="center">_next Table row element, center this element
+s_|_</td><td>_next Table row element, default-align this element
+
+
+   PLATES (.jpg images)
+
+   These assume that the illustrations are .jpg files placed in subdirectory "images"
+   Tag illustrations like this: "[Plate 2: alt text]"
+r_\[Plate (\d+):\s*([^\]]*)\]_<div class="figright" style="width:25%;"><a href="images/plate$1.jpg"><img width="100%" src="images/thumb$1.jpg" alt="Plate $1. $2" /></a><h3></h3></div>_Plate with alt text
+r_\[Plate (\d+)\]_<div class="figright" style="width:25%;"><a href="images/plate$1.jpg"><img width="100%" src="images/thumb$1.jpg" alt="Plate $1" /></a><h3></h3></div>_Plate without alt text
+
+
+   ILLUSTRATIONS
+
+   These assume that the illustrations are .png files placed in subdirectory "images"
+
+   For the Games book, all the images are titled "###.png" or "###-#.png".
+   There are no captions; put the text into the alt parameter.
+   Tag illustrations like this: "[Illustration C50/###-#: text]"
+  r_\[Illustration C(\d+)\/([^:]+):\s*([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration centered ??%
+  r_\[Illustration (\d+)\/([^:]+):\s*([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration centered ??%
+  r_\[Illustration L(\d+)\/([^:]+):\s*([^\]]*)\]_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration left ??%
+  r_\[Illustration R(\d+)\/([^:]+):\s*([^\]]*)\]_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a></div>_Illustration right ??%
+  r_\[Illustration C(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+  r_\[Illustration (\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+  r_\[Illustration L(\d+)\/([^\]]+)\]_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration left ??%, no caption
+  r_\[Illustration R(\d+)\/([^\]]+)\]_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration right ??%, no caption
+
+   If the closing bracket "]" falls on the same line, capture the caption
+r_\[Illustration:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration with caption
+
+   Added notations before the colon: C/L/R = centered/left/right, number = width percent
+   E.g., "[Illustration L42: caption]" yields a left-justified figure at 42% width
+   Both the letter and number are optional, but if both are used, the letter must come before the number.
+r_\[Illustration C(\d+):([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration (\d+):([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration L(\d+):([^\]]*)\]_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration left ??%
+r_\[Illustration R(\d+):([^\]]*)\]_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$2</div>_Illustration right ??%
+r_\[Illustration C:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration centered, default width (100%)
+r_\[Illustration L:([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration left, default width (50%)
+r_\[Illustration R:([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration right, default width (50%)
+
+s\[Illustration]\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a></div>\Illustration without caption
+
+   If the closing bracket does not fall on the same line, treat as well as possible.
+   (These will need some cleaning up later.)
+r_\[Illustration C(\d+):_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration (\d+):_<div class="figcenter" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered ??%
+r_\[Illustration L(\d+):_<div class="figleft" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left ??%
+r_\[Illustration R(\d+):_<div class="figright" style="width:$1%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right ??%
+r_\[Illustration C:_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration centered, default width (100%)
+r_\[Illustration L:_<div class="figleft" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration left, default width (50%)
+r_\[Illustration R:_<div class="figright" style="width:50%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>_Illustration right, default width (50%)
+
+  Badly formed illustration markup; handle as well as possible
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>\Illustration
+
+   subscripts & superscripts
+r~_\{([^\}]*)\}~<sub>$1</sub>~subscript
+r~\^\{([^\}]*)\}~<sup>$1</sup>~superscript
+
+
+   IMPORTANT: This line (if used) must come BEFORE defining any HTML character entities
+s\&\&amp;\ampersand
+
+
+      =SPECIAL=
+
+s\¢\&#162;\cent sign, ¢
+s\°\&#176;\degree symbol, °
+s\Æ\&#198;\AE ligature, Æ
+s\æ\&#230;\ae ligature, æ
+
+
+s\<p>          \<p class="i10">\Indent extra 10 spaces
+s\<p>        \<p class="i8">\Indent extra 8 spaces
+s\<p>      \<p class="i6">\Indent extra 6 spaces
+s\<p>    \<p class="i4">\Indent extra 4 spaces
+s\<p>  \<p class="i2">\Indent extra 2 spaces
+
+r_-{23}File: (\d+)\.png-{25,30}_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number 
+
+\Make sure you handle Page Separators and ampersands before treating dashes!
+s\--\&mdash;\em dash
+
+   Footnotes:
+r_\[(\d+)\]_<a id="footnotetag$1" name="footnotetag$1"></a><a href="#footnote$1"><sup>$1</sup></a>_Footnote
+   If the closing bracket "]" falls on same line, capture the footnote caption.
+r_\[Footnote (\d+): ([^\]]+)\]_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>$2</p></blockquote>_Footnote
+   Can't find closing bracket; treat as well as possible
+r_\[Footnote (\d+):_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1:</b><a href="#footnotetag$1"> (return) </a><p>***Put footnote text here***</p></blockquote>_Footnote
+
+
+  Sidenotes: (note that it grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote: ([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote
+
+
+   Help for Tables of Contents and Indices and "See p. ***"
+r_##(\d+)_<a href="#page$1">$1</a><br />_Go to page #
+\s\##\<a href="#page***">***</a></br>\Go to page #***
+
+
+   Enforce XHTML forms, in case the PPer used non-XHTML forms:
+s_<br>_<br />_convert HTML break to closed-break markup required by XHTML
+s_<hr>_<hr />_convert HTML rule to closed-rule markup required by XHTML

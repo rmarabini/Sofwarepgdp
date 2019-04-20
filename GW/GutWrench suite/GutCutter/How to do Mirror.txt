@@ -1,0 +1,177 @@
+These are instructions on how to use various computer tools to help make an HTML version of "The Mirror" magazine in the style prescribed by the PM, Jon Ingram. I think it makes a very nice looking product, and should work well on other projects involving illustrations, poetry, and footnotes. Following this scheme, I have been able to produce an HTML version of a 16-page Mirror in less that a half-hour (on top of producing the plain-text version), including preparing the (very few, for the Mirror) illustrations. You should have some familiarity with the basic scheme, which you can find laid out in detail in the DP Forum under Uberprojects --> Mirror.
+
+This is the version of these instructions of 2 December 2004.
+
+You are going to make both a plain-text version and an HTML version, in three Phases. The first phase is to make a well-marked-up version, which will be further worked on in the other two phases to produce both final versions.
+
+       *       *       *       *       *
+
+PHASE ONE. Error-checking and adding a little more mark-up.
+
+1. Optionally, first run GutSweeper on the text file. Then go thru the text with an editor:
+
+a) Add HTML Header markups as appropriate:
+<h2>...</h2> about major article titles;
+<h3>...</h3> about sub-titles and about titles of very small articles.
+<h4>...</h4> about authors and "(For the Mirror)"
+
+b) Insert rules where needed, according to the Mirror style. Between articles, use the "Thought Break" (the usual five asterisks, seven spaces apart):
+
+       *       *       *       *       *
+
+If an article ends at the bottom of a page, put a Thought Break after it but _just before_ the Page Separator. (This is so that the Page Number displayed in the HTML version will fall a little below the Rule--looks nicer.) It should look like this (note where the blank lines go):
+
+... end of text of previous page.
+
+       *       *       *       *       *
+-----------------------File: 123.png----------------------------
+
+Beginning of text of following page.....
+
+Change the scan number in each Page Separator to the page number that appears in the scan. You can use the GutPunch tool to do this.
+
+Optional: Rules between articles should be "full-length". These may be set up now by appending "full" after the Thought Break:
+
+       *       *       *       *       *full
+
+The "full" will be automatically stripped out of the plain-text version. "short" and "long" are also handled.
+
+c) Move Illustrations out of articles (unless they are part of the article). Separate them from surrounding articles (or each other) with Thought Breaks.
+
+Optional: Modify "[Illustration:" like these examples:
+"[Illustration R30/4-2:" scales the image, named "4-2.png", to 30% and floats it right.
+(Any whole number is accepted for the scaling percentage. The image name is optional.)
+"[Illustration 60:" scales the image to 60% and centers it. (Any whole-number percentage is accepted.)
+"[Illustration L40:" scales the image to 40% and floats it left. (Any whole-number percentage is accepted.)
+"[Illustration R30:" scales the image to 30% and floats it right. (Any whole-number percentage is accepted.)
+"[Illustration C:" or "[Illustration:" leaves it centered, 100% scale.
+"[Illustration L:" or "[Illustration R:" floats left or right, 50% scale (default).
+"Float" means justify it to one side and wrap the text around it.
+This step will save you having to scale the figures in the HTML later.
+
+d) Adjust mark-ups:
+Use /*...*/ around Poetry (and lists that are not to be rewrapped).
+Use /#...#/ around Block Quotes.
+Around Tables, change /*...*/ to /$...$/ and use GutCutter's Table-making capability (see the accompanying file "How to do Tables.txt".)
+
+e) Patch up any words that are hyphenated across Page Separators (or italics or bold markup that was interrupted by a Page Separator). For hyphenated words, put the complete word either before or after the Page Separator.
+
+2. Change any _low-line mark-ups_ of italics to <i>HTML style</i>.
+
+If you would like to have abbreviations like "etc." and "et al." appear in italics in the HTML, add tags around them now. (They will be stripped out automatically when you create the plain-text version with GutCutter.) I like to do this around the English money: "2<i>s.</i> 6<i>d.</i>"; these also get stripped out by GutCutter (note that the periods go INSIDE the italics markups).
+
+3. Proofread and check for errors in the usual manner:
+GutAxe
+Gutcheck (Guiguts is recommended!)
+GutWrench
+Spellchecker
+(See the Checklist that comes with the GutWrench suite.)
+
+4. Inspect.
+
+5. You have completed making a "well-marked-up" version. Save a copy of this file in a safe place. This file will become both the plain-text and HTML versions.
+
+       *       *       *       *       *
+
+PHASE TWO: make the plain-text version:
+
+1. Run GutCutter on the well-marked-up version with these selections:
+  (radio button) Output As ... Plain Text
+    and
+  (menu) Style --> Mirror
+This will automatically do the following:
+--Replace HTML <hx>header</hx> tags by <b>bold</b> tags.
+--Remove italics markups that shouldn't be used (e.g., around <i>e.g.</i>, <i>etc.</i>, and English money).
+
+GutCutter's output, named GCout.txt, is now a standard DP marked-up version. Continue working with this file.
+
+2. Edit the beginning of this file to include the proper title information. For "The Mirror", it should look like this:
+
+THE MIRROR OF LITERATURE, AMUSEMENT, AND INSTRUCTION. 
+
+VOL. ***, No. ***.] SATURDAY, ***DATE***. [PRICE 2d. 
+
+
+
+       *       *       *       *       *
+
+That is, Title, blank line, Volume, Number, date, price; then three blanks lines and a Thought Break.
+
+3. Fix up Footnotes in the Mirror style. Change this:
+
+[Footnote A: This is a footnote.]
+
+to look like this, with block-quote markups:
+
+/#
+[1] This is a footnote.
+#/
+
+and change [A] within the body text to [1]. (If you are doing a lot of Mirrors, you might want to edit the GCstyle0.txt file to do at least part of these changes automatically.)
+
+4. Run GutHammer to re-wrap the text. (If you prefer, use RewrapIndent or Guiguts.)
+Adjust GutHammer's settings to also:
+--Apply an additive indent (select "Add") of 2 spaces to Poetry.
+--Change <i>HTML-style italics mark-up</i> to _low-line markup_.
+--Change text within <b>HTML-style bold mark-up</b> to ALL CAPS.
+(GutHammer also removes the Page Separators.)
+
+5. Make a final inspection. It's a good idea to rerun gutcheck (in verbose mode) and GutAxe (in PPV mode). You have completed the plain-text version. Rename this file "Mirror.txt".
+
+       *       *       *       *       *
+
+PHASE THREE: make the HTML version. Start again with the well-marked-up version you made in Phase One. If you found any errors in making the plain-text version, correct them also in the well-marked-up file.
+
+1. Prepare the image files for the Illustrations by cropping them from the page scans (use IrfanView or Photoshop). Name them "ISSUENUMBER-1.png", etc., where ISSUENUMBER is the issue number (e.g., 345-1.png, where 345 is the issue number). Put them in a folder named "images".
+
+2. Prepare the footnotes by consecutively numbering them through the entire text.
+
+3. Run GutCutter on the well-marked-up file with "Output As ... HTML" and the Mirror Style selected. The output of this program is named GCout.htm. Continue working with this file.
+
+4. In the title area of the header, add the volume number and the date.
+
+5. Fix up the page numbers. GutCutter will replace each Page Separator with a line that looks like this (where 002 is the scan image number):
+
+<span class="pagenum"><a name="page002" id="page002"></a>[pg 002]</span>
+
+This should be repaired to look like this (where the page number is 123):
+
+<span class="pagenum"><a name="page123" id="page123"></a>[pg 123]</span>
+                                   ^^^          ^^^          ^^^
+(A little trick: in the first editing pass through the file in Phase One, replace the scan numbers in the Page Separators with the page numbers. Then this step will already be done.)
+
+6. Fix up the figure captions. GutCutter will replace each "[Illustration:" tag with a line that looks like this:
+
+<div class="figure" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>??CAPTION??</p></div><h3>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</h3>
+<p>WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."]</p>
+
+This should be repaired to look like this (where the figure's image file is named "345-1.png"):
+
+<div class="figure" style="width:100%;"><a href="images/345-1.png"><img width="100%" src="images/345-1.png" alt="" /></a><h3>AN OPEN-AIR VARIETY ENTERTAINMENT AT THE FRONT</h3>
+<p>WITH "OCCASIONAL MUSIC BY THE ANTI-AIRCRAFT SECTION."</p></div>
+
+Adjust the parameter "width:100%;" so that the percentage reflects the width of the image with respect to the original page (i.e., full width = 100%).
+
+7. Fix up the Footnotes. In the GutCutter output, the tags (i.e., [3]) are automatically handled (may need number adjusted), and the footnotes look like this:
+
+<blockquote class="footnote"><a id="footnote3" name="footnote3"></a><b>Footnote 3:</b><a href="#footnotetag3"> (return) </a><p>***put text here***</p></blockquote> This is the real footnote text.]
+
+Repair it to look like this:
+
+<blockquote class="footnote"><a id="footnote3" name="footnote3"></a><b>Footnote 3:</b><a href="#footnotetag3"> (return) </a><p>This is the real footnote text.</p></blockquote>
+
+and move the Footnote where you want it (near the end of the file for The Mirror, or possibly at end of Chapter for other projects).
+
+(Another little trick: If, in the well-makred-up version, the footnote text falls all on a single line, it will be handled completely automatically by GutCutter and require no clean-up.)
+
+If you are working on a project with Sidenotes, they are handled in a similar manner to Illustrations and Footnotes. Again, just a little clean-up is needed.
+
+8. Fix up Horizontal Rules. GutCutter replaces all 5-asterisk Thought Breaks with <hr />. Before major articles, replace these with <hr class="full" /> (if not handled by the optional task 1b in Phase One).
+
+9. Open with your favorite web-browser to inspect.
+
+10. Clean up your code with Tidy and validate it at http://validator.w3.org/.
+
+You're done making the HTML version.
+
+       *       *       *       *       *

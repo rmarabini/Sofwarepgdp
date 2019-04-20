@@ -1,0 +1,90 @@
+"How do I ...?"
+
+This file tells you how to do certain automatic checks and repairs of an e-text during post-processing by using GutSweeper, GutAxe, GutWrench, and GutHammer. It is intended to answer questions of the sort "How do I ...?"
+
+
+"... remove trailing blanks?"
+
+--In GutSweeper or GutWrench, Modify the text with this feature selected.
+
+
+"... clothe or flag naked hyphens and dashes?"
+
+--In GutSweeper, Modify the text with this feature selected. This will automatically correct most such cases, and flag (with a "*") those it cannot correct (such as a dash or hyphen beginning a line immediately after a Page Separator). Also, some badly formatted dashes and long dashes representing undisclosed words (such as "Mr. ----") may not be treated correctly; read the GSlog.txt file to make sure no errors have been introduced. 
+
+
+"... find mismatched italics markups?"
+
+--In GutWrench, make a Page Map (before you have removed the Page Separators!), and look through the result (scroll through the textbox or read the file GWmaps.txt). This will flag those pages having unequal numbers of opening and closing italics markups or odd numbers of low-line characters "_".
+
+
+"... find missing italics markups?"
+
+--In GutWrench, make a Page Map (before you have removed the Page Separators!), print the file GWmaps.txt (open it in MSWord and format it into two columns to save paper), and compare it with all the scan images (for speed and convenience, use IrfanView's slide-show feature). This also makes it easy to spot missing Thought Breaks and pages that should, but don't, start with a new paragraph.
+
+
+"... find mismatched poetry markups?"
+
+--In GutSweeper, Check the text.
+
+
+"... find missing poetry markups?"
+
+--In GutSweeper, Check the text; if you are lucky, the poetry (or at least part of it) will be indented and thus flagged with an Alert as having a "double space outside markups".
+
+
+"... clean up poetry markups to which proofers have added comments (such as '/* poetry')?"
+
+--In GutSweeper, Modify the text.
+
+
+"... find missing 'Thought Breaks'?"
+
+--In GutWrench, make a PageMap (before you have removed the Page Separators!), print the file GWmaps.txt (open it in MSWord and format it into two columns to save paper), and compare it with all the scan images (for speed and convenience, use IrfanView's slide-show feature).
+
+
+"... shorten long lines?"
+
+--In GutSweeper, Modify the text with "Divide Long Lines" selected.
+
+
+"... remove Page Separators?"
+
+--In GutWrench, Modify the text with this option selected.
+--In GutHammer, this is also done automatically while Rewrapping the text.
+
+
+"... join short lines?"
+
+--In GutWrench, Modify the text with this option selected; this will join adjacent pairs of short lines that together will not exceed the specified maximum length.
+
+
+"... check whether hyphenation (such as 'to-day' vs. 'today') is consistent?"
+
+--In GutWrench, Map Hyphenations. This lists, first, all hyphenated words in the text, and second, occurrences of unhyphenated versions of any of the hyphenated words.
+
+
+"... correct common words which sometimes (perhaps formerly) have hyphens (such as "to-day" and "south-east") and accents (such as 'élite' and 'coöperate') and ligatures (such as 'Æsop' and 'mediæval')"?
+
+--Run GutAxe to Modify the text.
+
+
+"... check whether any hyphens should really be dashes?"
+
+--In GutWrench, Map Hyphenations. This lists all hyphenated words in the text; if any of these should really be dashes, it should be readily apparent.
+
+
+"... check whether accented letters (such as 'élite' vs. 'elite' and 'mediæval' vs. 'mediaeval') are used consistently?"
+
+--In GutWrench, Map Accented Words. This lists, first, all words with accented characters in the text, and second, occurrences of other versions of any of the accented words.
+
+
+"... quickly correct some common stealth scannos?"
+
+--Run GutAxe to Modify the text.
+
+
+"... rewrap the text?"
+
+--In GutHammer, Rewrap the text. Text within Poetry markups ('/*...*/') is indented the specified number of spaces but not rewrapped. Text within Block Quote markups ('/#...#/') is indented the specified number of spaces and rewrapped. Text within Sic/Stet markup ('/$...$/') is neither indented not rewrapped (use this for tables and poetry with variable indents). All other text is rewrapped without indenting. The above markups and Page Separators are deleted; italics markups may be replaced by a specified character (such as the usual low-line character "_").
+--Use big_bill's RewrapIndent tool.

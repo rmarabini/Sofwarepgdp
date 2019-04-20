@@ -1,0 +1,11 @@
+These are instructions on how to use GutCutter to show suspected errors in a text. The text may be either a simple plain text or a well-marked-up text with DP-style and most HTML markups. Run GutCutter on the file with the "Show Errors" style selected. This will create an HTML file with any suspected errors highlighted (yellow backround, underlined, and blinking [the last is browser-dependent]). 
+
+To run:
+1) Open the GutCutter application.
+2) Select your text file from the pull-down menu or using the File menu (File --> Open ...).
+3) Select "Show errors (HTML only)" in the Select Style menu.
+4) Click the "Modify Text" button. (There will be a pause as GutCutter works; this could be several minutes for a very long file on a slow computer.) A message box will tell you when it's done.
+5) Close GutCutter.
+6) Open the file GCout.htm (created by GutCutter) in a web browser.
+
+Your original file will not be changed in any way.

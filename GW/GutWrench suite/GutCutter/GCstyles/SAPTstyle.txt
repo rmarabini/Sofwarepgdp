@@ -1,0 +1,189 @@
+\Auxiliary file SAPTstyle.txt for GutCutter 0.3
+\Converts text file with DP markups and some HTML markups to a plain-text version
+\This style is for the Scientific American uberproject (SciAm).
+\modified 29 Dec. 2005
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+s\*/*\\Remove blank-line markup used in poetry (needed by GutCutter!)
+s\/*\/$\Convert poetry markup to stet markup
+s\*/\$/\Convert poetry markup to stet markup
+s\<pre>\/$\Convert HTML markup to stet markup
+s\</pre>\$/\Convert HTML markup to stet markup
+
+=============================================================
+   Help for HTML TABLES. To activate, left-justify these lines.
+   Be sure to activate corresponding lines in SAHTMLstyle.txt.
+     Take out tokens for HTML Tables:
+  r_<table[^>]*>_\/\$_replace <table...> tag with /$ markup
+  s\</table>\$/\replace </table> tag with $/ markup
+  s\<tbody>\\remove <tbody> tag
+  r_<caption[^>]*>__remove <caption...> tag
+  s\</caption>\\remove </caption> tag
+  s\|<\|\Table separator, left-align
+  s\|>\|\Table separator, right-align
+  s\|^\|\Table separator, center-align
+
+    Optional: Activate this line to remove also all the |'s:
+  s\|\\remove vertical-line symbols
+=============================================================
+
+
+s\&amp;\&\ampersand
+s\&mdash;\--\em dash
+
+o_<[hH]2>([^<]+)<\/[hH]2>_$1_Major heading to TOC, no indent
+o_<[hH]3>([^<]+)<\/[hH]3>_  $1_Major heading to TOC, indent 2 sp
+o_<[hH]4>([^<]+)<\/[hH]4>_    $1_Major heading to TOC, indent 4 sp
+
+  Remove HTML Header tags:
+r~<h\d>~~delete Header-x open tag
+r~</h\d>~~delete Header-x close tag
+
+      THOUGHT BREAKS
+s\<hr>\       *       *       *       *       *\Rule to Thought Break
+s\<hr />\       *       *       *       *       *\Rule to Thought Break
+s\<hr class="short" />\       *       *       *       *       *\Short Rule to Thought Break
+s\<hr class="full" />\       *       *       *       *       *\Full Rule to Thought Break
+s\<hr class="long" />\       *       *       *       *       *\Long Rule to Thought Break
+s\<tb>\       *       *       *       *       *\<tb> DP markup to Thought Break
+s\<tb />\       *       *       *       *       *\(Erroneous) <tb /> DP markup to Thought Break
+s\<tb short>\       *       *       *       *       *\<tb short> modified DP markup to Thought Break
+s\<tb full>\       *       *       *       *       *\<tb full> modified DP markup to Thought Break
+s\<tb long>\       *       *       *       *       *\<tb long> modified DP markup to Thought Break
+\Remove special "Mirror", "Punch", "Notes & Queries", and "Fully Monty" features
+s\       *       *       *       *       *full\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *long\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *short\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *adverts\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *advert\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *ad\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *ads\       *       *       *       *       *\Thought Break
+s\       *       *       *       *       *adv\       *       *       *       *       *\Thought Break
+
+s\<p>\\Remove paragraph markup
+s\</p>\\Remove paragraph markup
+
+\Don't italicize letters used to enumerate lists:
+r_\(<i>([a-zA-Z\d])</i>\)_($1)_Don't italicize lone letter or number in parens
+  \s\(<i>a</i>)\(a)\Don't italicize "(a)"
+    etc.
+s\(<i>ii</i>)\(ii)\Don't italicize "(ii)"
+s\(<i>iii</i>)\(iii)\Don't italicize "(iii)"
+s\(<i>iv</i>)\(iv)\Don't italicize "(iv)"
+s\(<i>vi</i>)\(vi)\Don't italicize "(vi)"
+s\(<i>vii</i>)\(vii)\Don't italicize "(vii)"
+s\(<i>viii</i>)\(viii)\Don't italicize "(viii)"
+s\(<i>ix</i>)\(ix)\Don't italicize "(ix)"
+s\(<i>xi</i>)\(xi)\Don't italicize "(xi)"
+s\(<i>xii</i>)\(xii)\Don't italicize "(xii)"
+
+\Don't italicize common abbreviations:
+s\<i>i.e.</i>\i.e.\Don't italicize "i.e."
+s\<i>e.g.</i>\e.g.\Don't italicize "e.g."
+s\<i>etc.</i>\etc.\Don't italicize "etc."
+s\<i>et al.</i>\et al.\Don't italicize "et al."
+s\<i>Ib.</i>\Ib.\Don't italicize "Ib."
+s\<i>Ibid.</i>\Ibid.\Don't italicize "Ibid."
+s\<i>do.</i>\do.\Don't italicize "do."
+s\<i>Do.</i>\Do.\Don't italicize "Do."
+
+\British currency:
+s\<i>s.</i>\s.\Don't italicize "s." for shilling
+s\<i>d.</i>\d.\Don't italicize "d." for pence
+s\<i>l.</i>\l.\Don't italicize "l." for pounds
+
+s\##\\Remove link to page number
+
+   subscripts & superscripts
+r~_(\d)~_{$1}~subscript
+r~\^(\d)~^{$1}~superscript
+r~_\\(\d)~$1~subscript
+r~\^\\(\d)~$1~superscript
+r~_\\\{([^\}]*)\}~$1~subscript
+r~\^\\\{([^\}]*)\}~$1~superscript
+
+r_\[Illustration [^:]*-:_[Illustration:_small Illustration with caption
+r_\[Illustration [^\]:]*-\]_[Illustration]_small Illustration without caption
+r~\[Illustration [^:]*:~[Illustration:~large Illustration with caption
+r~\[Illustration [^\]:]*\]~[Illustration]~large Illustration without caption
+
+s_[Greek: Alpha]_[Alpha]_greek letter
+s_[Greek: A]_[Alpha]_greek letter
+s_[Greek: Beta]_[Beta]_greek letter
+s_[Greek: B]_[Beta]_greek letter
+s_[Greek: Gamma]_[Gamma]_greek letter
+s_[Greek: G]_[Gamma]_greek letter
+s_[Greek: Delta]_[Delta]_greek letter
+s_[Greek: D]_[Delta]_greek letter
+s_[Greek: Epsilon]_[Epsilon]_greek letter
+s_[Greek: Zeta]_[Zeta]_greek letter
+s_[Greek: Z]_[Zeta]_greek letter
+s_[Greek: Eta]_[Eta]_greek letter
+s_[Greek: H]_[Eta]_greek letter
+s_[Greek: Theta]_[Theta]_greek letter
+s_[Greek: Iota]_[Iota]_greek letter
+s_[Greek: I]_[Iota]_greek letter
+s_[Greek: Kappa]_[Kappa]_greek letter
+s_[Greek: K]_[Kappa]_greek letter
+s_[Greek: Lambda]_[Lambda]_greek letter
+s_[Greek: L]_[Lambda]_greek letter
+s_[Greek: Mu]_[Mu]_greek letter
+s_[Greek: M]_[Mu]_greek letter
+s_[Greek: Nu]_[Nu]_greek letter
+s_[Greek: N]_[Nu]_greek letter
+s_[Greek: Xi]_[Xi]_greek letter
+s_[Greek: Omicron]_[Omicron]_greek letter
+s_[Greek: O]_[Omicron]_greek letter
+s_[Greek: Pi]_[Pi]_greek letter
+s_[Greek: Rho]_[Rho]_greek letter
+s_[Greek: Sigma]_[Sigma]_greek letter
+s_[Greek: Tau]_[Tau]_greek letter
+s_[Greek: T]_[Tau]_greek letter
+s_[Greek: Upsilon]_[Upsilon]_greek letter
+s_[Greek: Y]_[Upsilon]_greek letter
+s_[Greek: Phi]_[Phi]_greek letter
+s_[Greek: Chi]_[Chi]_greek letter
+s_[Greek: Psi]_[Psi]_greek letter
+s_[Greek: Omega]_[Omega]_greek letter
+s_[Greek: alpha]_[alpha]_greek letter
+s_[Greek: a]_[alpha]_greek letter
+s_[Greek: beta]_[beta]_greek letter
+s_[Greek: b]_[beta]_greek letter
+s_[Greek: gamma]_[gamma]_greek letter
+s_[Greek: g]_[gamma]_greek letter
+s_[Greek: delta]_[delta]_greek letter
+s_[Greek: d]_[delta]_greek letter
+s_[Greek: epsilon]_[epsilon]_greek letter
+s_[Greek: e]_[epsilon]_greek letter
+s_[Greek: zeta]_[zeta]_greek letter
+s_[Greek: z]_[zeta]_greek letter
+s_[Greek: eta]_[eta]_greek letter
+s_[Greek: theta]_[theta]_greek letter
+s_[Greek: iota]_[iota]_greek letter
+s_[Greek: i]_[iota]_greek letter
+s_[Greek: kappa]_[kappa]_greek letter
+s_[Greek: k]_[kappa]_greek letter
+s_[Greek: lambda]_[lambda]_greek letter
+s_[Greek: l]_[lambda]_greek letter
+s_[Greek: mu]_[mu]_greek letter
+s_[Greek: m]_[mu]_greek letter
+s_[Greek: nu]_[nu]_greek letter
+s_[Greek: n]_[nu]_greek letter
+s_[Greek: xi]_[xi]_greek letter
+s_[Greek: omicron]_[omicron]_greek letter
+s_[Greek: o]_[omicron]_greek letter
+s_[Greek: pi]_[pi]_greek letter
+s_[Greek: rho]_[rho]_greek letter
+s_[Greek: sigmaf]_[sigmaf]_greek letter
+s_[Greek: sigma]_[sigma]_greek letter
+s_[Greek: tau]_[tau]_greek letter
+s_[Greek: t]_[tau]_greek letter
+s_[Greek: upsilon]_[upsilon]_greek letter
+s_[Greek: y]_[upsilon]_greek letter
+s_[Greek: phi]_[phi]_greek letter
+s_[Greek: chi]_[chi]_greek letter
+s_[Greek: psi]_[psi]_greek letter
+s_[Greek: omega]_[omega]_greek letter

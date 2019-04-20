@@ -1,0 +1,40 @@
+\Auxiliary file VanillaStyle.txt for GutCutter 0.3
+\Converts text file with DP markups to a "vanilla" (rather plain) HTML version
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+s\       *       *       *       *       *\<hr />\horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\<tb>\<hr />\horizontal rule
+
+s\/#\<blockquote>\Block quote begins
+s\#/\</blockquote>\Block Quote ends
+
+  Use <pre>...</pre> markups for poetry
+s\*/*\\Blank line in poetry
+s\/*\<pre>\Poem begins
+s\*/\</pre>\Poem ends
+
+r_\[Illustration:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration with caption
+s\[Illustration:\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width = "100%" src="images/??.png" alt="" /></a><p>??CAPTION??</p></div>\Illustration
+s\[Illustration]\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width = "100%" src="images/??.png" alt="" /></a></div>\Illustration without caption
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width = "100%" src="images/??.png" alt="" /></a><p>??CAPTION??</p></div>\Illustration
+
+s\/$\<pre>\pre-formatted begins
+s\$/\</pre>\pre-formatted ends
+
+s\&\&amp;\ampersand
+
+r_-{23}File:\s*(\d+)\.png-{25,30}__remove Page Separator
+
+r_\*\*\*PSstart\*\*\*\s*(\d+)\*\*\*PSend\*\*\*__remove Page Separator 
+
+s\--\&mdash;\em dash
+
+\Sidenotes: (note that it grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote: ([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote

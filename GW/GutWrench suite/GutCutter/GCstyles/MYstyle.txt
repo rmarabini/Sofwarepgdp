@@ -1,0 +1,749 @@
+\Auxiliary file MYstyle.txt for GutCutter 0.3
+\
+\My style for Sign Language book, Food Guide book
+\
+\Converts text file with DP and additional markups to an XHTML version in the 
+\general style of Jon Ingram (used for _Punch_ and _The Mirror_)
+\but with numerous other added features
+
+\modified 1 Jan. 2006
+
+\This is a comment line (starts with any character but r, w, or s).
+\The second character of each rule is the delimiter between type\old\new\description.
+\The description MUST be included.
+
+r_\[\^(\d)\]_<sup>$1</sup>_raised number
+  \s\[^1]\<sup>1</sup>\raised "1"
+
+   THOUGHT BREAKS --> HORIZONTAL RULES
+
+s\       *       *       *       *       *full\<hr class="full" />\full horizontal rule
+s\       *       *       *       *       *long\<hr />\long horizontal rule
+s\       *       *       *       *       *short\<hr class="short" />\short horizontal rule
+s\       *       *       *       *       *\<hr />\long horizontal rule
+s\ * * * * *full\<hr class="full" />\full horizontal rule
+s\ * * * * *long\<hr />\long horizontal rule
+s\ * * * * *short\<hr class="short" />\short horizontal rule
+s\ * * * * *\<hr />\long horizontal rule
+s\       ***\<hr class="short" />\short horiz. rule
+s\<tb>\<hr />\long horizontal rule
+s\<tb long>\<hr class="long" />\long horizontal rule
+s\<tb full>\<hr class="full" />\full horizontal rule
+s\<tb short>\<hr class="short" />\long horizontal rule
+
+r_^\/d$_<div class="drama">_Drama begins
+r_^d\/$_</div>_Drama ends
+
+s\/#note\<blockquote class="note"><p>\"Note-style" blockquote begins
+s\/#\<blockquote><p>\Block quote begins
+s\#/\</p></blockquote>\Block Quote ends
+s\*/*\  </div><div class="stanza">\New stanza
+s\/*\<div class="poem">  <div class="stanza">\Poem begins
+s\*/\  </div>  </div>\Poem ends
+
+   ILLUMINATED LETTERS
+r_\[\[([A-Z])\]\]_<div class="inline" style="width:6%;"><a href="images/Ltr-$1.png"><img width="100%" src="images/Ltr-$1.png" alt="Illuminated $1" /></a></div>_Illuminated letter
+
+
+
+   HELP FOR TABLE OF CONTENTS
+o_<p>>>([^<]+)<\/p>_ by $1_">>author" markup (2)
+
+   Change each heading (inside <hx>...</hx> tags) into itself plus a TOC entry.
+   To prevent infinite looping, this is done in steps:
+   DO CASES WITH ITALICS FIRST
+o_<[hH]2>(<[iI]>[^<]+<\/[iI]>)<\/[hH]2>_<p>$1 <a href="#page***">***</a></p>_Major article heading <h2>
+o_<[hH][34]>(<[iI]>[^<]+<\/[iI]>)<\/[hH][34]>_<p class="i4">$1 <a href="#page***">***</a></p>_Article sub-heading <h3>
+o_<[hH][56]>(<[iI]>[^<]+<\/[iI]>)<\/[hH][56]>_<p class="i8">$1 <a href="#page***">***</a></p>_Article sub-heading <h3>
+
+   CASE WITH INTERNAL BREAK MARKUP <br />
+o_<[hH][34]>([^<]+)<br \/>([^<]+)<\/[hH][34]>_<p class="i4">$1 $2 <a href="#page***">***</a></p>_Article sub-heading <h3>
+o_<[hH][56]>([^<]+)<br \/>([^<]+)<\/[hH][56]>_<p class="i8">$1 $2 <a href="#page***">***</a></p>_Article sub-heading <h3>
+
+   NO ITALICS
+o_<[hH]2>([^<]+)<\/[hH]2>_<p>$1 <a href="#page***">***</a></p>_Major article heading <h2>
+o_<[hH][34]>([^<]+)<\/[hH][34]>_<p class="i4">$1 <a href="#page***">***</a></p>_Article sub-heading <h3>
+o_<[hH][56]>([^<]+)<\/[hH][56]>_<p class="i8">$1 <a href="#page***">***</a></p>_Article sub-heading <h3>
+
+
+s\<p>>>\<p class="author">\">>author" markup (2)
+
+   SMALL CAPS
+r_<sc>_<span class="sc">_opening small-caps markup
+r_</sc>_</span>_closing small-caps markup
+
+r_<h(\d)sc>_<h$1 class="sc">_header in small caps
+
+   TABLES
+
+r_\/\$#<(.*)_<table summary="$1" align="left" border="1">_begin bordered table, left-aligned
+r_\/\$#>(.*)_<table summary="$1" align="right" border="1">_begin bordered table, right-aligned
+r_\/\$#\^(.*)_<table summary="$1" align="center" border="1">_begin bordered table, centered
+r_\/\$#\=(.*)_<table summary="$1" align="center" border="1">_begin bordered table, centered, new style
+r_\/\$#(.*)_<table summary="$1" align="center" border="1">_begin bordered table, centered (default)
+r_\/\$<(.*)_<table summary="$1" align="left">_begin table, left-aligned
+r_\/\$>(.*)_<table summary="$1" align="right">_begin table, right-aligned
+r_\/\$\^(.*)_<table summary="$1" align="center">_begin table, centered
+r_\/\$\=(.*)_<table summary="$1" align="center">_begin table, centered, new style
+r_\/\$(.*)_<table summary="$1" align="center">_begin table, centered (default)
+s\$/\</table>\end table
+r_^\s*\|<_<tr><td align="left">_begin a Table row, left-align first row element
+r_^\s*\|>_<tr><td align="right">_begin a Table row, right-align first row element
+r_^\s*\|\^_<tr><td align="center">_begin a Table row, center first row element
+r_^\s*\|\=_<tr><td align="center">_begin a Table row, center first row element, new style
+r_^\s*\|_<tr><td>_begin a Table row, default-align first row element
+r_\|\s*$_</td></tr>_end a Table row
+s_|<_</td><td align="left">_next Table row element, left-align this element
+s_|>_</td><td align="right">_next Table row element, right-align this element
+s_|^_</td><td align="center">_next Table row element, center this element
+s_|=_</td><td align="center">_next Table row element, center this element, new style
+s_|_</td><td>_next Table row element, default-align this element
+
+   PLATES (.jpg images and thumbnails)
+
+   These assume that the illustrations are .jpg files placed in subdirectory "images"
+   Tag illustrations like this: "[Plate 2: caption]"
+r_\[Plate ([^:]+):\s*([^\]]*)\]_<div class="figright" style="width:30%;"><a href="images/plate$1.jpg"><img width="100%" src="images/thumb$1.jpg" alt="$2" /></a>$2</div>_Plate with caption
+r_\[Plate ([^\]]+)\]_<div class="figright" style="width:30%;"><a href="images/plate$1.jpg"><img width="100%" src="images/thumb$1.jpg" alt="" /></a></div>_Plate without caption
+
+
+   ILLUSTRATIONS
+
+   These assume that the illustrations are .png files placed in subdirectory "images"
+
+   If the closing bracket "]" falls on the same line, capture the caption
+r_\[Illustration:([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a>$1</div>_Illustration with caption
+
+   Added notations before the colon: C/L/R = centered/left/right, number = width percent
+   E.g., "[Illustration L42: caption]" yields a left-justified figure at 42% width
+   Both the letter and number are optional, but if both are used, the letter must come before the number.
+
+   For the Sign Language book, all the images are titled "fig###.png", where ### is the Figure number.
+   Also, all the captions read like this: "Illustration L42: Fig. ###. Caption text]"
+   This allows us to get creative with Regular Expressions in handling the figures:
+r_\[Illustration C(\d+): Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration centered ??%
+r_\[Illustration (\d+): Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration centered ??%
+r_\[Illustration L(\d+): Fig. (\d+)([^\]]*)\]_<div class="figleft" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration left ??%
+r_\[Illustration R(\d+): Fig. (\d+)([^\]]*)\]_<div class="figright" style="width:$1%;"><a href="images/fig$2.png"><img width="100%" src="images/fig$2.png" alt="" /></a>Fig. $2$3</div>_Illustration right ??%
+r_\[Illustration C: Fig. (\d+)([^\]]*)\]_<div class="figcenter" style="width:100%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration centered, default width (100%)
+r_\[Illustration L: Fig. (\d+)([^\]]*)\]_<div class="figleft" style="width:50%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration left, default width (50%)
+r_\[Illustration R: Fig. (\d+)([^\]]*)\]_<div class="figright" style="width:50%;"><a href="images/fig$1.png"><img width="100%" src="images/fig$1.png" alt="" /></a>Fig. $1$2</div>_Illustration right, default width (50%)
+
+   Tag illustrations like this: "[Illustration C50/###-#: text]" where "###-#.png" is the image filename.
+
+   These lines handle figures captioned with <hx>"..."</hx> tags with quotes, possibly missing final "]"
+   (Replace the double quotes with single quotes in the alt parameter.)
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$3'" /></a><h$2>"$3"</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>"([^"]*)"<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$4'" /></a><h$3>"$4"</h$3></div>_Illustration right ??%
+
+   These lines handle figures captioned with <hx>...</hx> tags, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$3" /></a><h$2>$3</h$2></div>_Illustration centered 100%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*<[hH](\d)>([^<]*)<\/[hH]\d>\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$4" /></a><h$3>$4</h$3></div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, with "quotes" around the caption, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*"([^"]*)"\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="'$2'" /></a>"$2"</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*"([^"]*)"\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="'$3'" /></a>"$3"</div>_Illustration right ??%
+
+   These four lines deal with when the whole thing falls on the same line, possibly missing final "]"
+r_\[Illustration\s*C(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration centered ??%
+r_\[Illustration\s*C\/([^:]+):\s*([^\]]*)\]*_<div class="figcenter" style="width:100%;"><a href="images/$1.png"><img width="100%" src="images/$1.png" alt="$2" /></a>$2</div>_Illustration centered ??%
+r_\[Illustration\s*L(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration left ??%
+r_\[Illustration\s*R(\d+)\/([^:]+):\s*([^\]]*)\]*_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="$3" /></a>$3</div>_Illustration right ??%
+
+   These four lines handle when there is no caption "[Illustration C50/###-#]"
+r_\[Illustration\s*C(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*(\d+)\/([^\]]+)\]_<div class="figcenter" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration centered ??%, no caption
+r_\[Illustration\s*L(\d+)\/([^\]]+)\]_<div class="figleft" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration left ??%, no caption
+r_\[Illustration\s*R(\d+)\/([^\]]+)\]_<div class="figright" style="width:$1%;"><a href="images/$2.png"><img width="100%" src="images/$2.png" alt="" /></a></div>_Illustration right ??%, no caption
+
+   Tag in-line illustrations like this: "[Illustration I20/###-#: alt-text]"
+     where "###-#.png" is the image filename and "alt-text" goes into the alt property.
+r_\[Illustration\s*I(\d+)\/([^:]+):\s*([^\]]*)\]*_<a href="images/$2.png"><img class="inline" src="images/$2.png" width="$1%" alt="$3" /></a>_In-line illustration
+   No size given: "[Illustration I/###-#: alt-text]"
+r_\[Illustration\s*I\/([^:]+):\s*([^\]]*)\]*_<a href="images/$1.png"><img class="inline" src="images/$1.png" alt="$2" /></a>_In-line illustration
+   No text given: "[Illustration I20/###-#]"
+r_\[Illustration\s*I(\d+)\/([^\]]+)\]*_<a href="images/$2.png"><img class="inline" src="images/$2.png" width="$1%" alt="" /></a>_In-line illustration
+
+  Badly formed illustration markup; handle as well as possible
+s\[Illustration\<div class="figcenter" style="width:100%;"><a href="images/??.png"><img width="100%" src="images/??.png" alt="" /></a><p>**CAPTION**</p></div>\Illustration
+
+   subscripts & superscripts
+r~_\{([^\}]*)\}~<sub>$1</sub>~subscript
+r~\^\{([^\}]*)\}~<sup>$1</sup>~superscript
+
+
+   IMPORTANT: This line (if used) must come BEFORE defining any HTML character entities
+s\&\&amp;\ampersand
+
+
+       =A=
+
+s\[a]\&#592;\inverted "a"
+    Latin-1
+s_[\a]_&#224;_"a" with grave
+s_à_&#224;_"a" with grave
+s_[\A]_&#192;_"A" with grave
+s_À_&#192;_"A" with grave
+s\[/a]\&#225;\"a" with acute
+s\á\&#225;\"a" with acute
+s\[/A]\&#193;\"A" with acute
+s\Á\&#193;\"A" with acute
+s\[^a]\&#226;\"a" with circumflex
+s\â\&#226;\"a" with circumflex
+s\[^A]\&#194;\"A" with circumflex
+s\Â\&#194;\"A" with circumflex
+s\[~a]\&#227;\"a" with tilde
+s\ã\&#227;\"a" with tilde
+s\[~A]\&#195;\"A" with tilde
+s\Ã\&#195;\"A" with acute
+s\[:a]\&#228;\"a" with umlaut
+s\ä\&#228;\"a" with umlaut
+s\[:A]\&#196;\"A" with umlaut
+s\Ä\&#196;\"A" with umlaut
+s\[oa]\&#229;\"a" with circle, å
+s\å\&#229;\"a" with circle, å
+s\[oA]\&#197;\"A" with circle
+s\Å\&#197;\"A" with circle
+
+   non-Latin-1 ("&#256;" and above)
+s\[=A]\&#256;\"A" with macron
+s\[=a]\&#257;\"a" with macron
+s\[)A]\&#258;\"A" with breve
+s\[)a]\&#259;\"a" with breve
+s\[.A]\&#x0226;\"A" with dot above
+s\[.a]\&#x0227;\"a" with dot above
+s\[A,]\&#260;\"A" with ogonek
+s\[a,]\&#261;\"a" with ogonek
+s\[vA]\&#461;\"A" with caron
+s\[va]\&#462;\"a" with caron
+
+   combining characters
+s\[a:]\a&#x0324;\"a" with inferior diaeresis
+s\[a.]\a&#x0323;\"a" with inferior dot
+
+       =C=
+
+s\ç\&#231;\"c" with cedilla, ç
+s\[c,]\&#231;\"c" with cedilla, ç
+s\[c]\&#596;\reflected "c" ("open o")
+s\[C]\&#390;\reflected "C" ("open O")
+
+
+       =E=
+
+s\[E]\&#398;\reversed "E"
+s\[e]\&#601;\turned "e", schwa
+    Latin-1
+s_[\e]_&#232;_"e" with grave
+s_è_&#232;_"e" with grave
+s_[\E]_&#200;_"E" with grave
+s_È_&#200;_"E" with grave
+s\[/e]\&#233;\"e" with acute
+s\é\&#233;\"e" with acute
+s\[/E]\&#201;\"E" with acute
+s\É\&#201;\"E" with acute
+s\[^e]\&#234;\"e" with circumflex
+s\ê\&#234;\"e" with circumflex
+s\[^E]\&#202;\"E" with circumflex
+s\Ê\&#202;\"E" with circumflex
+s\[:e]\&#235;\"e" with umlaut
+s\ë\&#235;\"e" with umlaut
+s\[:E]\&#203;\"E" with umlaut
+s\Ë\&#203;\"E" with umlaut
+
+   non-Latin-1
+s\[=E]\&#274;\"E" with macron
+s\[=e]\&#275;\"e" with macron
+s\[)E]\&#276;\"E" with breve
+s\[)e]\&#277;\"e" with breve
+s\[.E]\&#278;\"E" with dot above
+s\[.e]\&#279;\"e" with dot above
+s\[E,]\&#280;\"E" with ogonek
+s\[e,]\&#281;\"e" with ogonek
+s\[Ec]\&#x0228;\"E" with cedilla
+s\[ec]\&#x0229;\"e" with cedilla
+s\[vE]\&#282;\"E" with caron
+s\[ve]\&#283;\"e" with caron
+s\[~e]\&#x1EBD;\"e" with tilde
+s\[~E]\&#x1EBC;\"E" with tilde
+
+   combining characters
+s\[=EE]\E&#862;E\double "E" with macron
+s\[=ee]\e&#862;e\double "e" with macron
+s\[)EE]\E&#861;E\double "E" with breve
+s\[)ee]\e&#861;e\double "e" with breve
+
+      =F=
+
+s\[f]\&#607;\dotless j with stroke (looks like inverted f)
+
+      =G=
+
+s\[=G]\&#x1E20;\"G" with macron
+s\[=g]\&#x1E21;\"g" with macron
+s\[.g]\&#x121;\"g" with macron
+
+      =H=
+
+s\[h]\&#613;\turned "h"
+
+      =I=
+
+   Latin-1
+s_[\i]_&#237;_"i" with grave, ì
+s_ì_&#237;_"i" with grave, ì
+s_[\I]_&#205;_"I" with grave
+s_Ì_&#205;_"I" with grave
+s\[/i]\&#237;\"i" with acute, í
+s\í\&#237;\"i" with acute, í
+s\[/I]\&#205;\"I" with acute
+s\Í\&#205;\"I" with acute
+s\[^i]\&#238;\"i" with circumflex, 
+s\î\&#238;\"i" with circumflex, 
+s\[^I]\&#206;\"I" with circumflex
+s\Î\&#206;\"I" with circumflex
+s\[:I]\&#207;\"I" with umlaut
+s\Ï\&#207;\"I" with umlaut
+s\[:i]\&#239;\"i" with umlaut
+s\ï\&#239;\"i" with umlaut
+
+   non-Latin-1 ("&#256;" and above)
+s\[~I]\&#296;\"I" with tilde
+s\[~i]\&#297;\"i" with tilde
+s\[=I]\&#298;\"I" with macron
+s\[=i]\&#299;\"i" with macron
+s\[)I]\&#300;\"I" with breve
+s\[)i]\&#301;\"i" with breve
+s\[I,]\&#302;\"I" with ogonek
+s\[i,]\&#303;\"i" with ogonek
+s\[.I]\&#304;\"I" with dot
+s\[.i]\&#305;\"i" without dot(!)
+s\[vI]\&#463;\"I" with caron
+s\[vi]\&#464;\"i" with caron
+
+      =J=
+   (See "F")
+
+      =K=
+
+s\[k]\&#670;\inverted "k"
+
+      =M=
+
+s\[m]\&#623;\turned "m"
+
+      =N=
+
+s\[n]\<sup>n</sup>\raised "n"
+s\[~n]\&#241;\"n" with tilde
+s\ñ\&#241;\"n" with tilde
+s\[~N]\&#209;\"N" with tilde
+s\Ñ\&#209;\"N" with tilde
+
+
+      =O=
+
+s_[\o]_&#242;_"o" with grave
+s\ò\&#242;\"o" with grave
+s_[\O]_&#210;_"O" with grave
+s\Ò\&#210;\"O" with grave
+s\[/o]\&#243;\"o" with acute
+s\ó\&#243;\"o" with acute
+s\[/O]\&#211;\"O" with acute
+s\Ó\&#211;\"O" with acute
+s\[^o]\&#244;\"o" with circumflex
+s\ô\&#244;\"o" with circumflex
+s\[^O]\&#212;\"O" with circumflex
+s\Ô\&#212;\"O" with circumflex
+s\[~o]\&#245;\"o" with tilde
+s\õ\&#245;\"o" with tilde
+s\[~O]\&#213;\"O" with tilde
+s\Õ\&#213;\"O" with tilde
+s\[:O]\&#214;\"O" with umlaut
+s\Ö\&#214;\"O" with umlaut
+s\[:o]\&#246;\"o" with umlaut
+s\ö\&#246;\"o" with umlaut
+
+   non-Latin-1
+s\[=O]\&#332;\"O" with macron
+s\[=o]\&#333;\"o" with macron
+s\[)O]\&#334;\"O" with breve
+s\[)o]\&#335;\"o" with breve
+s\[.O]\&#x022E;\"O" with dot
+s\[.o]\&#x022F;\"o" with dot
+s\[O.]\&#x1ECC;\"O" with inferior dot
+s\[o.]\&#x1ECD;\"o" with inferior dot
+
+      =R=
+
+s\[r]\&#633;\turned "r"
+
+      =T=
+
+s\[t]\\turned "t"
+
+      =U=
+
+s_[\u]_&#249;_"u" with grave, ù
+s_ù_&#249;_"u" with grave, ù
+s_[\U]_&#217;_"U" with grave
+s_Ù_&#217;_"U" with grave
+s\[/u]\&#250;\"u" with acute, ú
+s\ú\&#250;\"u" with acute, ú
+s\[/U]\&#218;\"U" with acute
+s\Ú\&#218;\"U" with acute
+s\[^u]\&#251;\"u" with circumflex, 
+s\û\&#251;\"u" with circumflex, 
+s\[^U]\&#219;\"U" with circumflex
+s\Û\&#219;\"U" with circumflex
+s\[:u]\&#252;\"u" with umlaut
+s\ü\&#252;\"u" with umlaut, ü
+s\[:U]\&#220;\"U" with umlaut
+s\Ü\&&#220;\"U" with umlaut
+
+   non-Latin-1
+s\[~U]\&#360;\"U" with tilde
+s\[~u]\&#361;\"u" with tilde
+s\[=U]\&#362;\"U" with macron
+s\[=u]\&#363;\"u" with macron
+s\[)U]\&#364;\"U" with breve
+s\[)u]\&#365;\"u" with breve
+s\[oU]\&#366;\"U" with ring
+s\[ou]\&#367;\"u" with ring
+s\[U,]\&#370;\"U" with ogonek
+s\[u,]\&#371;\"u" with ogonek
+s\[U.]\&#x1EE4;\"U" with inferior dot
+s\[u.]\&#x1EE5;\"u" with inferior dot
+s\[U:]\&#x1E72;\"U" with inferior double-dot
+s\[u:]\&#x1E73;\"u" with inferior double-dot
+
+
+     =V=
+
+s\[v]\&#652;\turned "v"
+
+     =W=
+
+s\[w]\&#653;\turned "w"
+
+     =Y=
+
+   non-Latin-1
+s\[y]\&#654;\turned "y"
+s\[/Y]\&#221;\"Y" with acute
+s\[/y]\&#253;\"y" with acute
+s\[:Y]\&#159;\"Y" with umlaut
+s\[:y]\&#255;\"y" with umlaut
+s\[=Y]\&#x0232;\"Y" with macron
+s\[=y]\&#x0233;\"y" with macron
+
+s\[)y]\y&#x0306;\"y" with breve
+
+     =SPECIAL CHARACTERS=
+
+s\[!]\&#161;\inverted "!"
+
+s\[schwa]\&#601;\schwa (inverted "e")
+   s\[schwa]\&#x0259;\schwa (inverted "e")
+s\[ezh]\&#x0292;\ezh character
+
+    INDIVIDUAL DIACRITICS
+s\[breve]\&#x02D8;\breve
+s\[caret]\&#x02C7;\caret (same as caron)
+s\[caron]\&#x02C7;\caron (same as caret)
+
+   letters with diacritical marks (for BAE); use HTML character entities
+s\[~A]\&Atilde;\"A" with tilde
+s\[~E]\&Etilde;\"E" with tilde
+s\[~N]\&Ntilde;\"N" with tilde
+s\[~O]\&Otilde;\"O" with tilde
+s\[:A]\&Auml;\"A" with umlaut
+s\[:E]\&Euml;\"E" with umlaut
+s\[:I]\&Iuml;\"I" with umlaut
+s\[:O]\&Ouml;\"O" with umlaut
+s\[:U]\&Uuml;\"U" with umlaut
+s\[~a]\&atilde;\"a" with tilde
+s\[~e]\&etilde;\"e" with tilde
+s\[~n]\&ntilde;\"n" with tilde
+s\[~o]\&otilde;\"o" with tilde
+s\[:a]\&auml;\"a" with umlaut
+s\[:e]\&euml;\"e" with umlaut
+s\[:i]\&iuml;\"i" with umlaut
+s\[:o]\&ouml;\"o" with umlaut
+s\[:u]\&uuml;\"u" with umlaut
+
+     =COMBINING CHARACTERS=
+
+s\[sT]\s&#x031D;\"s" with up-tack
+s\[xT]\x&#x031D;\"x" with up-tack
+s\[T]\ &#x02D4;\up-tack
+s\[e=]\e&#x0331;\"e" with inferior macron
+s\[=n]\n&#x0304;\"n" with macron
+s\[.g]\g&#x030A;\"g" with dot
+s\[.h]\h&#x030A;\"g" with dot
+
+s\[=æ]\æ&#x0304;\"ae" ligature with macron
+s\[=Æ]\Æ&#x0304;\"AE" ligature with macron
+s\['æ]\æ&#x0301;\"ae" ligature with acute accent
+s\['Æ]\Æ&#x0301;\"AE" ligature with acute accent
+s\[)æ]\æ&#x0306;\"ae" ligature with breve
+s\[)Æ]\Æ&#x0306;\"AE" ligature with breve
+
+s\['oe]\&oelig;&#x0301;\"oe" ligature with acute accent
+s\['OE]\&OElig;&#x0301;\"OE" ligature with acute accent
+s\[=oe]\&oelig;&#x0304;\"oe" ligature with macron
+s\[=OE]\&OElig;&#x0304;\"OE" ligature with macron
+s_[)oe]_&oelig;&#x0306;_oe ligature with breve
+s_[)OE]_&OElig;&#x0306;_OE ligature with breve
+
+r_\[=([a-zA-Z])([a-zA-Z])\]_$1&#862;$2_joining macron over two letters
+  s\[=OO]\O&#862;O\double "O" with macron
+  s\[=oo]\o&#862;o\double "o" with macron
+    \s\[=oo]\o&#x0305;o&#x0305;\"oo" with macron
+r_\[\)([a-zA-Z])([a-zA-Z])\]_$1&#861;$2_joining breve over two letters
+  s\[)OO]\O&#861;O\double "O" with breve
+  s\[)oo]\o&#861;o\double "o" with breve
+    \s\[)oo]\o&#x035D;o\"oo" with breve
+r_\[~([a-zA-Z])([a-zA-Z])\]_$1&#864;$2_joining tilde over two letters
+  s\[~OO]\O&#864;O\double "O" with tilde
+  s\[~oo]\o&#864;o\double "o" with tilde
+r_\[\(([a-zA-Z])([a-zA-Z])\]_$1&#865;$2_joining inverted breve over two letters
+  s\[(OO]\O&#865;O\double "O" with inverted breve
+  s\[(oo]\o&#865;o\double "o" with inverted breve
+
+
+   Greek letters; use HTML character entities
+s_[Alpha]_&Alpha;_Greek letter
+s_[Beta]_&Beta;_Greek letter
+s_[Gamma]_&Gamma;_Greek letter
+s_[Delta]_&Delta;_Greek letter
+s_[Epsilon]_&Epsilon;_Greek letter
+s_[Zeta]_&Zeta;_Greek letter
+s_[Eta]_&Eta;_Greek letter
+s_[Theta]_&Theta;_Greek letter
+s_[Iota]_&Iota;_Greek letter
+s_[Kappa]_&Kappa;_Greek letter
+s_[Lambda]_&Lambda;_Greek letter
+s_[Mu]_&Mu;_Greek letter
+s_[Nu]_&Nu;_Greek letter
+s_[Xi]_&Xi;_Greek letter
+s_[Omicron]_&Omicron;_Greek letter
+s_[Pi]_&Pi;_Greek letter
+s_[Rho]_&Rho;_Greek letter
+s_[Sigma]_&Sigma;_Greek letter
+s_[Tau]_&Tau;_Greek letter
+s_[Upsilon]_&Upsilon;_Greek letter
+s_[Phi]_&Phi;_Greek letter
+s_[Chi]_&Chi;_Greek letter
+s_[Psi]_&Psi;_Greek letter
+s_[Omega]_&Omega;_Greek letter
+s_[alpha]_&alpha;_Greek letter
+s_[beta]_&beta;_Greek letter
+s_[gamma]_&gamma;_Greek letter
+s_[delta]_&delta;_Greek letter
+s_[epsilon]_&epsilon;_Greek letter
+s_[zeta]_&zeta;_Greek letter
+s_[eta]_&eta;_Greek letter
+s_[theta]_&theta;_Greek letter
+s_[iota]_&iota;_Greek letter
+s_[kappa]_&kappa;_Greek letter
+s_[lambda]_&lambda;_Greek letter
+s_[mu]_&mu;_Greek letter
+s_[nu]_&nu;_Greek letter
+s_[xi]_&xi;_Greek letter
+s_[omicron]_&omicron;_Greek letter
+s_[pi]_&pi;_Greek letter
+s_[rho]_&rho;_Greek letter
+s_[sigmaf]_&sigmaf;_Greek letter
+s_[sigma]_&sigma;_Greek letter
+s_[tau]_&tau;_Greek letter
+s_[upsilon]_&upsilon;_Greek letter
+s_[phi]_&phi;_Greek letter
+s_[chi]_&chi;_Greek letter
+s_[psi]_&psi;_Greek letter
+s_[omega]_&omega;_Greek letter
+
+     OTHER HTML ENTITIES
+s_[ounce]_&ounce;_"ounce" character
+s_[dram]_&dram;_"dram" character
+
+s_[spade]_&spades;_"dram" character
+s_[heart]_&hearts;_"dram" character
+s_[diamond]_&diams;_"dram" character
+s_[diam]_&diams;_"dram" character
+s_[diams]_&diams;_"dram" character
+s_[club]_&clubs;_"dram" character
+s_[spades]_&spades;_"dram" character
+s_[hearts]_&hearts;_"dram" character
+s_[diamonds]_&diams;_"dram" character
+s_[clubs]_&clubs;_"dram" character
+
+s_[nbsp]_&nbsp;_non-breaking space
+
+    Ref: http://www.alanwood.net/unicode/miscellaneous_symbols.html
+s_[mercury]_&#x263f;_"mercury" character
+s_[female]_&#x2640;_"female" character
+s_[earth]_&#x2641;_"earth" character
+s_[male]_&#x2642;_"male" character
+s_[jupiter]_&#x2643;_"jupiter" character
+s_[saturn]_&#x2644;_"saturn" character
+s_[uranus]_&#x2645;_"uranus" character
+s_[neptune]_&#x2646;_"neptune" character
+s_[pluto]_&#x2647;_"pluto" character
+s_[aries]_&#x2648;_"aries" character
+s_[taurus]_&#x2649;_"taurus" character
+s_[gemini]_&#x264a;_"gemini" character
+s_[cancer]_&#x264b;_"cancer" character
+s_[leo]_&#x264c;_"leo" character
+s_[virgo]_&#x264d;_"virgo" character
+s_[libra]_&#x264e;_"libra" character
+s_[scorpius]_&#x264f;_"scorpius" character
+s_[sagittarius]_&#x2650;_"sagittarius" character
+s_[capricorn]_&#x2651;_"capricorn" character
+s_[aquarius]_&#x2652;_"aquarius" character
+s_[pisces]_&#x2653;_"pisces" character
+
+s_[comet]_&#x2604;_"comet" character
+s_[star]_&#x2605;_"black star" character
+s_[black star]_&#x2605;_"black star" character
+s_[white star]_&#x2606;_"black star" character
+s_[sun]_&#x2609;_"sun" character (dot in circle)
+s_[fisheye]_&#x25c9;_"fisheye" character (large dot in circle)
+s_[circle]_&#x25cb;_"white circle" character
+s_[dot]_&#x25cf;_"black circle" character
+s_[scissors]_&#x2702;_"scissors" character
+s_[cross]_&#x271d;_"Latin cross" character (other cross types are available)
+s_[maltese]_&#x2720;_"Maltese cross" character (other cross types are available)
+s_[arrow]_&#x2794;_"arrow" character (other arrow types are available)
+s_[arrowhead]_&#x27a2;_"arrowhead" character (other arrow types are available)
+
+s_[ankh]_&#x2625;_ankh character
+s_[chirho]_&#x2627;_chirho character
+s_[yinyang]_&#x262f;_yinyang character
+
+    CHESS PIECES
+s_[wking]_&#x2654;_white king
+s_[wqueen]_&#x2655;_white queen
+s_[wrook]_&#x2656;_white rook
+s_[wbishop]_&#x2657;_white bishop
+s_[wbish]_&#x2657;_white bishop (shorthand)
+s_[wknight]_&#x2658;_white knight
+s_[wknt]_&#x2658;_white knight (shorthand)
+s_[wpawn]_&#x2659;_white pawn
+s_[bking]_&#x265a;_black king
+s_[bqueen]_&#x265b;_black queen
+s_[brook]_&#x265c;_black rook
+s_[bbishop]_&#x265d;_black bishop
+s_[bbish]_&#x265d;_black bishop (shorthand)
+s_[bknight]_&#x265e;_black knight
+s_[bknt]_&#x265e;_black knight (shorthand)
+s_[bpawn]_&#x265f;_black pawn
+
+s_[oe]_&oelig;_oe ligature
+s_[OE]_&OElig;_OE ligature
+
+   white right-pointing index
+s_[fist]_&#x261e;_"fist" character
+s_[hand]_&#x261e;_"fist" character
+s_[index]_&#x261e;_"fist" character
+s_[index mark]_&#x261e;_"fist" character
+
+s_[dagger]_&dagger;_"dagger" character
+s_[double dagger]_&Dagger;_"double dagger" character
+
+    VULGAR FRACTIONS
+r_(\d)\-1\/4_$1&#188;_number and 1/4 fraction
+r_(\d)\-1\/2_$1&#189;_number and 1/2 fraction
+r_(\d)\-3\/4_$1&#190;_number and 3/4 fraction
+
+r_1\/4_&#188;_number and 1/4 fraction
+r_1\/2_&#189;_number and 1/2 fraction
+r_3\/4_&#190;_number and 3/4 fraction
+
+r_(\d)\-1\/3_$1&#8531;_number and 1/3 fraction
+r_(\d)\-2\/3_$1&#8532;_number and 2/3 fraction
+r_(\d)\-1\/5_$1&#8533;_number and 1/5 fraction
+r_(\d)\-2\/5_$1&#8534;_number and 2/5 fraction
+r_(\d)\-3\/5_$1&#8535;_number and 3/5 fraction
+r_(\d)\-4\/5_$1&#8536;_number and 4/5 fraction
+r_(\d)\-1\/6_$1&#8537;_number and 1/6 fraction
+r_(\d)\-5\/6_$1&#8538;_number and 5/6 fraction
+r_(\d)\-1\/8_$1&#8539;_number and 1/8 fraction
+r_(\d)\-3\/8_$1&#8540;_number and 3/8 fraction
+r_(\d)\-5\/8_$1&#8541;_number and 5/8 fraction
+r_(\d)\-7\/8_$1&#8542;_number and 7/8 fraction
+
+s_1/3_&#8531;_1/3 fraction
+s_2/3_&#8532;_2/3 fraction
+s_1/5_&#8533;_1/5 fraction
+s_2/5_&#8534;_2/5 fraction
+s_3/5_&#8535;_3/5 fraction
+s_4/5_&#8536;_4/5 fraction
+s_1/6_&#8537;_1/6 fraction
+s_5/6_&#8538;_5/6 fraction
+s_1/8_&#8539;_1/8 fraction
+s_3/8_&#8540;_3/8 fraction
+s_5/8_&#8541;_5/8 fraction
+s_7/8_&#8542;_7/8 fraction
+
+s\/$\<pre>\pre-formatted begins
+s\$/\</pre>\pre-formatted ends
+
+s\<p>          \<p class="i10">\Indent extra 10 spaces
+s\<p>        \<p class="i8">\Indent extra 8 spaces
+s\<p>      \<p class="i6">\Indent extra 6 spaces
+s\<p>    \<p class="i4">\Indent extra 4 spaces
+s\<p>  \<p class="i2">\Indent extra 2 spaces
+
+r_<link ([^>]+)>([^<]+)<\/link>_<a href="#$1">$2</a>_link
+r_<p><anchor\s*([^>]*)>([^<]*)</anchor></p>_<a name="$1" id="$1"></a>$2_anchor
+r_<anchor\s*([^>]*)>([^<]*)</anchor>_<a name="$1" id="$1"></a>$2_anchor
+r_<p><anchor\s*([^>]*)><h2>([^<]*)</h2></anchor></p>_<a name="$1" id="$1"></a><h2>$2</h2>_anchor
+r_<p><anchor\s*([^>]*)><h3>([^<]*)</h3></anchor></p>_<a name="$1" id="$1"></a><h3>$2</h3>_anchor
+r_<p><anchor\s*([^>]*)><h4>([^<]*)</h4></anchor></p>_<a name="$1" id="$1"></a><h4>$2</h4>_anchor
+
+   SELF-CLOSED ANCHORS <anchor name />
+r_<anchor\s*([^\/]*)\/>_<a name="$1" id="$1"></a>_anchor
+
+r_<anchor\s*([^>]*)><h2>([^<]*)</h2></anchor>_<a name="$1" id="$1"></a><h2>$2</h2>_anchor
+r_<anchor\s*([^>]*)><h3>([^<]*)</h3></anchor>_<a name="$1" id="$1"></a><h3>$2</h3>_anchor
+r_<anchor\s*([^>]*)><h4>([^<]*)</h4></anchor>_<a name="$1" id="$1"></a><h4>$2</h4>_anchor
+
+r_-{5,}File:\s*0*(\d+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+r_-{5,}File:\s*\-(\d+)\.png.*__remove Page Separator with negative page number
+r_-{5,}File:\s*([mdclxvi]+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number as Roman numeral
+r_-+File:\s*0*(\d+)\.png.*_<span class="pagenum"><a name="page$1" id="page$1"></a>[pg $1]</span>_page number
+
+\Make sure you handle Page Separators and ampersands before treating dashes!
+s\--\&mdash;\em dash
+
+   Footnotes:
+r_\[(\d{1,3})\]_<a id="footnotetag$1" name="footnotetag$1"></a><a href="#footnote$1"><sup>$1</sup></a>_Footnote
+   If the closing bracket "]" falls on same line, capture the footnote caption.
+r_\[Footnote (\d+): ([^\]]+)\]_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1: </b><a href="#footnotetag$1">(return) </a><p>$2</p></blockquote>_Footnote
+   Can't find closing bracket; treat as well as possible
+r_\[Footnote (\d+):_<blockquote class="footnote"><a id="footnote$1" name="footnote$1"></a><b>Footnote $1: </b><a href="#footnotetag$1">(return) </a><p>***Put footnote text here***</p></blockquote>_Footnote
+
+
+  Sidenotes: (note that it grabs ">" from the "<p>" tag inserted in Phase 1)
+r_>\[Sidenote: ([^\]]*)\]_ class="side">$1_Sidenote
+s\>[Sidenote: \ class="side">\Begin Sidenote
+
+
+   Help for Tables of Contents and Indices and "See p. ***"
+r_##(\d+)_<a href="#page$1">$1</a>_Go to page #
+r_##([ivxlc]+)_<a href="#page$1">$1</a>_Go to page #
+  \s\##\<a href="#page***">***</a></br>\Go to page #***
+
+
+

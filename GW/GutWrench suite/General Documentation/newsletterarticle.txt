@@ -1,0 +1,52 @@
+GUTWRENCH SUITE (Windows only)
+
+All four programs are contained in a single .zip file, downloadable at:
+
+http://www.pgdp.net/tools/GW.zip
+
+The programs come with documentation that explains their function in more detail. Email the author at flis@detk.com if you have any problems or suggestions. GutAxe and GutHammer are probably of most interest outside DP, as they are not at all DP-specific. Anyone interested in the Visual Basic source code is welcome to it. 
+
+
+GutAxe
+
+This simple program helps make rapid corrections to errors in e-texts. These include many "Stealth Scannos" (OCR errors that will pass a spell-checker), words that are usually hyphenated or have accents or ligatures, and mistakes in punctuation and markups. It is intended mainly as a quick-and-dirty, time-saving, error-reducing tool, not as a replacement for other more thorough tools, such as Gutcheck or a spell-checker.
+
+It works much like a spell-checker: when it finds an error, it shows the context and proposes the likely correction, asking the user to confirm. For example, if it finds the word "arid", it asks whether this should be changed to "and" (a "Stealth Scanno", because the erroneous word "arid" will pass a spell-checker). If it finds the string "Mrs," (with a comma), it asks whether it should be changed to "Mrs." (with a period). Of course, many errors do not have such predictable corrections or are too unlikely to occur (it doesn't flag "and" as possibly "arid", e.g.), and GutAxe does not attempt to be a completely general tool. However, it flags a relatively low percentage of "false positives" and enables the user to not only find but also correct a large number of errors in a short time.
+
+It is now set up to check English-language texts (with some French words). However, the errors that it detects and the corrections it offers are all contained in external text files, which could easily be edited to handle other languages (no re-programming needed).
+
+
+GutSweeper
+
+GutSweeper is a little time-saving tool intended to be used first in post-processing at DP. It automatically cleans up clear-cut errors. It divides any very long lines of text (over a specified length). It does some general cleaning up: removes trailing and double blanks, and deletes blank lines at the bottoms of pages (before the DP-style Page Separators). A preliminary text-checking feature insures that it will not be confused by erroneous poetry and other mark-ups.
+
+
+GutWrench
+
+This multi-purpose error-finding tool performs three kinds of functions:
+
+1. Mapping the text. This function creates various tables concerning the text:
+a) List of all characters in the file and their frequencies.
+b) "Page Map" gives a brief (one-line) summary of special features (such as italic markups, paragraphs, special characters) that appear on each page of text (between DP-style Page Separators). This may be printed then quickly compared with the scan images to find missing features in the text.
+c) List of all hyphenated words, and occurrences of unhyphenated versions of them.
+d) List of all accented words, and occurrences of unaccented versions.
+e) Concordance (alphabetic list of all words, their frequencies, and point of first occurrence)
+f) List of all lines of text having adjacent UPPER CASE characters (useful for checking chapter headings and finding some errors).
+
+2. Checking the text for errors (intended as a supplement to Gutcheck):
+a) Hyphens and dashes
+b) Italic and bold (HTML-style) markups
+c) Stealth scannos, including also optional lists of "ftealth fcannof" (old-style long "s" confused with "f") and French and "other" (mostly a few German) stealth scannos. (These lists are all contained in external text files, easily modified or expanded.)
+d) Other assorted errors in punctuation.
+
+3. Modifying the text:
+a) Joins short lines of text (outside of poetry and other markups, and provided the result is shorter than a specified length).
+b) Deletes trailing blanks.
+c) Deletes DP-style Page Separators.
+d) Deletes poetry, block quote, and stet markups.
+
+
+GutHammer
+
+This is an easy-to-use text-rewrapping program. It uses a simplified version of Big_Bill's markups (see his RewrapIndent program) to handle poetry (indented), block quotes (indented and rewrapped), and tables (left as is). Optionally, it will simultaneously replace HTML-style <i>italic</i> and <b>bold</b> markups with specified characters, or convert <b>bold</b> to ALL UPPER CASE. It uses a GUI to adjust its settings (e.g., column width), but it runs non-interactively--just a few mouse-clicks and you're done!
+
